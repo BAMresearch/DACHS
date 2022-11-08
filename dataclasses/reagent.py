@@ -15,9 +15,10 @@ __status__ = "beta"
 
 from attrs import define, validators, field
 from typing import Optional
-from addItemsToAttrs import addItemsToAttrs
+from additemstoattrs import addItemsToAttrs
+from __init__ import ureg  # get importError when using: "from . import ureg"
 
-# TODO: we probably need to add a units class like Pint
+# from dachsvalidators import isQuantity
 
 
 @define
@@ -34,8 +35,8 @@ class reagent(addItemsToAttrs):
     )
     MolarMass: float = field(
         default=None,
-        validator=validators.instance_of(float),
-        converter=float,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg,
     )
     Density: float = field(
         default=None,
@@ -82,6 +83,23 @@ class reagent(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(float)),
         converter=float,
     )
+    # internals, don't need a lot of validation:
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing
+
+    def __attrs_post_init__(self):
+        # auto-generate the store and load key lists:
+        self._storeKeys = [
+            i
+            for i in self.keys()
+            if (i not in self._excludeKeys and not i.startswith("_"))
+        ]
+        self._loadKeys = [
+            i
+            for i in self.keys()
+            if (i not in self._excludeKeys and not i.startswith("_"))
+        ]
 
 
 if __name__ == "__main__":
@@ -89,7 +107,7 @@ if __name__ == "__main__":
     solvent = reagent(
         Name="Methanol",
         ChemicalFormula="MeOH",
-        MolarMass=12.4,
+        MolarMass="12.4 g/mol",
         Density=0.8,
         CASNumber="1293847-2839147",
         Brand="Absolut",
@@ -101,3 +119,6 @@ if __name__ == "__main__":
         UnitSize=1,
     )
     print([f"{k}: {v}" for k, v in solvent.items()])
+    print(f"{solvent._loadKeys=}")
+    # test ureg:
+    print(ureg("12.4 microliter"))
