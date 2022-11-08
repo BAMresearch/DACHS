@@ -17,6 +17,7 @@ from attrs import define, validators, field
 from typing import Optional
 from additemstoattrs import addItemsToAttrs
 from __init__ import ureg  # get importError when using: "from . import ureg"
+import logging
 
 # from dachsvalidators import isQuantity
 
@@ -40,8 +41,8 @@ class reagent(addItemsToAttrs):
     )
     Density: float = field(
         default=None,
-        validator=validators.instance_of(float),
-        converter=float,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg,
     )
     CASNumber: str = field(
         default=None,
@@ -60,8 +61,8 @@ class reagent(addItemsToAttrs):
     )
     MinimumPurity: float = field(
         default=None,
-        validator=validators.instance_of(float),
-        converter=float,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg,
     )
     OpenDate: str = field(
         default=None,
@@ -75,13 +76,13 @@ class reagent(addItemsToAttrs):
     )
     UnitPrice: Optional[float] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(float)),
-        converter=float,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg,
     )
     UnitSize: float = field(
         default=None,
-        validator=validators.optional(validators.instance_of(float)),
-        converter=float,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg,
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
@@ -101,6 +102,14 @@ class reagent(addItemsToAttrs):
             if (i not in self._excludeKeys and not i.startswith("_"))
         ]
 
+    def PricePerUnit(self):
+        assert (self.UnitPrice is not None) and (
+            self.UnitSize is not None
+        ), logging.warning(
+            "PricePerUnit can only be calculated when both UnitSize and UnitPrice are set"
+        )
+        return self.UnitPrice / self.UnitSize
+
 
 if __name__ == "__main__":
     """Just a basic test of the class"""
@@ -108,17 +117,18 @@ if __name__ == "__main__":
         Name="Methanol",
         ChemicalFormula="MeOH",
         MolarMass="12.4 g/mol",
-        Density=0.8,
+        Density="0.8 g/cc",
         CASNumber="1293847-2839147",
         Brand="Absolut",
         UNNumber="weori-198273",
-        MinimumPurity=0.98,
+        MinimumPurity="98 percent",
         OpenDate="2022-05-01T10:04:22",
         StorageConditions=None,
-        UnitPrice=12.4,
-        UnitSize=1,
+        UnitPrice="12.4 euro",
+        UnitSize="0.5 liter",
     )
     print([f"{k}: {v}" for k, v in solvent.items()])
     print(f"{solvent._loadKeys=}")
     # test ureg:
     print(ureg("12.4 microliter"))
+    print(solvent.PricePerUnit())
