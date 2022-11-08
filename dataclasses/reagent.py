@@ -136,5 +136,5 @@ if __name__ == "__main__":
     print([f"{k}: {v}" for k, v in solvent.items()])
     print(f"{solvent._loadKeys=}")
     # test ureg:
-    print(ureg("12.4 microliter"))
+    print(ureg("12.4 percent")* solvent.UnitPrice)
     print(solvent.PricePerUnit())
