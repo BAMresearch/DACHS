@@ -24,6 +24,11 @@ import logging
 
 @define
 class reagent(addItemsToAttrs):
+    UID: str = field(
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
     Name: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -114,6 +119,7 @@ class reagent(addItemsToAttrs):
 if __name__ == "__main__":
     """Just a basic test of the class"""
     solvent = reagent(
+        UID="Solvent_1",
         Name="Methanol",
         ChemicalFormula="MeOH",
         MolarMass="12.4 g/mol",
