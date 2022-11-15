@@ -69,3 +69,16 @@ class addItemsToAttrs:  # used to be MutableMappingMixin(MutableMapping)
     def items(self) -> Iterable:
         for key in self.__iter__():
             yield key, self.__getattribute__(key)
+
+    def __attrs_post_init__(self):
+        # auto-generate the store and load key lists:
+        self._storeKeys = [
+            i
+            for i in self.keys()
+            if (i not in self._excludeKeys and not i.startswith("_"))
+        ]
+        self._loadKeys = [
+            i
+            for i in self.keys()
+            if (i not in self._excludeKeys and not i.startswith("_"))
+        ]
