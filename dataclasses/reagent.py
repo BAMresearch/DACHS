@@ -184,6 +184,20 @@ class reagentMixture(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
+    def componentConcentration(self, componentID: str) -> float:
+        """
+        Finds the concentration of a component defined by its componentID in the total mixture
+        This concentration will be in mole fraction. 
+        """
+        componentMoles = 0
+        totalMoles = 0
+        for component in self.ReagentList:
+            totalMoles += component.Moles()
+            if component.Reagent.UID == componentID:
+                componentMoles = component.Moles()
+        if componentMoles==0:
+            logging.warning(f'Concentration of component {componentID} is zero, component not found')
+        return componentMoles/totalMoles
 
 if __name__ == "__main__":
     """Just a basic test of the class"""
@@ -224,10 +238,6 @@ if __name__ == "__main__":
     print(ureg("12.4 percent")* solvent.UnitPrice)
     print(solvent.PricePerUnit())
 
-    r1 = reagentByVolume(
-                AmountOfVolume='500 ml',
-                Reagent=solvent
-            )
     # make mixture: 
     mixture = reagentMixture(
         UID='stock_1',
@@ -236,12 +246,15 @@ if __name__ == "__main__":
         PreparationDate='2022.07.27',
         StorageConditions='air conditioned lab',
         ReagentList=[
-            r1,
+            reagentByVolume(
+                AmountOfVolume='500 ml',
+                Reagent=solvent
+            ),
             reagentByMass(
                 AmountOfMass='4.5767 g',
                 Reagent=linker
             )
         ]
     )
-    print(f'{r1.Reagent.MolarMass=}')
-    print([f'{m.Moles()} of {m.Reagent.Name} in {mixture.Name}' for m in mixture.ReagentList])
+    # print(f'{r1.Reagent.MolarMass=}')
+    print([f'{m.Moles():.3f} of {m.Reagent.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(componentID=m.Reagent.UID):0.03e}' for m in mixture.ReagentList])

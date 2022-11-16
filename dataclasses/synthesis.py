@@ -72,9 +72,7 @@ class synthesisStep(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(str)),
         converter=str,
     )
-    # def __attrs_post_init__(self):
-    #     # auto-generate the store and load key lists:
-    #     super().__attrs_post_init__()
+
 
 @define
 class synthesis(addItemsToAttrs):
