@@ -15,18 +15,20 @@ __status__ = "beta"
 
 from attrs import define, validators, field
 from typing import List, Optional
-from additemstoattrs import addItemsToAttrs
-from __init__ import ureg  # get importError when using: "from . import ureg"
+from .additemstoattrs import addItemsToAttrs
+from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
+
 
 @define
 class pv(addItemsToAttrs):
-    '''
-    A process variable which can be added to a piece of equipment. 
-    Each process variable has a calibration factor and calibration offset as well. 
+    """
+    A process variable which can be added to a piece of equipment.
+    Each process variable has a calibration factor and calibration offset as well.
     These link the actual output with the set value as follows:
     PV_real = PV_set * calibrationFactor + calibrationOffset
-    '''
+    """
+
     UID: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -54,11 +56,11 @@ class pv(addItemsToAttrs):
     )
     CalibrationFactor: float = field(
         default=1.0,
-        validator=validators.instance_of(float), # unitless
+        validator=validators.instance_of(float),  # unitless
         converter=float,
     )
     CalibrationOffset: float = field(
-        default='0.0 kelvin',
+        default="0.0 kelvin",
         validator=validators.instance_of(ureg.Quantity),
         converter=ureg,
     )
@@ -67,7 +69,6 @@ class pv(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
     # value=Setpoint # straightforward for now
-
 
     # def __attrs_post_init__(self):
     #     # auto-generate the store and load key lists:
@@ -150,30 +151,32 @@ if __name__ == "__main__":
         UID="BATH_1",
         Name="Lauda Bath",
         Manufacturer="Lauda",
-        ModelName='Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz',
-        ModelNumber='L001603',
+        ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
+        ModelNumber="L001603",
         UnitPrice="9756 euro",
         UnitSize="1 item",
-        Description='funky bath with excellent temperature control',
-        PVs=[pv(
-            UID='temp',
-            Name='temperature',
-            Description='Setpoint temperature of the bath',
-            CalibrationFactor=1.0,
-            CalibrationOffset='0 kelvin', 
-            Setpoint='20 kelvin' # can also be set at a later stage, just wanted to check the units. 
-        )]
+        Description="funky bath with excellent temperature control",
+        PVs=[
+            pv(
+                UID="temp",
+                Name="temperature",
+                Description="Setpoint temperature of the bath",
+                CalibrationFactor=1.0,
+                CalibrationOffset="0 kelvin",
+                Setpoint="20 kelvin",  # can also be set at a later stage, just wanted to check the units.
+            )
+        ],
     )
     e2 = equipment(
         UID="VESS_1",
         Name="Falcon tube",
         Manufacturer="Labsolute",
-        ModelName='Centrifuge Tube 50 ml, PP',
-        ModelNumber='7696884',
+        ModelName="Centrifuge Tube 50 ml, PP",
+        ModelNumber="7696884",
         UnitPrice="202 euro",
         UnitSize="300 items",
-        Description='Falcon tubes, 50 ml',
-        PVs=[]
+        Description="Falcon tubes, 50 ml",
+        PVs=[],
     )
     print([f"{k}: {v}" for k, v in solvent.items()])
     print(f"{solvent._loadKeys=}")

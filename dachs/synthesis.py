@@ -15,14 +15,15 @@ __status__ = "beta"
 
 from attrs import define, validators, field
 from typing import List, Optional
-from additemstoattrs import addItemsToAttrs
-from __init__ import ureg  # get importError when using: "from . import ureg"
+from .additemstoattrs import addItemsToAttrs
+from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
-from equipment import pv
+from .equipment import pv
+
 
 @define
 class synthesisStep(addItemsToAttrs):
-    UID: str = field( # step number
+    UID: str = field(  # step number
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -72,11 +73,14 @@ class synthesisStep(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(str)),
         converter=str,
     )
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing
 
 
 @define
 class synthesis(addItemsToAttrs):
-    UID: str = field( # step number
+    UID: str = field(  # step number
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -106,3 +110,6 @@ class synthesis(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(dict)),
         converter=dict,
     )
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing

@@ -15,22 +15,139 @@ __date__ = "2022/11/07"
 __status__ = "beta"
 
 from dataclasses import dataclass
+import logging
 from pathlib import Path
-from dachs.reagent import reagent, reagentByMass, reagentByVolume, reagentMixture
+
+import pandas as pd
+from dachs.readers import assert_unit, find_reagent_in_rawmessage, find_trigger_in_log
+from dachs.reagent import (
+    chemical,
+    product,
+    reagent,
+    reagentByMass,
+    reagentByVolume,
+    reagentMixture,
+)
+from dachs.synthesis import synthesis, synthesisStep
+
 
 @dataclass
-class root():
+class chemicals:
+    starting_compounds = []
+    mixtures = []
+    final_product = product
+
+
+@dataclass
+class root:
     """Root entry point for the structure"""
-    ID=''
-    name=''
-    description=''
-    starting_compounds=[]
-    synthesis=[]
-    final_product=[]
-    characterizations=[]
+
+    ID = ""
+    name = ""
+    description = ""
+    chemicals = chemicals()  # does this need a factory? hmm...
+    synthesis = []
+    characterizations = []
 
 
-if __name__=='__main__': 
-    S0File = Path('testData', 'AutoMOFs_Logbook_Testing.xlsx')
+if __name__ == "__main__":
+    S0File = Path("testData", "AutoMOFs_Logbook_Testing.xlsx")
     assert S0File.exists()
-    
+    rootStruct = root()
+
+    logging.info("Defining the base chemicals / starting compounds")
+    df = pd.read_excel(
+        S0File, sheet_name="Chemicals", index_col=0, header=0, parse_dates=["Open Date"]
+    )
+    df = df.dropna(how="all")
+    for idx, row in df.iterrows():
+        print(f"{idx=}, {row=}")
+        rootStruct.chemicals.starting_compounds += [
+            reagent(
+                UID=str(idx),
+                Chemical=chemical(
+                    Name=row["Name"],
+                    ChemicalFormula=row["Formula"],
+                    MolarMass=assert_unit(row["Molar Mass"], "g/mol"),
+                    Density=assert_unit(row["Density"], "g/cm^3"),
+                ),
+                CASNumber=row["CAS-Number"],
+                Brand=row["Brand"],
+                UNNumber=row["UN-Number"],
+                MinimumPurity=assert_unit(row["Purity"], "percent"),
+                OpenDate=row["Open Date"],
+                StorageConditions=row["Storage Conditions"],
+                UnitPrice=assert_unit(row["Unit Price"], "euro"),
+                UnitSize=assert_unit(row["Unit Size"], row["Unit"]),
+            )
+        ]
+    # print(rootStruct.chemicals.starting_compounds)
+
+    logging.info("defining the mixtures based on mixtures of starting componds")
+    filenames = [
+        Path("testData", "AutoMOFs05_Solution0.xlsx"),
+        Path("testData", "AutoMOFs05_Solution1.xlsx"),
+    ]
+    for filename in filenames:
+        assert filename.exists(), f"{filename=} does not exist"
+        # read the synthesis logs
+        df = pd.read_excel(
+            filename, sheet_name="Sheet1", index_col=0, header=0, parse_dates=["Time"]
+        )
+
+        stepId = 1
+        assert len(df.SampleNumber.unique()) == 1, logging.error(
+            "no unique mixture ID (sampleNumber) identified in the solution log"
+        )
+        solutionId = df.SampleNumber.unique()[0]
+        reagList = []
+        synth = []
+        # now we find the reagents that went into the mixture
+        for idx, row in df.iterrows():
+            sstep = synthesisStep(
+                UID=str(stepId),
+                RawMessage=row["Readout"],
+                RawMessageLevel=row["Info"],
+                TimeStamp=idx,
+                stepDescription="Generating stock solutions",
+                stepType="mixing",
+                ExperimentId=row["ExperimentID"],
+            )
+            if find_trigger_in_log(sstep, triggerList=["Weight"]):
+                # we found a component to add to the mixture
+                reag = find_reagent_in_rawmessage(
+                    sstep.RawMessage, rootStruct.chemicals.starting_compounds
+                )
+                assert reag is not None, logging.warning(
+                    f"reagent not found in {sstep.RawMessage=}"
+                )
+                # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.UID=}')
+                reagList += [
+                    reagentByMass(
+                        Reagent=reag,
+                        AmountOfMass=str(row["Value"]) + " " + str(row["Unit"]),
+                    )
+                ]
+            synth += [sstep]
+            stepId += 1
+        # now we can define the mixture
+        rootStruct.chemicals.mixtures += [
+            reagentMixture(
+                UID=solutionId,
+                Name="Mixture",
+                Description="",
+                PreparationDate=idx,  # last timestamp read
+                StorageConditions="",
+                ReagentList=reagList,
+                Synthesis=synthesis(
+                    UID=solutionId,
+                    Name=f"Preparation of {solutionId}",
+                    Description=" ",
+                    SynthesisLog=synth,
+                ),
+            )
+        ]
+        # and we can add the synthesis used to make this mixture:
+        print(f"{solutionId=}")
+
+    logging.info(rootStruct.chemicals.mixtures)
