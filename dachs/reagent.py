@@ -15,8 +15,8 @@ __status__ = "beta"
 
 from attrs import define, validators, field
 from typing import List, Optional
-from additemstoattrs import addItemsToAttrs
-from __init__ import ureg  # get importError when using: "from . import ureg"
+from .additemstoattrs import addItemsToAttrs
+from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
 
 # from dachsvalidators import isQuantity

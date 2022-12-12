@@ -32,6 +32,8 @@ class addItemsToAttrs:  # used to be MutableMappingMixin(MutableMapping)
     """
 
     __slots__ = ()  # May as well save on memory?
+    _storeKeys = list()
+    _loadKeys = list()
 
     def __iter__(self) -> Iterable:
         for ifield in fields(self.__class__):
@@ -82,3 +84,5 @@ class addItemsToAttrs:  # used to be MutableMappingMixin(MutableMapping)
             for i in self.keys()
             if (i not in self._excludeKeys and not i.startswith("_"))
         ]
+
+    
