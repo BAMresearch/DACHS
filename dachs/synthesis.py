@@ -13,7 +13,7 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/07"
 __status__ = "beta"
 
-from attrs import define, validators, field
+from attrs import define, validators, field, Factory
 from typing import List, Optional
 from .additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
@@ -54,24 +54,24 @@ class synthesisStep(addItemsToAttrs):
         converter=str,
     )
     EquipmentId: Optional[str] = field(
-        default=None,
+        default=Factory(str),
         validator=validators.optional(validators.instance_of(str)),
-        converter=str,
+        # converter=str,
     )
     PVs: Optional[pv] = field(
-        default=None,
+        default=Factory(pv),
         validator=validators.optional(validators.instance_of(pv)),
-        converter=pv,
+        # converter=pv,
     )
     ExperimentId: Optional[str] = field(
-        default=None,
+        default=Factory(str),
         validator=validators.optional(validators.instance_of(str)),
-        converter=str,
+        # converter=str,
     )
     SampleId: Optional[str] = field(
-        default=None,
+        default=Factory(str),
         validator=validators.optional(validators.instance_of(str)),
-        converter=str,
+        # converter=str,
     )
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
@@ -101,14 +101,14 @@ class synthesis(addItemsToAttrs):
         converter=list,
     )
     SourceDOI: Optional[str] = field(
-        default=None,
+        default=Factory(str),
         validator=validators.optional(validators.instance_of(str)),
-        converter=str,
+        # converter=str,
     )
     DerivedParameters: Optional[dict] = field(
-        default=None,
+        default=Factory(dict),
         validator=validators.optional(validators.instance_of(dict)),
-        converter=dict,
+        # converter=dict,
     )
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)

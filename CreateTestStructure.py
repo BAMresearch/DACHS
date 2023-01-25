@@ -4,8 +4,15 @@
 """
 Overview:
 ========
-Construction of a test structure from Glen's excel files using the dataclasses here. 
-
+Construction of a test structure from Glen's excel files using the available dataclasses, 
+the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files. 
+It now defines: 
+  - base chemicals and 
+  - mixtures, 
+  todo: 
+  - write synthesis log
+  - write or (perhaps better) link to SAS data structure. 
+  - write or (perhaps better) link to analysis results?
 """
 
 __author__ = "Brian R. Pauw"
@@ -51,8 +58,11 @@ class root:
 
 
 if __name__ == "__main__":
+    # Input excel sheet, containing all necessary information:
     S0File = Path("testData", "AutoMOFs_Logbook_Testing.xlsx")
     assert S0File.exists()
+
+    # Start with a root
     rootStruct = root()
 
     logging.info("Defining the base chemicals / starting compounds")
@@ -60,6 +70,7 @@ if __name__ == "__main__":
         S0File, sheet_name="Chemicals", index_col=0, header=0, parse_dates=["Open Date"]
     )
     df = df.dropna(how="all")
+    # Turn the specified chemicals into a list of starting compounds
     for idx, row in df.iterrows():
         print(f"{idx=}, {row=}")
         rootStruct.chemicals.starting_compounds += [
@@ -88,13 +99,13 @@ if __name__ == "__main__":
         Path("testData", "AutoMOFs05_Solution0.xlsx"),
         Path("testData", "AutoMOFs05_Solution1.xlsx"),
     ]
+    # make a mixture as defined in each of the excel sheets:
     for filename in filenames:
         assert filename.exists(), f"{filename=} does not exist"
-        # read the synthesis logs
+        # read the synthesis logs:
         df = pd.read_excel(
             filename, sheet_name="Sheet1", index_col=0, header=0, parse_dates=["Time"]
         )
-
         stepId = 1
         assert len(df.SampleNumber.unique()) == 1, logging.error(
             "no unique mixture ID (sampleNumber) identified in the solution log"
@@ -102,7 +113,7 @@ if __name__ == "__main__":
         solutionId = df.SampleNumber.unique()[0]
         reagList = []
         synth = []
-        # now we find the reagents that went into the mixture
+        # now we find the reagents that went into the mixture:
         for idx, row in df.iterrows():
             sstep = synthesisStep(
                 UID=str(stepId),
@@ -151,3 +162,13 @@ if __name__ == "__main__":
         print(f"{solutionId=}")
 
     logging.info(rootStruct.chemicals.mixtures)
+    
+    logging.info("defining the synthesis log")
+    # just reading and dumping the synthesis log:
+    filename=Path("testData", "AutoMOFs05_H005.xlsx")
+    df = pd.read_excel(
+            filename, sheet_name="Sheet1", index_col=0, header=0, parse_dates=["Time"]
+        )
+    for idx, row in df.iterrows():
+        pass
+    logging.info("defining the synthesis steps (nicely organized from log)")

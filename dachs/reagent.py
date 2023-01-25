@@ -13,7 +13,7 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/07"
 __status__ = "beta"
 
-from attrs import define, validators, field
+from attrs import define, validators, field, Factory
 from typing import List, Optional
 
 from dachs.synthesis import synthesis
@@ -262,9 +262,9 @@ class reagentMixture(addItemsToAttrs):
         converter=str,
     )
     Synthesis: Optional[synthesis] = field(
-        default=None,
+        default=Factory(synthesis),
         validator=validators.optional(validators.instance_of(synthesis)),
-        converter=synthesis,
+        # factory=synthesis,
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
