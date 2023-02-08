@@ -14,11 +14,46 @@ __date__ = "2022/11/07"
 __status__ = "beta"
 
 from attrs import define, validators, field, Factory
-from typing import List, Optional
+from typing import List, Optional, Union
+
+from pandas import DatetimeIndex, Timestamp
 from .additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
 from .equipment import pv
+
+
+@define
+class RawLogMessage(addItemsToAttrs):
+    TimeStamp: Timestamp = field(
+        default=None, validator=validators.instance_of(Timestamp)
+    )
+    MessageLevel: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    ExperimentID: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    SampleID: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    Message: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    Quantity: Optional[ureg.Quantity] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+    )
+    Value: Optional[Union[float, int]] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of((int, float))),
+    )
+    Unit: Optional[str] = field(
+        default=None, validator=validators.optional(validators.instance_of(str))
+    )
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing
 
 
 @define

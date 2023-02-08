@@ -171,8 +171,9 @@ def test_integral() -> None:
     logging.info("defining the synthesis log")
     # just reading and dumping the synthesis log:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
+    assert filename.exists()
     df = pd.read_excel(
-        filename, sheet_name="Sheet1", index_col=0, header=0, parse_dates=["Time"]
+        filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
     )
     for idx, row in df.iterrows():
         pass
