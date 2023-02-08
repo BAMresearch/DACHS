@@ -7,6 +7,7 @@ import yaml
 from dachs.__init__ import ureg
 from dachs.equipment import equipment, pv
 from dachs.metaclasses import experimentalSetup, root
+from dachs.readers import ReadStartingCompounds, readRawMessageLog
 from dachs.reagent import product, reagent, reagentByMass, reagentByVolume, reagentMixture, chemical
 from dachs.synthesis import RawLogMessage
 
@@ -87,40 +88,14 @@ def test_experimental_setup()->None:
     print(f"{su1._loadKeys=}")
 
 
-def test_RawLogMessage()->None:
+def test_readRawMessageLog()->None:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
-    assert filename.exists()
-    df = pd.read_excel(
-        filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
-    )
-    for idx, row in df.iterrows():
-        condition=0
-        Val, U, Q=None, None, None
-        if row['Value'].strip() != '-':
-            Val=yaml.safe_load(row['Value']) if isinstance(row['Value'], str) else row['Value']
-            condition += 1
-        if row['Unit'].strip() != '-':
-            U=row['Unit']
-            U='percent' if U=='%' else U
-            # U=ureg.parse_units(U)
-            condition += 1
-        if condition == 2: # both value and unit are present
-            try:
-                Q = ureg(str(Val) + " " + str(U))
-            except: # conversion fail
-                Q = None
-        
-        tmp = RawLogMessage(
-            TimeStamp = row['Time'],
-            MessageLevel= row['Info'],
-            ExperimentID= row['ExperimentID'],
-            SampleID= row['SampleNumber'],
-            Message=row['Readout'],
-            Unit=U,
-            Value=Val, 
-            Quantity=Q
-        )
-        
+    _=readRawMessageLog(filename)
+
+
+def test_ReadStartingCompounds()->None:
+    filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
+    _=ReadStartingCompounds(filename)
 
 
 def test_product()->None:
@@ -138,7 +113,7 @@ def test_product()->None:
     return
 
 
-def test_reagent()->None:
+def test_reagent() -> None:
     """
     Tests for the reagent class
     """

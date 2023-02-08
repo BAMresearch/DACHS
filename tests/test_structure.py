@@ -7,7 +7,12 @@ import logging
 import sys
 
 import pandas as pd
-from dachs.readers import assert_unit, find_reagent_in_rawmessage, find_trigger_in_log
+from dachs.readers import (
+    ReadStartingCompounds,
+    assert_unit,
+    find_reagent_in_rawmessage,
+    find_trigger_in_log,
+)
 from dachs.reagent import (
     chemical,
     product,
@@ -71,33 +76,7 @@ def test_integral() -> None:
     )
 
     logging.info("Defining the base chemicals / starting compounds")
-    df = pd.read_excel(
-        S0File, sheet_name="Chemicals", index_col=0, header=0, parse_dates=["Open Date"]
-    )
-    df = df.dropna(how="all")
-    # Turn the specified chemicals into a list of starting compounds
-    for idx, row in df.iterrows():
-        print(f"{idx=}, {row=}")
-        rootStruct.Chemicals.starting_compounds += [
-            reagent(
-                UID=str(idx),
-                Chemical=chemical(
-                    Name=row["Name"],
-                    ChemicalFormula=row["Formula"],
-                    MolarMass=assert_unit(row["Molar Mass"], "g/mol"),
-                    Density=assert_unit(row["Density"], "g/cm^3"),
-                ),
-                CASNumber=row["CAS-Number"],
-                Brand=row["Brand"],
-                UNNumber=row["UN-Number"],
-                MinimumPurity=assert_unit(row["Purity"], "percent"),
-                OpenDate=row["Open Date"],
-                StorageConditions=row["Storage Conditions"],
-                UnitPrice=assert_unit(row["Unit Price"], "euro"),
-                UnitSize=assert_unit(row["Unit Size"], row["Unit"]),
-            )
-        ]
-    # print(rootStruct.chemicals.starting_compounds)
+    rootStruct.Chemicals.starting_compounds += ReadStartingCompounds(S0File)
 
     logging.info("defining the mixtures based on mixtures of starting componds")
     filenames = [
