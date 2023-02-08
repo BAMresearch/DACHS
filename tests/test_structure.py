@@ -179,7 +179,7 @@ def test_integral() -> None:
     )
     mLocs = np.where(dfMask)[0]
     assert len(mLocs) == 2
-    rootStruct.Synthesis.DerivedParameters += [
+    rootStruct.Synthesis.DerivedParameters = [
         DerivedParameter(
             Name="Yield",
             Description="Actual yield of the product",
@@ -194,7 +194,7 @@ def test_integral() -> None:
         rootStruct.Synthesis.RawLog,
         "arduino:environment:temperature",
         Highlander=True,
-        return_indices=True,
+        #return_indices=True,
     )
     rootStruct.Synthesis.DerivedParameters += [
         DerivedParameter(
