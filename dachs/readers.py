@@ -55,6 +55,7 @@ def readRawMessageLog(filename: Path) -> List:
 
         msgList += [
             RawLogMessage(
+                Index=idx,
                 TimeStamp=row["Time"],
                 MessageLevel=row["Info"],
                 ExperimentID=row["ExperimentID"],
@@ -67,10 +68,15 @@ def readRawMessageLog(filename: Path) -> List:
         ]
     return msgList
 
+
 def ReadStartingCompounds(filename) -> List:
     assert filename.exists()
     df = pd.read_excel(
-        filename, sheet_name="Chemicals", index_col=0, header=0, parse_dates=["Open Date"]
+        filename,
+        sheet_name="Chemicals",
+        index_col=0,
+        header=0,
+        parse_dates=["Open Date"],
     )
     df = df.dropna(how="all")
     # Turn the specified chemicals into a list of starting compounds
@@ -97,6 +103,7 @@ def ReadStartingCompounds(filename) -> List:
             )
         ]
     return cList
+
 
 def assert_unit(value, default_unit: str) -> str:
     """

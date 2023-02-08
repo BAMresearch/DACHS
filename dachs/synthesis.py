@@ -25,6 +25,7 @@ from .equipment import pv
 
 @define
 class RawLogMessage(addItemsToAttrs):
+    Index: int = field(default=0, validator=validators.instance_of(int))
     TimeStamp: Timestamp = field(
         default=None, validator=validators.instance_of(Timestamp)
     )
@@ -57,12 +58,43 @@ class RawLogMessage(addItemsToAttrs):
 
 
 @define
+class DerivedParameter(addItemsToAttrs):
+    """
+    Contains parameters derived from interpretation of the raw log.
+    This should link back to the indices of the raw log from which the parameter
+    was derived. values can be stored either as pint/ureg Quantities, or as
+    Value (float or int) with optional Unit (str)
+    """
+
+    Name: str = field(default="", validator=validators.instance_of(str), converter=str)
+    Description: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    RawMessages: List[int] = field(
+        default=Factory(list),
+        validator=validators.instance_of(list),
+    )
+    Quantity: Optional[ureg.Quantity] = field(
+        default=None, validator=validators.instance_of(ureg.Quantity)
+    )
+    Value: Optional[Union[int, float]] = field(
+        default=None, validator=validators.instance_of((int, float))
+    )
+    Unit: str = field(default="", validator=validators.instance_of(str), converter=str)
+
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing
+
+
+@define
 class synthesisStep(addItemsToAttrs):
     UID: str = field(  # step number
         default=None,
         validator=validators.instance_of(str),
         converter=str,
     )
+
     RawMessage: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -130,20 +162,21 @@ class synthesis(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    SynthesisLog: List[synthesisStep] = field(
+    RawLog: Optional[List[RawLogMessage]] = field(
         default=None,
-        validator=validators.instance_of(list),
-        converter=list,
+        validator=validators.optional(validators.instance_of(list)),
+    )
+    SynthesisLog: Optional[List[synthesisStep]] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(list)),
     )
     SourceDOI: Optional[str] = field(
-        default=Factory(str),
+        default=None,
         validator=validators.optional(validators.instance_of(str)),
-        # converter=str,
     )
-    DerivedParameters: Optional[dict] = field(
-        default=Factory(dict),
-        validator=validators.optional(validators.instance_of(dict)),
-        # converter=dict,
+    DerivedParameters: Optional[List[DerivedParameter]] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(list)),
     )
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)

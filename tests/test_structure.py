@@ -12,6 +12,7 @@ from dachs.readers import (
     assert_unit,
     find_reagent_in_rawmessage,
     find_trigger_in_log,
+    readRawMessageLog,
 )
 from dachs.reagent import (
     chemical,
@@ -88,7 +89,11 @@ def test_integral() -> None:
         assert filename.exists(), f"{filename=} does not exist"
         # read the synthesis logs:
         df = pd.read_excel(
-            filename, sheet_name="Sheet1", index_col=0, header=0, parse_dates=["Time"]
+            filename,
+            sheet_name="Sheet1",
+            index_col=None,
+            header=0,
+            parse_dates=["Time"],
         )
         stepId = 1
         assert len(df.SampleNumber.unique()) == 1, logging.error(
@@ -103,7 +108,7 @@ def test_integral() -> None:
                 UID=str(stepId),
                 RawMessage=row["Readout"],
                 RawMessageLevel=row["Info"],
-                TimeStamp=idx,
+                TimeStamp=row["Time"],
                 stepDescription="Generating stock solutions",
                 stepType="mixing",
                 ExperimentId=row["ExperimentID"],
@@ -150,10 +155,12 @@ def test_integral() -> None:
     logging.info("defining the synthesis log")
     # just reading and dumping the synthesis log:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
-    assert filename.exists()
-    df = pd.read_excel(
-        filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
+
+    rootStruct.Synthesis = synthesis(
+        UID="MOF_synthesis_1",
+        Name="MOF standard synthesis, room temperature, 20 minute residence time",
+        Description="-- add full text description of synthesis here--",
+        RawLog=readRawMessageLog(filename),
     )
-    for idx, row in df.iterrows():
-        pass
-    logging.info("defining the synthesis steps (nicely organized from log)")
+
+    logging.info("Extracting the derived parameters")
