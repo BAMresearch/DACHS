@@ -119,21 +119,6 @@ class reagent(addItemsToAttrs):
         # converter=reagent,
     )
     # Name and the following are in chemical
-    # ChemicalFormula: str = field(
-    #     default=None,
-    #     validator=validators.instance_of(str),
-    #     converter=str,
-    # )
-    # MolarMass: float = field(
-    #     default=None,
-    #     validator=validators.instance_of(ureg.Quantity),
-    #     converter=ureg,
-    # )
-    # Density: float = field(
-    #     default=None,
-    #     validator=validators.instance_of(ureg.Quantity),
-    #     converter=ureg,
-    # )
     CASNumber: str = field(
         default=None,
         validator=validators.instance_of(str),

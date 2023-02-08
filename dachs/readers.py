@@ -17,12 +17,13 @@ __status__ = "beta"
 
 
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import pandas as pd
 import yaml
 from dachs.reagent import chemical, reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
+from dachs.__init__ import ureg
 
 
 def readRawMessageLog(filename: Path) -> List:
@@ -31,6 +32,8 @@ def readRawMessageLog(filename: Path) -> List:
     df = pd.read_excel(
         filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
     )
+    df = df.dropna(how="all")
+
     msgList = []
     for idx, row in df.iterrows():
         condition = 0
@@ -141,3 +144,22 @@ def find_reagent_in_rawmessage(
         if reag.UID in searchString:
             return reag
     return None
+
+
+def find_in_log(
+    log: List[RawLogMessage],
+    searchString: str,
+    Highlander=True,  # there can be only one if Highlander is True
+) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
+    """
+    Returns (the first match of) a given reagent if its UID is found in an input string,
+    otherwise returns None
+    """
+    answers = []
+    for RLM in log:
+        if searchString in RLM.Message:
+            if Highlander:
+                return RLM
+            else:
+                answers += [RLM]
+    return answers
