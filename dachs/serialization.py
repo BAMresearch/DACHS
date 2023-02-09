@@ -11,10 +11,10 @@ __license__ = "GPLv3+"
 __date__ = "2023/02/07"
 __status__ = "beta"
 
-from pathlib import PosixPath
+from pathlib import PurePosixPath
 
 def storagePaths(name, objlst):
-    prefix = PosixPath(name)
+    prefix = PurePosixPath(name)
     # handle unnamed lists by default, catch single objects here
     if type(objlst) not in (list, tuple):
         objlst = (objlst,)
