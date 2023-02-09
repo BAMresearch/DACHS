@@ -179,7 +179,7 @@ def test_integral() -> None:
     )
     mLocs = np.where(dfMask)[0]
     assert len(mLocs) == 2
-    rootStruct.Synthesis.DerivedParameters += [
+    rootStruct.Synthesis.DerivedParameters = [
         DerivedParameter(
             Name="Yield",
             Description="Actual yield of the product",
@@ -194,7 +194,7 @@ def test_integral() -> None:
         rootStruct.Synthesis.RawLog,
         "arduino:environment:temperature",
         Highlander=True,
-        return_indices=True,
+        #return_indices=True,
     )
     rootStruct.Synthesis.DerivedParameters += [
         DerivedParameter(
@@ -204,3 +204,28 @@ def test_integral() -> None:
             Quantity=LogEntry.Quantity,
         )
     ]
+
+    # Export everything finally
+    from dachs.serialization import storagePaths
+    name = 'rootStruct'
+    dump = storagePaths(name, locals()[name])
+
+    # quick&dirty imports for testing
+    # make sure mcsas3 is in PYTHONPATH (for now)
+    mcsas3Path = Path('../mcsas3').resolve()
+    if mcsas3Path not in sys.path:
+        sys.path.insert(0, str(mcsas3Path))
+    #print(sys.path)
+    import mcsas3.McHDF as McHDF
+
+    # locate any warnings during processing
+    import warnings
+    #warnings.filterwarnings("error")
+
+    for key, value in dump.items():
+        # extracting path from keys could be added to McHDF.storeKVPairs()
+        try:
+            McHDF.storeKV(filename=f'{name}.h5', path=key.parent, key=key.name, value=value)
+        except Exception:
+            print(f"Error for path {key} and value '{value}' of type {type(value)}.")
+            raise

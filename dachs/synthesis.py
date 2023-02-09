@@ -22,6 +22,7 @@ from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
 from .equipment import pv
 
+NoneType = type(None)
 
 @define
 class RawLogMessage(addItemsToAttrs):
@@ -56,7 +57,6 @@ class RawLogMessage(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-
 @define
 class DerivedParameter(addItemsToAttrs):
     """
@@ -78,7 +78,7 @@ class DerivedParameter(addItemsToAttrs):
         default=None, validator=validators.instance_of(ureg.Quantity)
     )
     Value: Optional[Union[int, float]] = field(
-        default=None, validator=validators.instance_of((int, float))
+        default=None, validator=validators.instance_of((int, float, NoneType))
     )
     Unit: str = field(default="", validator=validators.instance_of(str), converter=str)
 
