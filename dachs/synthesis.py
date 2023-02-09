@@ -148,17 +148,14 @@ class synthesisStep(addItemsToAttrs):
 @define
 class synthesis(addItemsToAttrs):
     UID: str = field(  # step number
-        default=None,
         validator=validators.instance_of(str),
         converter=str,
     )
     Name: str = field(
-        default=None,
         validator=validators.instance_of(str),
         converter=str,
     )
     Description: str = field(
-        default=None,
         validator=validators.instance_of(str),
         converter=str,
     )
