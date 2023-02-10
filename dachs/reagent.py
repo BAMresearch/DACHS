@@ -29,6 +29,10 @@ import logging
 class chemical(addItemsToAttrs):
     """Base chemistry which underpins both reagents and products"""
 
+    ID: str = field(
+        validator=validators.instance_of(str),
+        converter=str,
+    )
     Name: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -49,10 +53,9 @@ class chemical(addItemsToAttrs):
         validator=validators.instance_of(ureg.Quantity),
         converter=ureg,
     )
-    SourceDOI: str = field(
+    SourceDOI: Optional[str] = field(
         default=None,
-        validator=validators.instance_of(str),
-        converter=str,
+        validator=validators.optional(validators.instance_of(str)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
@@ -66,7 +69,7 @@ class product(addItemsToAttrs):
     Defines a chemical product as having a chemical structure, with a target mass (100% conversion) and an actual mass
     """
 
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -108,7 +111,7 @@ class product(addItemsToAttrs):
 
 @define
 class reagent(addItemsToAttrs):
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -226,7 +229,7 @@ class reagentMixture(addItemsToAttrs):
     Defines chemicals prepared for the experiments from the reagents from the shelves.
     """
 
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -275,7 +278,7 @@ class reagentMixture(addItemsToAttrs):
         totalMoles = 0
         for component in self.ReagentList:
             totalMoles += component.Moles()
-            if component.Reagent.UID == componentID:
+            if component.Reagent.ID == componentID:
                 componentMoles = component.Moles()
         if componentMoles == 0:
             logging.warning(

@@ -31,7 +31,7 @@ from dachs.synthesis import synthesis
 
 @define
 class experimentalSetup(addItemsToAttrs):
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,

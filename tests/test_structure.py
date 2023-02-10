@@ -49,10 +49,11 @@ def test_integral() -> None:
 
     # define a zif chemical:
     zifChemical = chemical(
+        ID="Zif-8",
         Name="Zif-8",
-        ChemicalFormula="ZnSomething",
-        MolarMass="12.5 g/mol",
-        Density="0.335 g/cc",
+        ChemicalFormula="ZnC8H12N4",
+        MolarMass="229.6 g/mol",
+        Density="0.3 g/cc",
         SourceDOI="something",
     )
 
@@ -64,16 +65,16 @@ def test_integral() -> None:
             In this series, MOFs are synthesised in methanol from two stock solutions, 
             all performed at room temperature (see environmental details in log).
             The injection rate and injection order are varied. Centrifugation and drying 
-            is performed manually. Residence times are 20 minutes after start of second injection.
+            is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
         Chemicals=chemicals(
             starting_compounds=[],
             mixtures=[],
             target_product=product(
-                UID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
             ),
             final_product=product(
-                UID="ZIF-8", Chemical=zifChemical, Mass="10.8 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Mass="10.8 mg", Purity="99 percent"
             ),
         ),
     )
@@ -107,7 +108,7 @@ def test_integral() -> None:
         # now we find the reagents that went into the mixture:
         for idx, row in df.iterrows():
             sstep = synthesisStep(
-                UID=str(stepId),
+                ID=str(stepId),
                 RawMessage=row["Readout"],
                 RawMessageLevel=row["Info"],
                 TimeStamp=row["Time"],
@@ -123,7 +124,7 @@ def test_integral() -> None:
                 assert reag is not None, logging.warning(
                     f"reagent not found in {sstep.RawMessage=}"
                 )
-                # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.UID=}')
+                # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
                 reagList += [
                     reagentByMass(
                         Reagent=reag,
@@ -135,14 +136,14 @@ def test_integral() -> None:
         # now we can define the mixture
         rootStruct.Chemicals.mixtures += [
             reagentMixture(
-                UID=solutionId,
+                ID=solutionId,
                 Name="Mixture",
                 Description="",
                 PreparationDate=idx,  # last timestamp read
                 StorageConditions="",
                 ReagentList=reagList,
                 Synthesis=synthesis(
-                    UID=solutionId,
+                    ID=solutionId,
                     Name=f"Preparation of {solutionId}",
                     Description=" ",
                     SynthesisLog=synth,
@@ -159,7 +160,7 @@ def test_integral() -> None:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
 
     rootStruct.Synthesis = synthesis(
-        UID="MOF_synthesis_1",
+        ID="MOF_synthesis_1",
         Name="MOF standard synthesis, room temperature, 20 minute residence time",
         Description="-- add full text description of synthesis here--",
         RawLog=readRawMessageLog(filename),

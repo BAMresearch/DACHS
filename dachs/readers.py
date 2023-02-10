@@ -77,7 +77,7 @@ def ReadStartingCompounds(filename) -> List:
     df = pd.read_excel(
         filename,
         sheet_name="Chemicals",
-        index_col=0,
+        index_col=None,
         header=0,
         parse_dates=["Open Date"],
     )
@@ -88,8 +88,9 @@ def ReadStartingCompounds(filename) -> List:
         print(f"{idx=}, {row=}")
         cList += [
             reagent(
-                UID=str(idx),
+                ID=str(row["Reagent ID"]),
                 Chemical=chemical(
+                    ID=row["Reagent ID"],
                     Name=row["Name"],
                     ChemicalFormula=row["Formula"],
                     MolarMass=assert_unit(row["Molar Mass"], "g/mol"),
@@ -137,11 +138,11 @@ def find_reagent_in_rawmessage(
     searchString: str, reagentList: List[reagent]
 ) -> Optional[reagent]:
     """
-    Returns (the first match of) a given reagent if its UID is found in an input string,
+    Returns (the first match of) a given reagent if its ID is found in an input string,
     otherwise returns None
     """
     for reag in reagentList:
-        if reag.UID in searchString:
+        if reag.ID in searchString:
             return reag
     return None
 
@@ -152,7 +153,7 @@ def find_in_log(
     Highlander=True,  # there can be only one if Highlander is True
 ) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
-    Returns (the first match of) a given reagent if its UID is found in an input string,
+    Returns (the first match of) a given reagent if its ID is found in an input string,
     otherwise returns None
     """
     answers = []

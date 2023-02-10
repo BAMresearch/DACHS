@@ -89,7 +89,7 @@ class DerivedParameter(addItemsToAttrs):
 
 @define
 class synthesisStep(addItemsToAttrs):
-    UID: str = field(  # step number
+    ID: str = field(  # step number
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -147,7 +147,7 @@ class synthesisStep(addItemsToAttrs):
 
 @define
 class synthesis(addItemsToAttrs):
-    UID: str = field(  # step number
+    ID: str = field(  # step number
         validator=validators.instance_of(str),
         converter=str,
     )

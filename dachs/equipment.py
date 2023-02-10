@@ -29,7 +29,7 @@ class pv(addItemsToAttrs):
     PV_real = PV_set * calibrationFactor + calibrationOffset
     """
 
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -77,7 +77,7 @@ class pv(addItemsToAttrs):
 
 @define
 class equipment(addItemsToAttrs):
-    UID: str = field(
+    ID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,

@@ -14,7 +14,7 @@ from dachs.synthesis import RawLogMessage
 def test_equipment()->None:
     """Just a basic test of the class"""
     solvent = equipment(
-        UID="BATH_1",
+        ID="BATH_1",
         Name="Lauda Bath",
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
@@ -24,7 +24,7 @@ def test_equipment()->None:
         Description="funky bath with excellent temperature control",
         PVs=[
             pv(
-                UID="temp",
+                ID="temp",
                 Name="temperature",
                 Description="Setpoint temperature of the bath",
                 CalibrationFactor=1.0,
@@ -34,7 +34,7 @@ def test_equipment()->None:
         ],
     )
     e2 = equipment(
-        UID="VESS_1",
+        ID="VESS_1",
         Name="Falcon tube",
         Manufacturer="Labsolute",
         ModelName="Centrifuge Tube 50 ml, PP",
@@ -67,7 +67,7 @@ def test_root()->None:
 def test_experimental_setup()->None:
     """Just a basic test of the class"""
     eq1 = equipment(
-        UID="BATH_1",
+        ID="BATH_1",
         Name="Lauda Bath",
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
@@ -78,7 +78,7 @@ def test_experimental_setup()->None:
     )
 
     su1 = experimentalSetup(
-        UID="AMSET_6",
+        ID="AMSET_6",
         Name="AutoMof Configuration 6",
         Description="Same as AMSET_4 but Rod shaped stirring bar",
         EquipmentList=[eq1],
@@ -101,14 +101,15 @@ def test_ReadStartingCompounds()->None:
 def test_product()->None:
     # define a zif chemical:
     zifChemical = chemical(
-            Name='Zif-8',
-            ChemicalFormula="ZnSomething",
-            MolarMass="12.5 g/mol",
-            Density="0.335 g/cc",
-            SourceDOI="something",
+        ID='Zif-8',
+        Name='Zif-8',
+        ChemicalFormula="ZnSomething",
+        MolarMass="229 g/mol",
+        Density="0.335 g/cc",
+        SourceDOI="something",
     )
     _=product(
-                UID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
             )
     return
 
@@ -119,8 +120,9 @@ def test_reagent() -> None:
     """
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     solvent = reagent(
-        UID="Solvent_1",
+        ID="Solvent_1",
         Chemical=chemical(
+            ID='MeOH',
             Name="Methanol",
             ChemicalFormula="CH3OH",
             MolarMass="32.04 g/mol",
@@ -136,8 +138,9 @@ def test_reagent() -> None:
         UnitSize="2.5 liter",
     )
     linker = reagent(
-        UID="linker_1",
+        ID="linker_1",
         Chemical=chemical(
+            ID='2-MIM',
             Name="2-methylimidazole",
             ChemicalFormula="C4H6N2",
             MolarMass="82.11 g/mol",
@@ -170,7 +173,7 @@ def test_reagent() -> None:
 
     # make mixture: 
     mixture = reagentMixture(
-        UID='stock_1',
+        ID='stock_1',
         Name='linker stock solution',
         Description='Stock solution of linker at 78 g/mole',
         PreparationDate='2022.07.27',
@@ -181,4 +184,4 @@ def test_reagent() -> None:
         ]
     )
     # print(f'{r1.Reagent.MolarMass=}')
-    logging.info([f'{m.Moles():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(componentID=m.Reagent.UID):0.03e}' for m in mixture.ReagentList])
+    logging.info([f'{m.Moles():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(componentID=m.Reagent.ID):0.03e}' for m in mixture.ReagentList])
