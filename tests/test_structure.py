@@ -226,7 +226,7 @@ def test_integral() -> None:
     for key, value in dump.items():
         # extracting path from keys could be added to McHDF.storeKVPairs()
         try:
-            McHDF.storeKV(filename=f'{name}.h5', path=key.parent, key=key.name, value=value)
+            McHDF.storeKV(filename=f'{name}.h5', path=key, value=value)
         except Exception:
             print(f"Error for path {key} and value '{value}' of type {type(value)}.")
             raise

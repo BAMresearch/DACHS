@@ -85,7 +85,7 @@ def ReadStartingCompounds(filename) -> List:
     # Turn the specified chemicals into a list of starting compounds
     cList = []
     for idx, row in df.iterrows():
-        print(f"{idx=}, {row=}")
+        #print(f"{idx=}, {row=}")
         cList += [
             reagent(
                 ID=str(row["Reagent ID"]),
@@ -115,7 +115,7 @@ def assert_unit(value, default_unit: str) -> str:
     if the value is not in string format yet
     (and therefore does not yet have a unit)
     """
-    print(f"{value=}, {default_unit=}")
+    #print(f"{value=}, {default_unit=}")
     if not isinstance(value, str):
         return str(value) + " " + str(default_unit)
     else:
