@@ -121,9 +121,9 @@ class root(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(list)),
     )
-    Equipment: Optional[List[equipment]] = field(
+    ExperimentalSetup: Optional[experimentalSetup] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(list)),
+        validator=validators.optional(validators.instance_of(experimentalSetup)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage

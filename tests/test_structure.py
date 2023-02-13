@@ -14,6 +14,7 @@ from dachs.readers import (
     find_in_log,
     find_reagent_in_rawmessage,
     find_trigger_in_log,
+    readExperimentalSetup,
     readRawMessageLog,
 )
 from dachs.reagent import (
@@ -68,7 +69,7 @@ def test_integral() -> None:
             is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
         Chemicals=chemicals(
-            starting_compounds=[],
+            starting_compounds=ReadStartingCompounds(S0File),
             mixtures=[],
             target_product=product(
                 ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
@@ -77,10 +78,14 @@ def test_integral() -> None:
                 ID="ZIF-8", Chemical=zifChemical, Mass="10.8 mg", Purity="99 percent"
             ),
         ),
+        ExperimentalSetup=readExperimentalSetup(
+            filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx"),
+            SetupName='AMSET_6'
+        )
     )
 
-    logging.info("Defining the base chemicals / starting compounds")
-    rootStruct.Chemicals.starting_compounds += ReadStartingCompounds(S0File)
+    # logging.info("Defining the base chemicals / starting compounds")
+    # rootStruct.Chemicals.starting_compounds += 
 
     logging.info("defining the mixtures based on mixtures of starting componds")
     filenames = [
@@ -165,6 +170,13 @@ def test_integral() -> None:
         Description="-- add full text description of synthesis here--",
         RawLog=readRawMessageLog(filename),
     )
+
+    #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
+    # SetupName='AMSET_6'
+    # rootStruct.ExperimentalSetup=readExperimentalSetup(
+    #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx"),
+    #     SetupName='AMSET_6'
+    # )
 
     #### After our discussion, we've decided not to focus on including derived parameters just yet. 
     # logging.info("Extracting the derived parameters")

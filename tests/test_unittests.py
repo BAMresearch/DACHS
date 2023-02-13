@@ -19,8 +19,8 @@ def test_equipment()->None:
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
         ModelNumber="L001603",
-        UnitPrice="9756 euro",
-        UnitSize="1 item",
+        UnitPrice=ureg.Quantity("9756 euro"),
+        UnitSize=ureg.Quantity("1 item"),
         Description="funky bath with excellent temperature control",
         PVs=[
             pv(
@@ -39,8 +39,8 @@ def test_equipment()->None:
         Manufacturer="Labsolute",
         ModelName="Centrifuge Tube 50 ml, PP",
         ModelNumber="7696884",
-        UnitPrice="202 euro",
-        UnitSize="300 items",
+        UnitPrice=ureg.Quantity("202 euro"),
+        UnitSize=ureg.Quantity("300 items"),
         Description="Falcon tubes, 50 ml",
         PVs=[],
     )
@@ -116,8 +116,8 @@ def test_experimental_setup()->None:
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
         ModelNumber="L001603",
-        UnitPrice="9756 euro",
-        UnitSize="1 item",
+        UnitPrice=ureg.Quantity("9756 euro"),
+        UnitSize=ureg.Quantity("1 item"),
         Description="funky bath with excellent temperature control",
     )
 
