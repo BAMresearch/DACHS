@@ -13,7 +13,7 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/15"
 __status__ = "beta"
 
-from attrs import define, validators, field
+from attrs import define, validators, field, Factory
 from typing import List, Optional
 from .additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
@@ -97,35 +97,31 @@ class equipment(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    ModelNumber: str = field(
+    ModelNumber: Optional[str] = field(
         default=None,
-        validator=validators.instance_of(str),
+        validator=validators.optional(validators.instance_of(str)),
         converter=str,
     )
-    Description: str = field(
+    Description: Optional[str] = field(
         default=None,
-        validator=validators.instance_of(str),
+        validator=validators.optional(validators.instance_of(str)),
         converter=str,
     )
-    UnitPrice: Optional[float] = field(
+    UnitPrice: Optional[ureg.Quantity] = field(
         default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
-    UnitSize: float = field(
+    UnitSize: Optional[ureg.Quantity] = field(
         default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
     PVs: List[pv] = field(
-        default=[],
+        default=Factory(list),
         validator=validators.instance_of(list),
-        converter=list,
     )
     AlternativeIDs: List[str] = field(
-        default=[],
+        default=Factory(list),
         validator=validators.instance_of(list),
-        converter=list,
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage

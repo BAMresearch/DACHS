@@ -49,6 +49,50 @@ def test_equipment()->None:
     # test ureg:
     print(e2.PricePerUnit())
 
+def test_readEquipment()->None:
+    filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
+    SetupName='AMSET_6'
+
+    # read equipment list:
+    eq = pd.read_excel(
+        filename, sheet_name="Equipment", index_col=None, header=0
+    )
+    eq = eq.dropna(how="all") 
+    eqDict={}
+    for rowi,equip in eq.iterrows():
+        try:
+            eqItem=equipment(
+                ID=str(equip['Equipment ID']),
+                Name=str(equip['Equipment Name']),
+                Manufacturer=str(equip['Manufacturer']),
+                ModelName=str(equip['Model Name']),
+                ModelNumber=str(equip['Model Number']),
+                UnitPrice=ureg.Quantity(str(equip['Unit Price']) + " " + str(equip['Price Unit'])),
+                UnitSize=ureg.Quantity(str(equip['Unit Size']) + " " + str(equip['Unit'])),
+                Description=str(equip['Description']),
+                PVs=[]
+            )
+            eqDict.update({str(equip['Equipment ID']): eqItem})
+        except Exception as e:
+            print(f'Failure reading {equip["Equipment ID"]=}\n {str(e)}')
+
+    # read setup configuration:
+    df = pd.read_excel(
+        filename, sheet_name="Setup", index_col=None, header=0
+    )
+    df = df.dropna(how="all")
+    dfRow = df.loc[df.SetupID==SetupName].copy()
+    assert len(dfRow==1), f'More or less than one entry found for {SetupName=} in {filename=}'
+    # get all equipment for the setup
+    itemList = [dfRow[i].item() for i in dfRow.keys() if 'ID_' in i]
+    eqList=[eqDict[item] for item in itemList if item in eqDict.keys()]
+    expSetup = experimentalSetup(
+        ID=dfRow['SetupID'],
+        Name=dfRow['Name'],
+        Description=dfRow['Description'],
+        EquipmentList=eqList
+    )
+    print(filename)
 
 def test_root()->None:
     _=root(

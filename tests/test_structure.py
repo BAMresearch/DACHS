@@ -166,45 +166,46 @@ def test_integral() -> None:
         RawLog=readRawMessageLog(filename),
     )
 
-    logging.info("Extracting the derived parameters")
-    df = pd.read_excel(
-        filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
-    )
-    df = df.dropna(how="all")
+    #### After our discussion, we've decided not to focus on including derived parameters just yet. 
+    # logging.info("Extracting the derived parameters")
+    # df = pd.read_excel(
+    #     filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
+    # )
+    # df = df.dropna(how="all")
 
-    # calculate the weight of product:
-    targets = ["Weight", "Falcon"]
-    # find me the messages containing both those words:
-    dfMask = df["Readout"].apply(
-        lambda sentence: all(word in sentence for word in targets)
-    )
-    mLocs = np.where(dfMask)[0]
-    assert len(mLocs) == 2
-    rootStruct.Synthesis.DerivedParameters = [
-        DerivedParameter(
-            Name="Yield",
-            Description="Actual yield of the product",
-            RawMessages=list(mLocs),
-            Quantity=rootStruct.Synthesis.RawLog[mLocs[-1]].Quantity
-            - rootStruct.Synthesis.RawLog[mLocs[0]].Quantity,
-        )
-    ]
+    # # calculate the weight of product:
+    # targets = ["Weight", "Falcon"]
+    # # find me the messages containing both those words:
+    # dfMask = df["Readout"].apply(
+    #     lambda sentence: all(word in sentence for word in targets)
+    # )
+    # mLocs = np.where(dfMask)[0]
+    # assert len(mLocs) == 2
+    # rootStruct.Synthesis.DerivedParameters = [
+    #     DerivedParameter(
+    #         Name="Yield",
+    #         Description="Actual yield of the product",
+    #         RawMessages=list(mLocs),
+    #         Quantity=rootStruct.Synthesis.RawLog[mLocs[-1]].Quantity
+    #         - rootStruct.Synthesis.RawLog[mLocs[0]].Quantity,
+    #     )
+    # ]
 
-    # store the room temperature:
-    LogEntry = find_in_log(
-        rootStruct.Synthesis.RawLog,
-        "arduino:environment:temperature",
-        Highlander=True,
-        #return_indices=True,
-    )
-    rootStruct.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            Name="RoomTemperature",
-            Description="Actual room temperature at synthesis time",
-            RawMessages=[LogEntry.Index],
-            Quantity=LogEntry.Quantity,
-        )
-    ]
+    # # store the room temperature:
+    # LogEntry = find_in_log(
+    #     rootStruct.Synthesis.RawLog,
+    #     "arduino:environment:temperature",
+    #     Highlander=True,
+    #     #return_indices=True,
+    # )
+    # rootStruct.Synthesis.DerivedParameters += [
+    #     DerivedParameter(
+    #         Name="RoomTemperature",
+    #         Description="Actual room temperature at synthesis time",
+    #         RawMessages=[LogEntry.Index],
+    #         Quantity=LogEntry.Quantity,
+    #     )
+    # ]
 
     # Export everything finally
     from dachs.serialization import storagePaths
