@@ -167,13 +167,39 @@ class reagent(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-    def PricePerUnit(self):
-        assert (self.UnitPrice is not None) and (
+    # @property
+    def _CheckForPriceCalc(self):
+        assert (self.Chemical.Density is not None) and (self.UnitPrice is not None) and (
             self.UnitSize is not None
         ), logging.warning(
-            "PricePerUnit can only be calculated when both UnitSize and UnitPrice are set"
+            "Price calculations can only be done when UnitSize and UnitPrice as well as Chemical.Density are set"
         )
+        return
+
+    # @property
+    def PricePerUnit(self) -> ureg.Quantity:
+        self._CheckForPriceCalc()
         return self.UnitPrice / self.UnitSize
+
+    # @property
+    def PricePerMass(self) -> Union[ureg.Quantity, None] :
+        self._CheckForPriceCalc()
+        if self.UnitSize.check('[mass]'): return self.PricePerUnit()
+        elif self.UnitSize.check('[volume]'):
+            return self.PricePerUnit() / self.Chemical.Density
+        else: 
+            logging.warning(f'Price per mass cannot be calculated from {self.PricePerUnit=}')
+            return None
+
+    # @property
+    def PricePerVolume(self) -> Union[ureg.Quantity, None] :
+        self._CheckForPriceCalc()
+        if self.UnitSize.check('[volume]'): return self.PricePerUnit()
+        elif self.UnitSize.check('[mass]'):
+            return self.PricePerUnit() * self.Chemical.Density
+        else: 
+            logging.warning(f'Price per volume cannot be calculated from {self.PricePerUnit=}')
+            return None
 
 
 @define
@@ -269,6 +295,7 @@ class reagentMixture(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
+    # @property
     def componentConcentration(self, componentID: str) -> float:
         """
         Finds the concentration of a component defined by its componentID in the total mixture
