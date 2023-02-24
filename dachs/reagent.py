@@ -186,7 +186,7 @@ class reagent(addItemsToAttrs):
         self._CheckForPriceCalc()
         if self.UnitSize.check('[mass]'): return self.PricePerUnit()
         elif self.UnitSize.check('[volume]'):
-            return self.PricePerUnit() / self.Chemical.Density
+            return (self.PricePerUnit() / self.Chemical.Density).to('euro/g')
         else: 
             logging.warning(f'Price per mass cannot be calculated from {self.PricePerUnit=}')
             return None
@@ -196,7 +196,7 @@ class reagent(addItemsToAttrs):
         self._CheckForPriceCalc()
         if self.UnitSize.check('[volume]'): return self.PricePerUnit()
         elif self.UnitSize.check('[mass]'):
-            return self.PricePerUnit() * self.Chemical.Density
+            return (self.PricePerUnit() * self.Chemical.Density).to('euro/L')
         else: 
             logging.warning(f'Price per volume cannot be calculated from {self.PricePerUnit=}')
             return None
@@ -220,8 +220,8 @@ class reagentByMass(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-    def Moles(self) -> float:
-        return self.AmountOfMass / self.Reagent.Chemical.MolarMass
+    def Moles(self) -> ureg.Quantity:
+        return (self.AmountOfMass / self.Reagent.Chemical.MolarMass).to('mole')
 
 
 @define
@@ -241,12 +241,12 @@ class reagentByVolume(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-    def Moles(self) -> float:
+    def Moles(self) -> ureg.Quantity:
         return (
             self.AmountOfVolume
             * self.Reagent.Chemical.Density
             / self.Reagent.Chemical.MolarMass
-        )
+        ).to('mole')
 
 
 @define
@@ -294,6 +294,26 @@ class reagentMixture(addItemsToAttrs):
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
+    
+    def ReagentConcentrations(self) -> List[ureg.Quantity]:
+        # returns a list of mole concentrations of the reagents
+        return (
+            self.AmountOfVolume
+            * self.Reagent.Chemical.Density
+            / self.Reagent.Chemical.MolarMass
+        ).to('mole')
+    
+    def TotalMass(self) -> ureg.Quantity:
+        # returns the total mass of the mixture
+        pass
+
+    def TotalPrice(self) -> ureg.Quantity:
+        # returns the total cost of the miture
+        pass
+
+    def PricePerMass(self) -> ureg.Quantity:
+        # returns the cost per mass of the mixture 
+        pass
 
     # @property
     def componentConcentration(self, componentID: str) -> float:
