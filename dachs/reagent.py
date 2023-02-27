@@ -222,6 +222,10 @@ class reagentByMass(addItemsToAttrs):
 
     def Moles(self) -> ureg.Quantity:
         return (self.AmountOfMass / self.Reagent.Chemical.MolarMass).to('mole')
+    
+    @property
+    def Price(self) -> ureg.Quantity:
+        return (self.Reagent.PricePerMass() * self.AmountOfMass)
 
 
 @define
@@ -247,7 +251,16 @@ class reagentByVolume(addItemsToAttrs):
             * self.Reagent.Chemical.Density
             / self.Reagent.Chemical.MolarMass
         ).to('mole')
-
+    
+    @property
+    def AmountOfMass(self) -> ureg.Quantity:
+        return (
+            self.AmountOfVolume * self.Reagent.Chemical.Density
+        ).to('g')
+    
+    @property
+    def Price(self) -> ureg.Quantity:
+        return (self.Reagent.PricePerMass() * self.AmountOfMass)
 
 @define
 class reagentMixture(addItemsToAttrs):
@@ -297,38 +310,45 @@ class reagentMixture(addItemsToAttrs):
     
     def ReagentConcentrations(self) -> List[ureg.Quantity]:
         # returns a list of mole concentrations of the reagents
-        return (
-            self.AmountOfVolume
-            * self.Reagent.Chemical.Density
-            / self.Reagent.Chemical.MolarMass
-        ).to('mole')
-    
-    def TotalMass(self) -> ureg.Quantity:
-        # returns the total mass of the mixture
-        pass
-
-    def TotalPrice(self) -> ureg.Quantity:
-        # returns the total cost of the miture
-        pass
-
-    def PricePerMass(self) -> ureg.Quantity:
-        # returns the cost per mass of the mixture 
-        pass
+        return [self.componentConcentration(MatchComponent=i).to('mole/mole') for i in self.ReagentList]
 
     # @property
-    def componentConcentration(self, componentID: str) -> float:
+    def componentConcentration(self, MatchComponent: Union[reagentByMass, reagentByVolume]) -> float:
         """
-        Finds the concentration of a component defined by its componentID in the total mixture
+        Finds the concentration of a component defined by its entry in the total mixture
         This concentration will be in mole fraction.
         """
         componentMoles = 0
         totalMoles = 0
         for component in self.ReagentList:
             totalMoles += component.Moles()
-            if component.Reagent.ID == componentID:
+            if component == MatchComponent:
                 componentMoles = component.Moles()
         if componentMoles == 0:
             logging.warning(
-                f"Concentration of component {componentID} is zero, component not found"
+                f"Concentration of {MatchComponent=} is zero, component not found"
             )
         return componentMoles / totalMoles
+
+    
+    @property
+    def TotalMass(self) -> ureg.Quantity:
+        # returns the total mass of the mixture
+        TMass = 0
+        for component in self.ReagentList:
+            TMass += component.AmountOfMass
+        return TMass
+    
+    @property
+    def TotalPrice(self) -> ureg.Quantity:
+        # returns the total cost of the miture
+        # assert False, 'Price calculation Not implemented yet.'
+        TPrice = 0
+        for component in self.ReagentList:
+            TPrice += component.Price
+        return TPrice
+        
+    def PricePerMass(self) -> ureg.Quantity:
+        # assert False, 'Price calculation Not implemented yet.'
+        # returns the cost per mass of the mixture 
+        return self.TotalPrice / self.TotalMass

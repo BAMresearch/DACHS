@@ -228,5 +228,7 @@ def test_reagent() -> None:
         ]
     )
     # print(f'{r1.Reagent.MolarMass=}')
-    logging.info([f'{m.Moles():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(componentID=m.Reagent.ID):0.03e}' for m in mixture.ReagentList])
+    logging.info([f'{m.Moles():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(MatchComponent=m):0.03e}' for m in mixture.ReagentList])
     logging.info([f'{m.Reagent.PricePerMass():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name}' for m in mixture.ReagentList])
+    logging.info([f'\n {mixture.ReagentConcentrations()=}, {mixture.TotalMass=}'])
+    
