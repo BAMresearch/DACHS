@@ -21,13 +21,13 @@ from typing import List, Optional, Union
 
 import pandas as pd
 import yaml
-from dachs.equipment import equipment
-from dachs.metaclasses import experimentalSetup
-from dachs.reagent import chemical, reagent
+from dachs.equipment import Equipment
+from dachs.metaclasses import ExperimentalSetupClass
+from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 from dachs.__init__ import ureg
 
-def readExperimentalSetup(filename:Path, SetupName:str='AMSET_6')-> experimentalSetup:
+def readExperimentalSetup(filename:Path, SetupName:str='AMSET_6')-> ExperimentalSetupClass:
     #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
     # SetupName='AMSET_6'
 
@@ -41,7 +41,7 @@ def readExperimentalSetup(filename:Path, SetupName:str='AMSET_6')-> experimental
     eqDict={}
     for rowi,equip in eq.iterrows():
         try:
-            eqItem=equipment(
+            eqItem=Equipment(
                 ID=str(equip['Equipment ID']),
                 Name=str(equip['Equipment Name']),
                 Manufacturer=str(equip['Manufacturer']),
@@ -66,7 +66,7 @@ def readExperimentalSetup(filename:Path, SetupName:str='AMSET_6')-> experimental
     # get all equipment for the setup
     itemList = [dfRow[i].item() for i in dfRow.keys() if 'ID_' in i]
     eqList=[eqDict[item] for item in itemList if item in eqDict.keys()]
-    expSetup = experimentalSetup(
+    expSetup = ExperimentalSetupClass(
         ID=dfRow['SetupID'],
         Name=dfRow['Name'],
         Description=dfRow['Description'],
@@ -135,9 +135,9 @@ def ReadStartingCompounds(filename) -> List:
     for idx, row in df.iterrows():
         #print(f"{idx=}, {row=}")
         cList += [
-            reagent(
+            Reagent(
                 ID=str(row["Reagent ID"]),
-                Chemical=chemical(
+                Chemical=Chemical(
                     ID=row["Reagent ID"],
                     Name=row["Name"],
                     ChemicalFormula=row["Formula"],
@@ -183,13 +183,13 @@ def find_trigger_in_log(logEntry: synthesisStep, triggerList=["Weight"]) -> bool
 
 
 def find_reagent_in_rawmessage(
-    searchString: str, reagentList: List[reagent]
-) -> Optional[reagent]:
+    searchString: str, ReagentList: List[Reagent]
+) -> Optional[Reagent]:
     """
-    Returns (the first match of) a given reagent if its ID is found in an input string,
+    Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
     """
-    for reag in reagentList:
+    for reag in ReagentList:
         if reag.ID in searchString:
             return reag
     return None
@@ -201,7 +201,7 @@ def find_in_log(
     Highlander=True,  # there can be only one if Highlander is True
 ) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
-    Returns (the first match of) a given reagent if its ID is found in an input string,
+    Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
     """
     answers = []

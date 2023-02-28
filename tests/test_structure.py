@@ -18,15 +18,15 @@ from dachs.readers import (
     readRawMessageLog,
 )
 from dachs.reagent import (
-    chemical,
-    product,
-    reagent,
-    reagentByMass,
-    reagentByVolume,
-    reagentMixture,
+    Chemical,
+    Product,
+    Reagent,
+    ReagentByMass,
+    ReagentByVolume,
+    ReagentMixture,
 )
-from dachs.metaclasses import root, chemicals
-from dachs.synthesis import DerivedParameter, synthesis, synthesisStep
+from dachs.metaclasses import root, ChemicalsClass
+from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
 
 
 def test_integral() -> None:
@@ -34,7 +34,7 @@ def test_integral() -> None:
     Construction of a test structure from Glen's excel files using the available dataclasses,
     the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.
     It now defines:
-        - base chemicals and
+        - base Chemicals and
         - mixtures,
     todo:
         - write synthesis log
@@ -48,8 +48,8 @@ def test_integral() -> None:
     S0File = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
     assert S0File.exists()
 
-    # define a zif chemical:
-    zifChemical = chemical(
+    # define a zif Chemical:
+    zifChemical = Chemical(
         ID="Zif-8",
         Name="Zif-8",
         ChemicalFormula="ZnC8H12N4",
@@ -68,13 +68,13 @@ def test_integral() -> None:
             The injection rate and injection order are varied. Centrifugation and drying 
             is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
-        Chemicals=chemicals(
+        Chemicals=ChemicalsClass(
             starting_compounds=ReadStartingCompounds(S0File),
             mixtures=[],
-            target_product=product(
+            target_product=Product(
                 ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
             ),
-            final_product=product(
+            final_product=Product(
                 ID="ZIF-8", Chemical=zifChemical, Mass="10.8 mg", Purity="99 percent"
             ),
         ),
@@ -110,7 +110,7 @@ def test_integral() -> None:
         solutionId = df.SampleNumber.unique()[0]
         reagList = []
         synth = []
-        # now we find the reagents that went into the mixture:
+        # now we find the Reagents that went into the mixture:
         for idx, row in df.iterrows():
             sstep = synthesisStep(
                 ID=str(stepId),
@@ -127,11 +127,11 @@ def test_integral() -> None:
                     sstep.RawMessage, rootStruct.Chemicals.starting_compounds
                 )
                 assert reag is not None, logging.warning(
-                    f"reagent not found in {sstep.RawMessage=}"
+                    f"Reagent not found in {sstep.RawMessage=}"
                 )
                 # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
                 reagList += [
-                    reagentByMass(
+                    ReagentByMass(
                         Reagent=reag,
                         AmountOfMass=str(row["Value"]) + " " + str(row["Unit"]),
                     )
@@ -140,14 +140,14 @@ def test_integral() -> None:
             stepId += 1
         # now we can define the mixture
         rootStruct.Chemicals.mixtures += [
-            reagentMixture(
+            ReagentMixture(
                 ID=solutionId,
                 Name="Mixture",
                 Description="",
                 PreparationDate=idx,  # last timestamp read
                 StorageConditions="",
                 ReagentList=reagList,
-                Synthesis=synthesis(
+                Synthesis=SynthesisClass(
                     ID=solutionId,
                     Name=f"Preparation of {solutionId}",
                     Description=" ",
@@ -164,7 +164,7 @@ def test_integral() -> None:
     # just reading and dumping the synthesis log:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
 
-    rootStruct.Synthesis = synthesis(
+    rootStruct.Synthesis = SynthesisClass(
         ID="MOF_synthesis_1",
         Name="MOF standard synthesis, room temperature, 20 minute residence time",
         Description="-- add full text description of synthesis here--",
@@ -185,7 +185,7 @@ def test_integral() -> None:
     # )
     # df = df.dropna(how="all")
 
-    # # calculate the weight of product:
+    # # calculate the weight of Product:
     # targets = ["Weight", "Falcon"]
     # # find me the messages containing both those words:
     # dfMask = df["Readout"].apply(
@@ -196,7 +196,7 @@ def test_integral() -> None:
     # rootStruct.Synthesis.DerivedParameters = [
     #     DerivedParameter(
     #         Name="Yield",
-    #         Description="Actual yield of the product",
+    #         Description="Actual yield of the Product",
     #         RawMessages=list(mLocs),
     #         Quantity=rootStruct.Synthesis.RawLog[mLocs[-1]].Quantity
     #         - rootStruct.Synthesis.RawLog[mLocs[0]].Quantity,

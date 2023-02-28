@@ -5,7 +5,7 @@
 Overview:
 ========
 A dataclass for specifying metaclasses, superclasses that consist of collections of the end classes. 
-experimentalSetup: a collection of equipment that make up an experimental setup.
+ExperimentalSetup: a collection of equipment that make up an experimental setup.
 """
 
 __author__ = "Brian R. Pauw"
@@ -17,7 +17,7 @@ __status__ = "beta"
 from attrs import define, validators, field, Factory
 from typing import List, Optional  # , Optional
 
-from dachs.reagent import chemical, product, reagent, reagentMixture
+from dachs.reagent import Chemical, Mixture, Product, Reagent, ReagentMixture
 from dachs.additemstoattrs import addItemsToAttrs
 
 # from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
@@ -25,12 +25,12 @@ from dachs.additemstoattrs import addItemsToAttrs
 from dataclasses import dataclass
 import dataclasses
 
-from dachs.equipment import equipment
-from dachs.synthesis import synthesis
+from dachs.equipment import Equipment
+from dachs.synthesis import SynthesisClass
 
 
 @define
-class experimentalSetup(addItemsToAttrs):
+class ExperimentalSetupClass(addItemsToAttrs):
     ID: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -46,7 +46,7 @@ class experimentalSetup(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    EquipmentList: List[equipment] = field(
+    EquipmentList: List[Equipment] = field(
         default=None,
         validator=validators.instance_of(list),
         converter=list,
@@ -62,22 +62,22 @@ class experimentalSetup(addItemsToAttrs):
 
 
 @define
-class chemicals(addItemsToAttrs):
-    starting_compounds: List[reagent] = field(
+class ChemicalsClass(addItemsToAttrs):
+    starting_compounds: List[Reagent] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    mixtures: List[reagentMixture] = field(
+    mixtures: List[Mixture] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    final_product: Optional[product] = field(  # probably could use an "evidence" too.
+    final_product: Optional[Product] = field(  # probably could use an "evidence" too.
         default=None,
-        validator=validators.optional(validators.instance_of(product)),
+        validator=validators.optional(validators.instance_of(Product)),
     )
-    target_product: product = field(
-        default=Factory(product),
-        validator=validators.instance_of(product),
+    target_product: Product = field(
+        default=Factory(Product),
+        validator=validators.instance_of(Product),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
@@ -86,10 +86,10 @@ class chemicals(addItemsToAttrs):
 
 
 # @dataclass
-# class chemicals:
+# class ChemicalsClass:
 #     starting_compounds: List = dataclasses.field(default_factory=list)
 #     mixtures: List = dataclasses.field(default_factory=list)
-#     final_product: product = dataclasses.field(default_factory=product)
+#     final_product: Product = dataclasses.field(default_factory=Product)
 
 
 @define
@@ -109,21 +109,21 @@ class root(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Chemicals: Optional[chemicals] = field(
+    Chemicals: Optional[ChemicalsClass] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(chemicals)),
+        validator=validators.optional(validators.instance_of(ChemicalsClass)),
     )
-    Synthesis: Optional[synthesis] = field(
+    Synthesis: Optional[SynthesisClass] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(synthesis)),
+        validator=validators.optional(validators.instance_of(SynthesisClass)),
     )
     Characterizations: Optional[List] = field(
         default=None,
         validator=validators.optional(validators.instance_of(list)),
     )
-    ExperimentalSetup: Optional[experimentalSetup] = field(
+    ExperimentalSetup: Optional[ExperimentalSetupClass] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(experimentalSetup)),
+        validator=validators.optional(validators.instance_of(ExperimentalSetupClass)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage

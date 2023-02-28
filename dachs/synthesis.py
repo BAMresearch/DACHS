@@ -146,7 +146,7 @@ class synthesisStep(addItemsToAttrs):
 
 
 @define
-class synthesis(addItemsToAttrs):
+class SynthesisClass(addItemsToAttrs):
     ID: str = field(  # step number
         validator=validators.instance_of(str),
         converter=str,

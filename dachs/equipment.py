@@ -76,7 +76,7 @@ class pv(addItemsToAttrs):
 
 
 @define
-class equipment(addItemsToAttrs):
+class Equipment(addItemsToAttrs):
     ID: str = field(
         default=None,
         validator=validators.instance_of(str),

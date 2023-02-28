@@ -5,15 +5,15 @@ import pandas as pd
 import pytest
 import yaml
 from dachs.__init__ import ureg
-from dachs.equipment import equipment, pv
-from dachs.metaclasses import experimentalSetup, root
+from dachs.equipment import Equipment, pv
+from dachs.metaclasses import ExperimentalSetupClass, root
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
-from dachs.reagent import product, reagent, reagentByMass, reagentByVolume, reagentMixture, chemical
+from dachs.reagent import Product, Reagent, ReagentByMass, ReagentByVolume, ReagentMixture, Chemical
 from dachs.synthesis import RawLogMessage
 
 def test_equipment()->None:
     """Just a basic test of the class"""
-    solvent = equipment(
+    solvent = Equipment(
         ID="BATH_1",
         Name="Lauda Bath",
         Manufacturer="Lauda",
@@ -33,7 +33,7 @@ def test_equipment()->None:
             )
         ],
     )
-    e2 = equipment(
+    e2 = Equipment(
         ID="VESS_1",
         Name="Falcon tube",
         Manufacturer="Labsolute",
@@ -61,7 +61,7 @@ def test_readEquipment()->None:
     eqDict={}
     for rowi,equip in eq.iterrows():
         try:
-            eqItem=equipment(
+            eqItem=Equipment(
                 ID=str(equip['Equipment ID']),
                 Name=str(equip['Equipment Name']),
                 Manufacturer=str(equip['Manufacturer']),
@@ -86,7 +86,7 @@ def test_readEquipment()->None:
     # get all equipment for the setup
     itemList = [dfRow[i].item() for i in dfRow.keys() if 'ID_' in i]
     eqList=[eqDict[item] for item in itemList if item in eqDict.keys()]
-    expSetup = experimentalSetup(
+    expSetup = ExperimentalSetupClass(
         ID=dfRow['SetupID'],
         Name=dfRow['Name'],
         Description=dfRow['Description'],
@@ -110,7 +110,7 @@ def test_root()->None:
 
 def test_experimental_setup()->None:
     """Just a basic test of the class"""
-    eq1 = equipment(
+    eq1 = Equipment(
         ID="BATH_1",
         Name="Lauda Bath",
         Manufacturer="Lauda",
@@ -121,7 +121,7 @@ def test_experimental_setup()->None:
         Description="funky bath with excellent temperature control",
     )
 
-    su1 = experimentalSetup(
+    su1 = ExperimentalSetupClass(
         ID="AMSET_6",
         Name="AutoMof Configuration 6",
         Description="Same as AMSET_4 but Rod shaped stirring bar",
@@ -143,8 +143,8 @@ def test_ReadStartingCompounds()->None:
 
 
 def test_product()->None:
-    # define a zif chemical:
-    zifChemical = chemical(
+    # define a zif Chemical:
+    zifChemical = Chemical(
         ID='Zif-8',
         Name='Zif-8',
         ChemicalFormula="ZnSomething",
@@ -152,7 +152,7 @@ def test_product()->None:
         Density="0.335 g/cc",
         SourceDOI="something",
     )
-    _=product(
+    _=Product(
                 ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
             )
     return
@@ -160,12 +160,12 @@ def test_product()->None:
 
 def test_reagent() -> None:
     """
-    Tests for the reagent class
+    Tests for the Reagent class
     """
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-    solvent = reagent(
+    solvent = Reagent(
         ID="Solvent_1",
-        Chemical=chemical(
+        Chemical=Chemical(
             ID='MeOH',
             Name="Methanol",
             ChemicalFormula="CH3OH",
@@ -181,9 +181,9 @@ def test_reagent() -> None:
         UnitPrice="9 euro",
         UnitSize="2.5 liter",
     )
-    linker = reagent(
+    linker = Reagent(
         ID="linker_1",
-        Chemical=chemical(
+        Chemical=Chemical(
             ID='2-MIM',
             Name="2-methylimidazole",
             ChemicalFormula="C4H6N2",
@@ -206,17 +206,17 @@ def test_reagent() -> None:
     print(ureg("12.4 percent")* solvent.UnitPrice)
     print(solvent.PricePerUnit())
 
-    r1 = reagentByVolume(
+    r1 = ReagentByVolume(
                 AmountOfVolume='500 ml',
                 Reagent=solvent
             )
-    r2 = reagentByMass(
+    r2 = ReagentByMass(
                 AmountOfMass='4.5767 g',
                 Reagent=linker
             )
 
     # make mixture: 
-    mixture = reagentMixture(
+    mixture = ReagentMixture(
         ID='stock_1',
         Name='linker stock solution',
         Description='Stock solution of linker at 78 g/mole',
