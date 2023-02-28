@@ -8,8 +8,8 @@ from dachs.__init__ import ureg
 from dachs.equipment import Equipment, pv
 from dachs.metaclasses import ExperimentalSetupClass, root
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
-from dachs.reagent import Product, Reagent, ReagentByMass, ReagentByVolume, ReagentMixture, Chemical
-from dachs.synthesis import RawLogMessage
+from dachs.reagent import Mixture, Product, Reagent, Chemical # ReagentByMass, ReagentByVolume, ReagentMixture, 
+# from dachs.synthesis import RawLogMessage
 
 def test_equipment()->None:
     """Just a basic test of the class"""
@@ -206,29 +206,34 @@ def test_reagent() -> None:
     print(ureg("12.4 percent")* solvent.UnitPrice)
     print(solvent.PricePerUnit())
 
-    r1 = ReagentByVolume(
-                AmountOfVolume='500 ml',
-                Reagent=solvent
-            )
-    r2 = ReagentByMass(
-                AmountOfMass='4.5767 g',
-                Reagent=linker
-            )
+    # r1 = ReagentByVolume(
+    #             AmountOfVolume='500 ml',
+    #             Reagent=solvent
+    #         )
+    # r2 = ReagentByMass(
+    #             AmountOfMass='4.5767 g',
+    #             Reagent=linker
+    #         )
 
     # make mixture: 
-    mixture = ReagentMixture(
+    mixture = Mixture(
         ID='stock_1',
         Name='linker stock solution',
         Description='Stock solution of linker at 78 g/mole',
         PreparationDate='2022.07.27',
         StorageConditions='air conditioned lab',
-        ReagentList=[
-            r1,
-            r2
+        ComponentList=[
+            solvent,
+            linker
+        ],
+        ComponentMasses=[
+            ureg.Quantity('4.5767 g'),
+            solvent.MassByVolume(ureg.Quantity('500 ml'))
         ]
     )
+
     # print(f'{r1.Reagent.MolarMass=}')
-    logging.info([f'{m.Moles():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name} at mole concentration {mixture.componentConcentration(MatchComponent=m):0.03e}' for m in mixture.ReagentList])
-    logging.info([f'{m.Reagent.PricePerMass():.3f} of {m.Reagent.Chemical.Name} in {mixture.Name}' for m in mixture.ReagentList])
-    logging.info([f'\n {mixture.ReagentConcentrations()=}, {mixture.TotalMass=}'])
+    logging.info([f'{c.MolesByMass(mixture.ComponentMasses[ci]):.3f} of {c.Chemical.Name} in {mixture.Name} at mole concentration {mixture.ComponentConcentration(MatchComponent=c):0.03e}' for ci, c in enumerate(mixture.ComponentList)])
+    logging.info([f'{c.PricePerMass():.3f} of {c.Chemical.Name} in {mixture.Name}' for c in mixture.ComponentList])
+    logging.info(f'\n {mixture.ComponentConcentrations()=}, {mixture.TotalMass=}, {mixture.TotalPrice=}')
     

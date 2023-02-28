@@ -17,7 +17,7 @@ __status__ = "beta"
 from attrs import define, validators, field, Factory
 from typing import List, Optional  # , Optional
 
-from dachs.reagent import Chemical, Mixture, Product, Reagent, ReagentMixture
+from dachs.reagent import Chemical, Mixture, Product, Reagent # , ReagentMixture
 from dachs.additemstoattrs import addItemsToAttrs
 
 # from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
