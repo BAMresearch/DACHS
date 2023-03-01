@@ -111,6 +111,15 @@ def test_integral() -> None:
         solutionId = df.SampleNumber.unique()[0]
         reagList = []
         synth = []
+        mix = Mixture(
+                ID=solutionId,
+                Name="Mixture",
+                Description="",
+                PreparationDate="TBD", # idx,  # last timestamp read
+                StorageConditions="RT",
+                # ComponentList=reagList,
+                # Synthesis=None # will be filled in later
+            )
         # now we find the Reagents that went into the mixture:
         for idx, row in df.iterrows():
             sstep = synthesisStep(
@@ -131,31 +140,18 @@ def test_integral() -> None:
                     f"Reagent not found in {sstep.RawMessage=}"
                 )
                 # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                reagList += [
-                    ReagentByMass(
-                        Reagent=reag,
-                        AmountOfMass=str(row["Value"]) + " " + str(row["Unit"]),
-                    )
-                ]
+                mix.AddReagent(reag=reag, ReagentMass = str(row["Value"]) + " " + str(row["Unit"]))
             synth += [sstep]
             stepId += 1
         # now we can define the mixture
-        rootStruct.Chemicals.mixtures += [
-            ReagentMixture(
-                ID=solutionId,
-                Name="Mixture",
-                Description="",
-                PreparationDate=idx,  # last timestamp read
-                StorageConditions="",
-                ReagentList=reagList,
-                Synthesis=SynthesisClass(
+        mix.PreparationDate=idx # last index found should be the date 
+        mix.Synthesis = SynthesisClass(
                     ID=solutionId,
                     Name=f"Preparation of {solutionId}",
                     Description=" ",
                     SynthesisLog=synth,
-                ),
-            )
-        ]
+                )
+        rootStruct.Chemicals.mixtures += [mix]
         # and we can add the synthesis used to make this mixture:
         print(f"{solutionId=}")
 
