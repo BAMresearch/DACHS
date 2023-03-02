@@ -19,6 +19,8 @@ __status__ = "beta"
 from pathlib import Path
 from typing import List, Optional, Union
 
+import chempy
+
 import pandas as pd
 import yaml
 from dachs.equipment import Equipment
@@ -134,6 +136,7 @@ def ReadStartingCompounds(filename) -> List:
     cList = []
     for idx, row in df.iterrows():
         #print(f"{idx=}, {row=}")
+        s=chempy.Substance.from_formula(row["Formula"])
         cList += [
             Reagent(
                 ID=str(row["Reagent ID"]),
@@ -141,8 +144,9 @@ def ReadStartingCompounds(filename) -> List:
                     ID=row["Reagent ID"],
                     Name=row["Name"],
                     ChemicalFormula=row["Formula"],
-                    MolarMass=assert_unit(row["Molar Mass"], "g/mol"),
-                    Density=assert_unit(row["Density"], "g/cm^3"),
+                    Substance=s,
+                    MolarMass=ureg.Quantity(str(s.molar_mass())).to('g/mol'), # assert_unit(row["Molar Mass"], "g/mol"),
+                    Density=ureg.Quantity(str(row["Density"]) + " g/cm^3"),
                 ),
                 CASNumber=row["CAS-Number"],
                 Brand=row["Brand"],
@@ -197,18 +201,21 @@ def find_reagent_in_rawmessage(
 
 def find_in_log(
     log: List[RawLogMessage],
-    searchString: str,
-    Highlander=True,  # there can be only one if Highlander is True
+    searchString: Union[str, list],
+    Highlander:bool=True,  # there can be only one if Highlander is True
+    Which:str='first' # if highlander, specify if first or last
 ) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
     Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
     """
     answers = []
+    if isinstance(searchString, str): searchString=[searchString]
     for RLM in log:
-        if searchString in RLM.Message:
+        if all(i.lower() in RLM.Message.lower() for i in searchString):
             if Highlander:
-                return RLM
+                answers = RLM
+                if Which.lower() == 'first': return
             else:
                 answers += [RLM]
     return answers

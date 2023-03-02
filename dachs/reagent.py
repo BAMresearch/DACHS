@@ -6,7 +6,12 @@ Overview:
 ========
 A dataclass for specifying a Reagent, Reagentmixture or Product.
 """
-from __future__ import annotations # to get around using Mixture typing inside the Mixture class
+from __future__ import annotations
+
+from dachs.equipment import Equipment
+import chempy
+
+# from dachs.metaclasses import EnvironmentClass # to get around using Mixture typing inside the Mixture class
 
 __author__ = "Brian R. Pauw"
 __contact__ = "brian@stack.nl"
@@ -45,22 +50,27 @@ class Chemical(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    MolarMass: float = field(
+    MolarMass: Optional[ureg.Quantity] = field(
         default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+        # converter=ureg,
     )
-    Density: float = field(
+    Density: Optional[ureg.Quantity] = field(
         default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+        # converter=ureg,
+    )
+    Substance: Optional[chempy.Substance] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(chempy.Substance)),
+        # converter=chempy.Substance.from_formula,
     )
     SourceDOI: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
     )
     # internals, don't need a lot of validation:
-    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys", "Substance"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
@@ -81,10 +91,10 @@ class Product(addItemsToAttrs):
         validator=validators.instance_of(Chemical),
         # converter=Reagent,
     )
-    Mass: float = field(
+    Mass: Optional[ureg.Quantity] = field(
         default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+        # converter=ureg,
     )
     Purity: Optional[float] = field(
         default=None,
@@ -99,16 +109,16 @@ class Product(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-    def ChemicalYield(self):
-        assert (self.ActualMass is not None) and (
-            self.TargetMass is not None
-        ), logging.warning(
-            "Yied can only be calculated when both target mass and actual mass are set"
-        )
-        assert self.TargetMass > self.ActualMass, logging.warning(
-            "target mass has to be bigger than actual mass"
-        )
-        return self.ActualMass / self.TargetMass
+    # def ChemicalYield(self):
+    #     assert (self.ActualMass is not None) and (
+    #         self.TargetMass is not None
+    #     ), logging.warning(
+    #         "Yied can only be calculated when both target mass and actual mass are set"
+    #     )
+    #     assert self.TargetMass > self.Mass, logging.warning(
+    #         "target mass has to be bigger than actual mass"
+    #     )
+    #     return self.Mass / self.TargetMass
 
 
 @define
@@ -266,6 +276,14 @@ class Mixture(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(SynthesisClass)),
     )
+    # Environment: Optional[EnvironmentClass] = field(
+    #     default=None,
+    #     validator=validators.optional(validators.instance_of(EnvironmentClass)),
+    # )
+    Container: Optional[Equipment]= field(
+        default=None,
+        validator=validators.optional(validators.instance_of(Equipment)),
+    )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
@@ -288,7 +306,7 @@ class Mixture(addItemsToAttrs):
         if AddMixtureMass is None:
             assert (AddMixtureVolume is not None) and (MixtureDensity is not None), "If added mixture mass is not supplied, both volume and density must be defined"
             assert AddMixtureVolume.check('[volume]'), 'AddMixtureVolume must be a volume'
-            assert MixtureDensity.check('[mass/volume]'), 'MixtureDensity must be a density (mass per volume)'
+            assert MixtureDensity.check('[mass]/[volume]'), 'MixtureDensity must be a density (mass per volume)'
             AddMixtureMass = AddMixtureVolume * MixtureDensity
         # Check that we are making sense
         assert AddMixtureMass <= mix.TotalMass, 'Sanity check failed, you are adding more mass of mixture than existed in the mixture.'
@@ -321,7 +339,7 @@ class Mixture(addItemsToAttrs):
     @property
     def TotalMass(self) -> ureg.Quantity:
         # returns the total mass of the mixture
-        TMass = 0
+        TMass = ureg.Quantity('0 gram')
         for mass in self.ComponentMasses:
             TMass += mass
         return TMass

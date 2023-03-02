@@ -14,11 +14,13 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/15"
 __status__ = "beta"
 
+import logging
 from attrs import define, validators, field, Factory
 from typing import List, Optional  # , Optional
 
 from dachs.reagent import Chemical, Mixture, Product, Reagent # , ReagentMixture
 from dachs.additemstoattrs import addItemsToAttrs
+from .__init__ import ureg  # get importError when using: "from . import ureg"
 
 # from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
 # import logging
@@ -60,6 +62,39 @@ class ExperimentalSetupClass(addItemsToAttrs):
     #     # auto-generate the store and load key lists:
     #     super().__attrs_post_init__()
 
+@define
+class EnvironmentClass(addItemsToAttrs):
+    """Calss for storing environmental parameters including stirring speed"""
+    ID: str = field(
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    Name: str = field(
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    Temperature: Optional[ureg.Quantity] = field(
+        default=None,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg.Quantity,
+    )
+    Humidity: Optional[ureg.Quantity] = field(
+        default=None,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg.Quantity,
+    )
+    Pressure: Optional[ureg.Quantity] = field(
+        default=None,
+        validator=validators.instance_of(ureg.Quantity),
+        converter=ureg.Quantity,
+    )
+    # internals, don't need a lot of validation:
+    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+    _storeKeys: list = []  # store these keys (will be filled in later)
+    _loadKeys: list = []  # load these keys from file if reconstructing
+
 
 @define
 class ChemicalsClass(addItemsToAttrs):
@@ -84,12 +119,22 @@ class ChemicalsClass(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-
-# @dataclass
-# class ChemicalsClass:
-#     starting_compounds: List = dataclasses.field(default_factory=list)
-#     mixtures: List = dataclasses.field(default_factory=list)
-#     final_product: Product = dataclasses.field(default_factory=Product)
+    @property
+    def ChemicalYield(self):
+        assert (self.target_product.Mass is not None) and (
+            self.final_product.Mass is not None
+        ), logging.warning(
+            "Yield can only be calculated when both target mass and actual mass are set"
+        )
+        assert (self.target_product.Chemical ==
+            self.final_product.Chemical), logging.warning(
+            "Yield can only be calculated when target and final Chemicals are the same "
+        )
+        # maybe not a required assertion:
+        # assert self.target_product.Mass > self.final_product.Mass, logging.warning(
+        #     "target (ideal) mass has to be bigger than final product mass"
+        # )
+        return self.final_product.Mass / self.target_product.Mass
 
 
 @define

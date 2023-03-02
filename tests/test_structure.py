@@ -7,6 +7,8 @@ import dachs as dachs
 import logging
 import sys
 
+import chempy # we only need a tiny bit, but it does offer options...
+
 import pandas as pd
 from dachs.readers import (
     ReadStartingCompounds,
@@ -28,6 +30,7 @@ from dachs.reagent import (
 )
 from dachs.metaclasses import root, ChemicalsClass
 from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
+from .__init__ import ureg  # get importError when using: "from . import ureg"
 
 
 def test_integral() -> None:
@@ -50,17 +53,19 @@ def test_integral() -> None:
     assert S0File.exists()
 
     # define a zif Chemical:
+    z8 = chempy.Substance.from_formula("ZnC8H12N4")
     zifChemical = Chemical(
         ID="Zif-8",
-        Name="Zif-8",
+        Name="Zeolite Imidazole Framework type 8",
         ChemicalFormula="ZnC8H12N4",
-        MolarMass="229.6 g/mol",
-        Density="0.3 g/cc",
+        Substance=z8,
+        MolarMass=ureg.Quantity(str(z8.molar_mass())),
+        Density=ureg.Quantity("0.3 g/cc"),
         SourceDOI="something",
     )
 
     # Start with a root
-    rootStruct = root(
+    DACHS = root(
         ID="AutoMOF5",
         Name="Automatic MOF Exploration series 5",
         Description="""
@@ -73,10 +78,10 @@ def test_integral() -> None:
             starting_compounds=ReadStartingCompounds(S0File),
             mixtures=[],
             target_product=Product(
-                ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"
             ),
             final_product=Product(
-                ID="ZIF-8", Chemical=zifChemical, Mass="10.8 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Purity="99 percent" # mass is set later. 
             ),
         ),
         ExperimentalSetup=readExperimentalSetup(
@@ -86,7 +91,7 @@ def test_integral() -> None:
     )
 
     # logging.info("Defining the base chemicals / starting compounds")
-    # rootStruct.Chemicals.starting_compounds += 
+    # DACHS.Chemicals.starting_compounds += 
 
     logging.info("defining the mixtures based on mixtures of starting componds")
     filenames = [
@@ -134,13 +139,13 @@ def test_integral() -> None:
             if find_trigger_in_log(sstep, triggerList=["Weight"]):
                 # we found a component to add to the mixture
                 reag = find_reagent_in_rawmessage(
-                    sstep.RawMessage, rootStruct.Chemicals.starting_compounds
+                    sstep.RawMessage, DACHS.Chemicals.starting_compounds
                 )
                 assert reag is not None, logging.warning(
                     f"Reagent not found in {sstep.RawMessage=}"
                 )
                 # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                mix.AddReagent(reag=reag, ReagentMass = str(row["Value"]) + " " + str(row["Unit"]))
+                mix.AddReagent(reag=reag, ReagentMass = ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"])))
             synth += [sstep]
             stepId += 1
         # now we can define the mixture
@@ -151,63 +156,100 @@ def test_integral() -> None:
                     Description=" ",
                     SynthesisLog=synth,
                 )
-        rootStruct.Chemicals.mixtures += [mix]
+        DACHS.Chemicals.mixtures += [mix]
         # and we can add the synthesis used to make this mixture:
         print(f"{solutionId=}")
 
-    logging.info(rootStruct.Chemicals.mixtures)
+    logging.info(DACHS.Chemicals.mixtures)
 
     logging.info("defining the synthesis log")
     # just reading and dumping the synthesis log:
     filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
 
-    rootStruct.Synthesis = SynthesisClass(
+    DACHS.Synthesis = SynthesisClass(
         ID="MOF_synthesis_1",
         Name="MOF standard synthesis, room temperature, 20 minute residence time",
         Description="-- add full text description of synthesis here--",
         RawLog=readRawMessageLog(filename),
     )
 
-    #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
-    # SetupName='AMSET_6'
-    # rootStruct.ExperimentalSetup=readExperimentalSetup(
-    #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx"),
-    #     SetupName='AMSET_6'
-    # )
-
-    #### After our discussion, we've decided not to focus on including derived parameters just yet. 
-    # logging.info("Extracting the derived parameters")
+    #### After our discussion, we've decided not to focus on including derived parameters just yet. We still need a few things though. 
+    logging.info("Extracting the derived parameters")
     # df = pd.read_excel(
     #     filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
     # )
     # df = df.dropna(how="all")
 
+    # minimal derived information:
+    # add the reaction mixtures to Chemicals.mixtures
+    ## for the start time we need the last "start injection of solution" timestamp
+    ReactionStart = find_in_log(
+        DACHS.Synthesis.RawLog,
+        "Start injection of solution",
+        Highlander=True,
+        Which='last'
+        #return_indices=True,
+    ).TimeStamp# .astimezone('UTC'))#, does this need str-ing?
+    
+    ## now we can create a new mixture
+    mix = Mixture(
+                ID="ReactionMix_0",
+                Name="Reaction Mixture 0",
+                Description="The MOF synthesis reaction mixture",
+                PreparationDate=ReactionStart, # idx,  # last timestamp read
+                StorageConditions="RT",
+                Container=DACHS.ExperimentalSetup.EquipmentList[18]
+            )
+    ## to this we need to find the volume and density of which solution for the injections
+    allVolumes=find_in_log(DACHS.Synthesis.RawLog, "Solution volume set", Highlander=False)
+    assert len(allVolumes)!=0, 'No injection volume specified in log'
+    assert len(allVolumes)==1, 'More than one injection volumes specified in log, dissimilar solution volumes not yet implemented'
+    VolumeRLM=allVolumes[0]
+    allSolutions=find_in_log(DACHS.Synthesis.RawLog, 'Stop injection of solution', Highlander=False)
+    # I don't have the densities yet, so we have to assume something for now
+    for solutionRLM in allSolutions:
+        solutionId = solutionRLM.Value
+        mix.AddMixture(
+            DACHS.Chemicals.mixtures[solutionId],
+            AddMixtureVolume=VolumeRLM.Quantity, # TODO: correction factor should be added in 
+            MixtureDensity=ureg.Quantity('0.792 g/cc'), # TODO: methanol density for now
+        )
+    # Add to the structure. 
+    DACHS.Chemicals.mixtures += [mix]
+
     # # calculate the weight of Product:
+    WeightRLMs=find_in_log(DACHS.Synthesis.RawLog, ['Weight', 'Falcon'], Highlander=False)
     # targets = ["Weight", "Falcon"]
     # # find me the messages containing both those words:
     # dfMask = df["Readout"].apply(
     #     lambda sentence: all(word in sentence for word in targets)
     # )
     # mLocs = np.where(dfMask)[0]
-    # assert len(mLocs) == 2
-    # rootStruct.Synthesis.DerivedParameters = [
-    #     DerivedParameter(
-    #         Name="Yield",
-    #         Description="Actual yield of the Product",
-    #         RawMessages=list(mLocs),
-    #         Quantity=rootStruct.Synthesis.RawLog[mLocs[-1]].Quantity
-    #         - rootStruct.Synthesis.RawLog[mLocs[0]].Quantity,
-    #     )
-    # ]
+    assert len(WeightRLMs) == 2, 'more than two weight indications (empty, empty+dry product) were found'
+    DACHS.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
+    # compute theoretical yield:
+    # we need to find out how many moles of metal we have in the previously established reaction mixture
+    # for component in mix.ComponentList:
+    #     print(component)
+
+    # DACHS.Chemicals.target_product.Mass = 
+
+    # DerivedParameter(
+    #     Name="Yield",
+    #     Description="Actual yield of the Product",
+    #     RawMessages=list(mLocs),
+    #     Quantity=DACHS.Synthesis.RawLog[mLocs[-1]].Quantity
+    #     - DACHS.Synthesis.RawLog[mLocs[0]].Quantity,
+    # )
 
     # # store the room temperature:
     # LogEntry = find_in_log(
-    #     rootStruct.Synthesis.RawLog,
+    #     DACHS.Synthesis.RawLog,
     #     "arduino:environment:temperature",
     #     Highlander=True,
     #     #return_indices=True,
     # )
-    # rootStruct.Synthesis.DerivedParameters += [
+    # DACHS.Synthesis.DerivedParameters += [
     #     DerivedParameter(
     #         Name="RoomTemperature",
     #         Description="Actual room temperature at synthesis time",
@@ -218,7 +260,7 @@ def test_integral() -> None:
 
     # Export everything finally
     from dachs.serialization import storagePaths
-    name = 'rootStruct'
+    name = 'DACHS'
     dump = storagePaths(name, locals()[name])
 
     # quick&dirty imports for testing
