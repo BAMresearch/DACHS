@@ -136,6 +136,15 @@ class ChemicalsClass(addItemsToAttrs):
         # )
         return self.final_product.Mass / self.target_product.Mass
 
+# @define
+# class DocumentationClass(addItemsToAttrs):
+#     RoboticSetup = field(
+#         default=None,
+#     )
+#     ChemicalReaction = field(
+#         default=None,
+#     )
+
 
 @define
 class root(addItemsToAttrs):
@@ -170,6 +179,10 @@ class root(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(ExperimentalSetupClass)),
     )
+    # Documentation: Optional[DocumentationClass] = field(
+    #     default=None,
+    #     validator=validators.optional(validators.instance_of(DocumentationClass)),
+    # )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)

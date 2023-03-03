@@ -21,6 +21,7 @@ from .additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
 from .equipment import pv
+import chempy
 
 NoneType = type(None)
 
@@ -159,6 +160,10 @@ class SynthesisClass(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
+    ChemicalReaction: Optional[chempy.Reaction] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(chempy.Reaction))
+    )
     RawLog: Optional[List[RawLogMessage]] = field(
         default=None,
         validator=validators.optional(validators.instance_of(list)),
@@ -170,6 +175,10 @@ class SynthesisClass(addItemsToAttrs):
     SourceDOI: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
+    )
+    ExtraInformation: Optional[dict] = field(
+        default=Factory(dict),
+        validator=validators.optional(validators.instance_of(dict)),
     )
     DerivedParameters: Optional[List[DerivedParameter]] = field(
         default=None,

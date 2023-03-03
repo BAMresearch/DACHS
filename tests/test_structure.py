@@ -230,13 +230,22 @@ def test_integral() -> None:
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
     for component in mix.ComponentList:
-        print(component)
         aNumber = chempy.util.periodic.atomic_number("Zn")
         if aNumber in component.Chemical.Substance.composition.keys():
             # this is the component we're looking for. How many moles of atoms per moles of substance?
             metalMoles = component.Chemical.Substance.composition[aNumber]
             TotalMetalMoles = mix.ComponentMoles(MatchComponent=component) * metalMoles
-    
+        if 'C4H6N2' in component.Chemical.Substance.name:
+            TotalLinkerMoles = mix.ComponentMoles(MatchComponent=component)
+
+    DACHS.Synthesis.ExtraInformation.update({'MetalToLinkerRatio': TotalMetalMoles/TotalLinkerMoles})
+    DACHS.Chemicals.target_product.Mass=TotalMetalMoles * DACHS.Chemicals.target_product.Chemical.MolarMass
+    print(DACHS.Chemicals.ChemicalYield)
+    DACHS.Chemicals._storeKeys += ['ChemicalYield']
+    # maybe later
+    # DACHS.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
+    DACHS.Synthesis.SourceDOI = "10.1039/D1RA02856A"
+
 
     # DACHS.Chemicals.target_product.Mass = 
 
@@ -284,7 +293,7 @@ def test_integral() -> None:
     for key, value in dump.items():
         # extracting path from keys could be added to McHDF.storeKVPairs()
         try:
-            McHDF.storeKV(filename=f'{name}.h5', path=key, value=value)
+            McHDF.storeKV(filename=f'{name}_H005.h5', path=key, value=value)
         except Exception:
             print(f"Error for path {key} and value '{value}' of type {type(value)}.")
             raise
