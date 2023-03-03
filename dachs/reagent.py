@@ -316,24 +316,32 @@ class Mixture(addItemsToAttrs):
             self.ComponentMasses += [mix.ComponentMasses[ci] * MassFractionOfTotal]
         return
 
-
-    def ComponentConcentration(self, MatchComponent: Reagent) -> float:
-        """
-        Finds the concentration of a component defined by its entry in the total mixture
-        This concentration will be in mole fraction.
-        """
+    def ComponentMoles(self, MatchComponent:Reagent) -> ureg.Quantity:
         componentMoles = 0
-        totalMoles = 0
         for ci, component in enumerate(self.ComponentList):
             theseMoles = component.MolesByMass(self.ComponentMasses[ci])
-            totalMoles += theseMoles
             if component == MatchComponent:
                 componentMoles = theseMoles
         if componentMoles == 0:
             logging.warning(
                 f"Concentration of {MatchComponent=} is zero, component not found"
             )
-        return componentMoles / totalMoles
+        return componentMoles
+    
+    def TotalMoles(self) -> ureg.Quantity:
+        totalMoles = 0
+        for ci, component in enumerate(self.ComponentList):
+            theseMoles = component.MolesByMass(self.ComponentMasses[ci])
+            totalMoles += theseMoles
+        return totalMoles
+
+
+    def ComponentConcentration(self, MatchComponent: Reagent) -> float:
+        """
+        Finds the concentration of a component defined by its entry in the total mixture
+        This concentration will be in mole fraction.
+        """
+        return self.componentMoles(MatchComponent) / self.TotalMoles
 
     
     @property

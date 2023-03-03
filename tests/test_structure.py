@@ -229,8 +229,14 @@ def test_integral() -> None:
     DACHS.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
-    # for component in mix.ComponentList:
-    #     print(component)
+    for component in mix.ComponentList:
+        print(component)
+        aNumber = chempy.util.periodic.atomic_number("Zn")
+        if aNumber in component.Chemical.Substance.composition.keys():
+            # this is the component we're looking for. How many moles of atoms per moles of substance?
+            metalMoles = component.Chemical.Substance.composition[aNumber]
+            TotalMetalMoles = mix.ComponentMoles(MatchComponent=component) * metalMoles
+    
 
     # DACHS.Chemicals.target_product.Mass = 
 
