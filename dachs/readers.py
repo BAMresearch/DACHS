@@ -96,13 +96,15 @@ def readRawMessageLog(filename: Path) -> List:
             )
             condition += 1
         if row["Unit"].strip() != "-":
-            U = row["Unit"]
+            U = row["Unit"].strip()
             U = "percent" if U == "%" else U
+            U = "degC" if U == "C" else U
+            U = "minute" if U == "mins" else U
             # U=ureg.parse_units(U)
             condition += 1
         if condition == 2:  # both value and unit are present
             try:
-                Q = ureg(str(Val) + " " + str(U))
+                Q = ureg.Quantity(Val, str(U))
             except:  # conversion fail
                 Q = None
 
@@ -215,7 +217,7 @@ def find_in_log(
         if all(i.lower() in RLM.Message.lower() for i in searchString):
             if Highlander:
                 answers = RLM
-                if Which.lower() == 'first': return
+                if Which.lower() == 'first': return RLM
             else:
                 answers += [RLM]
     return answers

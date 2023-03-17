@@ -174,6 +174,11 @@ class Reagent(addItemsToAttrs):
         validator=validators.instance_of(ureg.Quantity),
         converter=ureg,
     )
+    Used: bool = field(
+        default=False,
+        validator=validators.instance_of(bool),
+        converter=bool,
+    )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
@@ -297,6 +302,8 @@ class Mixture(addItemsToAttrs):
         """Adds a reagent to the mixture"""
         self.ComponentList += [reag]
         self.ComponentMasses += [ReagentMass]
+        # mark the reagent as actually in use:
+        reag.Used=True
         return
 
     def AddMixture(self, mix:Mixture, AddMixtureMass:ureg.Quantity=None, AddMixtureVolume:ureg.Quantity=None, MixtureDensity:ureg.Quantity=None)->None:
@@ -365,154 +372,3 @@ class Mixture(addItemsToAttrs):
         # assert False, 'Price calculation Not implemented yet.'
         # returns the cost per mass of the mixture 
         return self.TotalPrice / self.TotalMass
-
-# @define
-# class ReagentByMass(addItemsToAttrs):
-#     AmountOfMass: float = field(
-#         default=None,
-#         validator=validators.instance_of(ureg.Quantity),
-#         converter=ureg,
-#     )
-#     Reagent: Reagent = field(
-#         default=None,
-#         validator=validators.instance_of(Reagent),
-#         # converter=Reagent,
-#     )
-
-#     # internals, don't need a lot of validation:
-#     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
-#     _storeKeys: list = []  # store these keys (will be filled in later)
-#     _loadKeys: list = []  # load these keys from file if reconstructing
-
-#     def Moles(self) -> ureg.Quantity:
-#         return (self.AmountOfMass / self.Reagent.Chemical.MolarMass).to('mole')
-    
-#     @property
-#     def Price(self) -> ureg.Quantity:
-#         return (self.Reagent.PricePerMass() * self.AmountOfMass)
-
-
-# @define
-# class ReagentByVolume(addItemsToAttrs):
-#     AmountOfVolume: float = field(
-#         default=None,
-#         validator=validators.instance_of(ureg.Quantity),
-#         converter=ureg,
-#     )
-#     Reagent: Reagent = field(
-#         default=None,
-#         validator=validators.instance_of(Reagent),
-#         # converter=Reagent,
-#     )
-#     # internals, don't need a lot of validation:
-#     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
-#     _storeKeys: list = []  # store these keys (will be filled in later)
-#     _loadKeys: list = []  # load these keys from file if reconstructing
-
-#     def Moles(self) -> ureg.Quantity:
-#         return (
-#             self.AmountOfVolume
-#             * self.Reagent.Chemical.Density
-#             / self.Reagent.Chemical.MolarMass
-#         ).to('mole')
-    
-#     @property
-#     def AmountOfMass(self) -> ureg.Quantity:
-#         return (
-#             self.AmountOfVolume * self.Reagent.Chemical.Density
-#         ).to('g')
-    
-#     @property
-#     def Price(self) -> ureg.Quantity:
-#         return (self.Reagent.PricePerMass() * self.AmountOfMass)
-
-# @define
-# class ReagentMixture(addItemsToAttrs):
-#     """
-#     Defines chemicals prepared for the experiments from the Reagents from the shelves.
-#     """
-
-#     ID: str = field(
-#         default=None,
-#         validator=validators.instance_of(str),
-#         converter=str,
-#     )
-#     Name: str = field(
-#         default=None,
-#         validator=validators.instance_of(str),
-#         converter=str,
-#     )
-#     Description: str = field(
-#         default=None,
-#         validator=validators.instance_of(str),
-#         converter=str,
-#     )
-#     ReagentList: List[
-#         Union[ReagentByMass, ReagentByVolume]
-#     ] = field(  # list of ReagentByMass and/or ReagentByVolume
-#         default=Factory(list),
-#         validator=validators.instance_of(list),
-#     )
-#     PreparationDate: str = field(
-#         default=None,
-#         validator=validators.instance_of(str),
-#         converter=str,
-#     )
-#     StorageConditions: Optional[str] = field(
-#         default=None,
-#         validator=validators.optional(validators.instance_of(str)),
-#         converter=str,
-#     )
-#     Synthesis: Optional[SynthesisClass] = field(
-#         default=None,
-#         validator=validators.optional(validators.instance_of(SynthesisClass)),
-#     )
-#     # internals, don't need a lot of validation:
-#     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
-#     _storeKeys: list = []  # store these keys (will be filled in later)
-#     _loadKeys: list = []  # load these keys from file if reconstructing
-    
-#     def ReagentConcentrations(self) -> List[ureg.Quantity]:
-#         # returns a list of mole concentrations of the Reagents
-#         return [self.ComponentConcentration(MatchComponent=i).to('mole/mole') for i in self.ReagentList]
-
-#     # @property
-#     def ComponentConcentration(self, MatchComponent: Union[ReagentByMass, ReagentByVolume]) -> float:
-#         """
-#         Finds the concentration of a component defined by its entry in the total mixture
-#         This concentration will be in mole fraction.
-#         """
-#         componentMoles = 0
-#         totalMoles = 0
-#         for component in self.ReagentList:
-#             totalMoles += component.Moles()
-#             if component == MatchComponent:
-#                 componentMoles = component.Moles()
-#         if componentMoles == 0:
-#             logging.warning(
-#                 f"Concentration of {MatchComponent=} is zero, component not found"
-#             )
-#         return componentMoles / totalMoles
-
-    
-#     @property
-#     def TotalMass(self) -> ureg.Quantity:
-#         # returns the total mass of the mixture
-#         TMass = 0
-#         for component in self.ReagentList:
-#             TMass += component.AmountOfMass
-#         return TMass
-    
-#     @property
-#     def TotalPrice(self) -> ureg.Quantity:
-#         # returns the total cost of the miture
-#         # assert False, 'Price calculation Not implemented yet.'
-#         TPrice = 0
-#         for component in self.ReagentList:
-#             TPrice += component.Price
-#         return TPrice
-        
-#     def PricePerMass(self) -> ureg.Quantity:
-#         # assert False, 'Price calculation Not implemented yet.'
-#         # returns the cost per mass of the mixture 
-#         return self.TotalPrice / self.TotalMass

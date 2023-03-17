@@ -1,18 +1,21 @@
-from datetime import datetime
+#!/usr/bin/env python
+# coding: utf-8
+# requires at least attrs version == 21.4
 import os
 from pathlib import Path
-import numpy as np
-import pytest
-import dachs as dachs
+import argparse
+# from sys import platform
 import logging
 import sys
+
+from datetime import datetime
+import dachs as dachs
 
 import chempy # we only need a tiny bit, but it does offer options...
 
 import pandas as pd
 from dachs.readers import (
     ReadStartingCompounds,
-    assert_unit,
     find_in_log,
     find_reagent_in_rawmessage,
     find_trigger_in_log,
@@ -22,35 +25,88 @@ from dachs.readers import (
 from dachs.reagent import (
     Chemical,
     Product,
-    Reagent,
     Mixture
     # ReagentByMass,
     # ReagentByVolume,
     # ReagentMixture,
 )
 from dachs.metaclasses import root, ChemicalsClass
-from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
-from .__init__ import ureg  # get importError when using: "from . import ureg"
+from dachs.synthesis import SynthesisClass, synthesisStep
+from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
 
 
-def test_integral() -> None:
-    """
-    Construction of a test structure from Glen's excel files using the available dataclasses,
-    the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.
-    It now defines:
-        - base Chemicals and
-        - mixtures,
-    todo:
-        - write synthesis log
-        - write or (perhaps better) link to SAS data structure.
-        - write or (perhaps better) link to analysis results?
-    """
-    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+def configureParser() -> argparse.ArgumentParser:
 
+    def validate_file(arg):
+        if (file := Path(arg).absolute()).is_file():
+            return file
+        else:
+            raise FileNotFoundError(arg)
+        
+    # process input arguments
+    parser = argparse.ArgumentParser(
+        description="""
+            Creates an archival HDF5 structure containing synthesis details from a RoWaN AutoMOF synthesis. 
+
+            Released under a GPLv3+ license.
+            """
+    )
+    # TODO: add info about output files to be created ...
+    parser.add_argument(
+        "-l",
+        "--logbook",
+        type=validate_file,
+        default=Path(__file__).absolute().parent / "tests" / "testData" / "AutoMOFs_Logbook_Working.csv",
+        help="Path to the filename containing the main AutoMOF logbook",
+        # nargs="+",
+        required=True,
+    )
+    parser.add_argument( # could perhaps be done with a multi-file input for multiple solutions...
+        "-s0",
+        "--s0file",
+        type=validate_file,
+        default=Path(__file__).absolute().parent / "tests" / "testData" / "AutoMOFs05_Solution0.csv",
+        help="File containing the syntheiss log of Solution 0",
+        required=True,
+    )
+    parser.add_argument(
+        "-s1",
+        "--s1file",
+        type=validate_file,
+        default=Path(__file__).absolute().parent / "tests" / "testData" / "AutoMOFs05_Solution1.csv",
+        help="File containing the syntheiss log of Solution 1",
+        required=True,
+    )
+    parser.add_argument(
+        "-f",
+        "--filename",
+        type=validate_file,
+        default=Path(__file__).absolute().parent / "tests" / "testData" / "AutoMOFs05_H005.csv",
+        help="File containing the syntheiss log of the MOF itself.",
+        required=True,
+    )
+
+    return parser
+
+
+if __name__ == "__main__":
+
+    parser = configureParser()
+
+    try:
+        args = parser.parse_args()
+    except SystemExit:
+        raise
+
+    # initiate logging (to console stderr for now)
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+
+    adict = vars(args)
+
+    ## main code for generating the autoMOF structure follows:
     # Input excel sheet, containing all necessary information:
     logging.info(f"{os.getcwd()}")
-    S0File = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
-    assert S0File.exists()
+    # S0File = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
 
     # define a zif Chemical:
     z8 = chempy.Substance.from_formula("ZnC8H12N4")
@@ -75,7 +131,7 @@ def test_integral() -> None:
             is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
         Chemicals=ChemicalsClass(
-            starting_compounds=ReadStartingCompounds(S0File),
+            starting_compounds=ReadStartingCompounds(adict['logbook']),
             mixtures=[],
             target_product=Product(
                 ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"
@@ -85,7 +141,7 @@ def test_integral() -> None:
             ),
         ),
         ExperimentalSetup=readExperimentalSetup(
-            filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx"),
+            filename = adict['logbook'],
             SetupName='AMSET_6'
         )
     )
@@ -95,12 +151,11 @@ def test_integral() -> None:
 
     logging.info("defining the mixtures based on mixtures of starting componds")
     filenames = [
-        Path("tests", "testData", "AutoMOFs05_Solution0.xlsx"),
-        Path("tests", "testData", "AutoMOFs05_Solution1.xlsx"),
+        adict['s0file'],
+        adict['s1file'],
     ]
     # make a mixture as defined in each of the excel sheets:
     for filename in filenames:
-        assert filename.exists(), f"{filename=} does not exist"
         # read the synthesis logs:
         df = pd.read_excel(
             filename,
@@ -164,7 +219,7 @@ def test_integral() -> None:
 
     logging.info("defining the synthesis log")
     # just reading and dumping the synthesis log:
-    filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
+    filename = adict['filename']
 
     DACHS.Synthesis = SynthesisClass(
         ID="MOF_synthesis_1",
@@ -275,17 +330,6 @@ def test_integral() -> None:
     # DACHS.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
     DACHS.Synthesis.SourceDOI = "10.1039/D1RA02856A"
 
-
-    # DACHS.Chemicals.target_product.Mass = 
-
-    # DerivedParameter(
-    #     Name="Yield",
-    #     Description="Actual yield of the Product",
-    #     RawMessages=list(mLocs),
-    #     Quantity=DACHS.Synthesis.RawLog[mLocs[-1]].Quantity
-    #     - DACHS.Synthesis.RawLog[mLocs[0]].Quantity,
-    # )
-
     # store the room temperature:
     LogEntry = find_in_log(
         DACHS.Synthesis.RawLog,
@@ -305,14 +349,6 @@ def test_integral() -> None:
     )
     DACHS.Synthesis.ExtraInformation.update({'InjectionSpeed': LogEntry.Quantity})
 
-    # DACHS.Synthesis.DerivedParameters += [
-    #     DerivedParameter(
-    #         Name="RoomTemperature",
-    #         Description="Actual room temperature at synthesis time",
-    #         RawMessages=[LogEntry.Index],
-    #         Quantity=LogEntry.Quantity,
-    #     )
-    # ]
 
     # lastly, we can remove all the unused reagents from starting_compounds:
     DACHS.Chemicals.starting_compounds = [item for item in DACHS.Chemicals.starting_compounds if item.Used]
@@ -334,10 +370,12 @@ def test_integral() -> None:
     import warnings
     #warnings.filterwarnings("error")
 
+    ofname = filename.absolute().with_suffix('.h5')
+
     for key, value in dump.items():
         # extracting path from keys could be added to McHDF.storeKVPairs()
         try:
-            McHDF.storeKV(filename=f'{name}_H005.h5', path=key, value=value)
+            McHDF.storeKV(filename=ofname, path=key, value=value)
         except Exception:
             print(f"Error for path {key} and value '{value}' of type {type(value)}.")
             raise
