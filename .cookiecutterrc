@@ -1,0 +1,27 @@
+# This file exists so you can easily regenerate your project.
+# run:
+#
+#    cookiecutter --overwrite-if-exists --config-file=.cookiecutterrc gh:BAMresearch/yapy-cookiecutter
+
+default_context:
+    full_name:                 'Brian R. Pauw'
+    email:                     'brian.pauw@bam.de'
+    website:                   'https://github.com/toqduj'
+    project_name:              'DACHS'
+    repo_name:                 'DACHS'
+    repo_hosting:              'github.com'
+    repo_hosting_domain:       'github.com'
+    repo_userorg:              'BAMresearch'
+    docs_url:                  'https://BAMresearch.github.io/DACHS'
+    repo_main_branch:          'main'
+    package_name:              'dachs'
+    distribution_name:         'dachs'
+    project_short_description: 'Database for Automation and Consistent Holistic Synthesis'
+    release_date:              '2023-03-17'
+    year_from:                 '2022'
+    year_to:                   '2023'
+    version:                   '0.1.0'
+    pypi_host:                 'test.pypi.org'
+    license:                   'GNU General Public License v3 or later (GPLv3+)'
+    sphinx_theme:              'furo'
+    extra_context:             {'exclude_existing': "['AUTHORS.rst', 'CHANGELOG.md', 'src/dachs/__init__.py']"}
