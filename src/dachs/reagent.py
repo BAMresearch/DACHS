@@ -185,23 +185,18 @@ class Reagent(addItemsToAttrs):
     _loadKeys: list = []  # load these keys from file if reconstructing
 
     def _CheckForDensity(self):
-        assert self.Chemical.Density is not None, logging.warning(
-            "Chemical.Density must be provided"
-        )
+        assert self.Chemical.Density is not None, logging.warning("Chemical.Density must be provided")
         return
 
     def _CheckForMolarMass(self):
-        assert self.Chemical.MolarMass is not None, logging.warning(
-            "Chemical.MolarMass must be provided"
-        )
+        assert self.Chemical.MolarMass is not None, logging.warning("Chemical.MolarMass must be provided")
         return
 
     # @property
     def _CheckForPriceCalc(self):
         self._CheckForDensity()
         assert (self.UnitPrice is not None) and (self.UnitSize is not None), logging.warning(
-            "Price calculations can only be done when UnitSize and UnitPrice as well as"
-            " Chemical.Density are set"
+            "Price calculations can only be done when UnitSize and UnitPrice as well as Chemical.Density are set"
         )
         return
 
@@ -266,11 +261,9 @@ class Mixture(addItemsToAttrs):
             validator=validators.instance_of(list),
         )
     )
-    ComponentMasses: List[Union[ureg.Quantity, None]] = (
-        field(  # masses of the aforementioned components.
-            default=Factory(list),
-            validator=validators.instance_of(list),
-        )
+    ComponentMasses: List[Union[ureg.Quantity, None]] = field(  # masses of the aforementioned components.
+        default=Factory(list),
+        validator=validators.instance_of(list),
     )
     PreparationDate: str = field(
         default=None,
@@ -301,10 +294,7 @@ class Mixture(addItemsToAttrs):
 
     def ComponentConcentrations(self) -> List[ureg.Quantity]:
         # returns a list of mole concentrations of the Reagents
-        return [
-            self.ComponentConcentration(MatchComponent=i).to("mole/mole")
-            for i in self.ComponentList
-        ]
+        return [self.ComponentConcentration(MatchComponent=i).to("mole/mole") for i in self.ComponentList]
 
     def AddReagent(self, reag: Reagent, ReagentMass: ureg.Quantity) -> None:
         """Adds a reagent to the mixture"""
@@ -329,9 +319,7 @@ class Mixture(addItemsToAttrs):
                 MixtureDensity is not None
             ), "If added mixture mass is not supplied, both volume and density must be defined"
             assert AddMixtureVolume.check("[volume]"), "AddMixtureVolume must be a volume"
-            assert MixtureDensity.check(
-                "[mass]/[volume]"
-            ), "MixtureDensity must be a density (mass per volume)"
+            assert MixtureDensity.check("[mass]/[volume]"), "MixtureDensity must be a density (mass per volume)"
             AddMixtureMass = AddMixtureVolume * MixtureDensity
         # Check that we are making sense
         assert (

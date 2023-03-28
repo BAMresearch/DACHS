@@ -122,9 +122,7 @@ class ChemicalsClass(addItemsToAttrs):
 
     @property
     def ChemicalYield(self):
-        assert (self.target_product.Mass is not None) and (
-            self.final_product.Mass is not None
-        ), logging.warning(
+        assert (self.target_product.Mass is not None) and (self.final_product.Mass is not None), logging.warning(
             "Yield can only be calculated when both target mass and actual mass are set"
         )
         assert self.target_product.Chemical == self.final_product.Chemical, logging.warning(

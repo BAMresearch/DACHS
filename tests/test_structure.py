@@ -72,9 +72,7 @@ def test_integral() -> None:
             starting_compounds=ReadStartingCompounds(S0File),
             mixtures=[],
             target_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),
-            final_product=Product(
-                ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"  # mass is set later.
-            ),
+            final_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),  # mass is set later.
         ),
         ExperimentalSetup=readExperimentalSetup(
             filename=Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx"), SetupName="AMSET_6"
@@ -129,16 +127,10 @@ def test_integral() -> None:
             )
             if find_trigger_in_log(sstep, triggerList=["Weight"]):
                 # we found a component to add to the mixture
-                reag = find_reagent_in_rawmessage(
-                    sstep.RawMessage, DACHS.Chemicals.starting_compounds
-                )
-                assert reag is not None, logging.warning(
-                    f"Reagent not found in {sstep.RawMessage=}"
-                )
+                reag = find_reagent_in_rawmessage(sstep.RawMessage, DACHS.Chemicals.starting_compounds)
+                assert reag is not None, logging.warning(f"Reagent not found in {sstep.RawMessage=}")
                 # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                mix.AddReagent(
-                    reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"]))
-                )
+                mix.AddReagent(reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"])))
             synth += [sstep]
             stepId += 1
         # now we can define the mixture
@@ -217,21 +209,16 @@ def test_integral() -> None:
         Description="The MOF synthesis reaction mixture",
         PreparationDate=ReactionStart,  # idx,  # last timestamp read
         StorageConditions="RT",
-        Container=[
-            i for i in DACHS.ExperimentalSetup.EquipmentList if "falcon tube" in i.Name.lower()
-        ][-1],
+        Container=[i for i in DACHS.ExperimentalSetup.EquipmentList if "falcon tube" in i.Name.lower()][-1],
     )
     ## to this we need to find the volume and density of which solution for the injections
     allVolumes = find_in_log(DACHS.Synthesis.RawLog, "Solution volume set", Highlander=False)
     assert len(allVolumes) != 0, "No injection volume specified in log"
-    assert len(allVolumes) == 1, (
-        "More than one injection volumes specified in log, dissimilar solution volumes not yet"
-        " implemented"
-    )
+    assert (
+        len(allVolumes) == 1
+    ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
     VolumeRLM = allVolumes[0]
-    allSolutions = find_in_log(
-        DACHS.Synthesis.RawLog, "Stop injection of solution", Highlander=False
-    )
+    allSolutions = find_in_log(DACHS.Synthesis.RawLog, "Stop injection of solution", Highlander=False)
     # I don't have the densities yet, so we have to assume something for now
     for solutionRLM in allSolutions:
         solutionId = solutionRLM.Value
@@ -251,9 +238,7 @@ def test_integral() -> None:
     #     lambda sentence: all(word in sentence for word in targets)
     # )
     # mLocs = np.where(dfMask)[0]
-    assert (
-        len(WeightRLMs) == 2
-    ), "more than two weight indications (empty, empty+dry product) were found"
+    assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
     DACHS.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
@@ -268,16 +253,10 @@ def test_integral() -> None:
         if "CH3OH" in component.Chemical.Substance.name:
             TotalMethanolMoles = mix.ComponentMoles(MatchComponent=component)
 
-    DACHS.Synthesis.ExtraInformation.update(
-        {"MetalToLinkerRatio": TotalMetalMoles / TotalLinkerMoles}
-    )
-    DACHS.Synthesis.ExtraInformation.update(
-        {"MetalToMethanolRatio": TotalMetalMoles / TotalMethanolMoles}
-    )
+    DACHS.Synthesis.ExtraInformation.update({"MetalToLinkerRatio": TotalMetalMoles / TotalLinkerMoles})
+    DACHS.Synthesis.ExtraInformation.update({"MetalToMethanolRatio": TotalMetalMoles / TotalMethanolMoles})
 
-    DACHS.Chemicals.target_product.Mass = (
-        TotalMetalMoles * DACHS.Chemicals.target_product.Chemical.MolarMass
-    )
+    DACHS.Chemicals.target_product.Mass = TotalMetalMoles * DACHS.Chemicals.target_product.Chemical.MolarMass
     print(DACHS.Chemicals.ChemicalYield)
     DACHS.Chemicals._storeKeys += ["ChemicalYield"]
     # maybe later
@@ -323,9 +302,7 @@ def test_integral() -> None:
     # ]
 
     # lastly, we can remove all the unused reagents from starting_compounds:
-    DACHS.Chemicals.starting_compounds = [
-        item for item in DACHS.Chemicals.starting_compounds if item.Used
-    ]
+    DACHS.Chemicals.starting_compounds = [item for item in DACHS.Chemicals.starting_compounds if item.Used]
 
     # Export everything finally
     from dachs.serialization import storagePaths

@@ -41,9 +41,7 @@ class RawLogMessage(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of((int, float))),
     )
-    Unit: Optional[str] = field(
-        default=None, validator=validators.optional(validators.instance_of(str))
-    )
+    Unit: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
@@ -64,9 +62,7 @@ class DerivedParameter(addItemsToAttrs):
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    Quantity: Optional[ureg.Quantity] = field(
-        default=None, validator=validators.instance_of(ureg.Quantity)
-    )
+    Quantity: Optional[ureg.Quantity] = field(default=None, validator=validators.instance_of(ureg.Quantity))
     Value: Optional[Union[int, float]] = field(
         default=None, validator=validators.instance_of((int, float, NoneType))
     )

@@ -155,9 +155,7 @@ def test_product() -> None:
         Density=ureg.Quantity("0.335 g/cc"),
         SourceDOI="something",
     )
-    _ = Product(
-        ID="ZIF-8", Chemical=zifChemical, Mass=ureg.Quantity("12.5 mg"), Purity="99 percent"
-    )
+    _ = Product(ID="ZIF-8", Chemical=zifChemical, Mass=ureg.Quantity("12.5 mg"), Purity="99 percent")
     return
 
 
@@ -238,12 +236,5 @@ def test_reagent() -> None:
             for ci, c in enumerate(mixture.ComponentList)
         ]
     )
-    logging.info(
-        [
-            f"{c.PricePerMass():.3f} of {c.Chemical.Name} in {mixture.Name}"
-            for c in mixture.ComponentList
-        ]
-    )
-    logging.info(
-        f"\n {mixture.ComponentConcentrations()=}, {mixture.TotalMass=}, {mixture.TotalPrice=}"
-    )
+    logging.info([f"{c.PricePerMass():.3f} of {c.Chemical.Name} in {mixture.Name}" for c in mixture.ComponentList])
+    logging.info(f"\n {mixture.ComponentConcentrations()=}, {mixture.TotalMass=}, {mixture.TotalPrice=}")
