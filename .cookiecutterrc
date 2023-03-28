@@ -24,4 +24,4 @@ default_context:
     pypi_host:                 'test.pypi.org'
     license:                   'GNU General Public License v3 or later (GPLv3+)'
     sphinx_theme:              'furo'
-    extra_context:             {'exclude_existing': "['AUTHORS.rst', 'CHANGELOG.md', 'src/dachs/__init__.py']"}
+    extra_context:             {'exclude_existing': "['AUTHORS.rst', 'CHANGELOG.md', 'src/dachs/__init__.py', 'tests/test_dachs.py']"}

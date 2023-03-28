@@ -1,0 +1,11 @@
+ipykernel
+notebook
+pandas
+ipywidgets
+matplotlib
+scipy
+git+https://github.com/BAMresearch/McSAS3.git
+chempy
+pint
+openpyxl
+h5py
