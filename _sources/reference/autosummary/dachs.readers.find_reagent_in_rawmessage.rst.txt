@@ -1,0 +1,6 @@
+dachs.readers.find\_reagent\_in\_rawmessage
+===========================================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: find_reagent_in_rawmessage

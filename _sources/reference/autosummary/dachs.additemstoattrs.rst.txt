@@ -1,0 +1,31 @@
+dachs.additemstoattrs
+=====================
+
+.. automodule:: dachs.additemstoattrs
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: class.rst
+   
+      addItemsToAttrs
+   
+   
+
+   
+   
+   
+
+
+

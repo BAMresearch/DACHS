@@ -1,0 +1,6 @@
+dachs.dachsvalidators.isQuantity
+================================
+
+.. currentmodule:: dachs.dachsvalidators
+
+.. autofunction:: isQuantity

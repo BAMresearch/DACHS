@@ -1,0 +1,36 @@
+dachs.readers
+=============
+
+.. automodule:: dachs.readers
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      ReadStartingCompounds
+      assert_unit
+      find_in_log
+      find_reagent_in_rawmessage
+      find_trigger_in_log
+      readExperimentalSetup
+      readRawMessageLog
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

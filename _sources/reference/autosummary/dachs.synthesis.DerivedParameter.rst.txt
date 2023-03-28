@@ -1,0 +1,40 @@
+dachs.synthesis.DerivedParameter
+================================
+
+.. currentmodule:: dachs.synthesis
+
+.. autoclass:: DerivedParameter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DerivedParameter.__init__
+      ~DerivedParameter.items
+      ~DerivedParameter.keys
+      ~DerivedParameter.pop
+      ~DerivedParameter.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DerivedParameter.Name
+      ~DerivedParameter.Description
+      ~DerivedParameter.RawMessages
+      ~DerivedParameter.Quantity
+      ~DerivedParameter.Value
+      ~DerivedParameter.Unit
+   
+   

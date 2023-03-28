@@ -1,0 +1,44 @@
+dachs.synthesis.synthesisStep
+=============================
+
+.. currentmodule:: dachs.synthesis
+
+.. autoclass:: synthesisStep
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~synthesisStep.__init__
+      ~synthesisStep.items
+      ~synthesisStep.keys
+      ~synthesisStep.pop
+      ~synthesisStep.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~synthesisStep.ID
+      ~synthesisStep.RawMessage
+      ~synthesisStep.RawMessageLevel
+      ~synthesisStep.TimeStamp
+      ~synthesisStep.stepType
+      ~synthesisStep.stepDescription
+      ~synthesisStep.EquipmentId
+      ~synthesisStep.PVs
+      ~synthesisStep.ExperimentId
+      ~synthesisStep.SampleId
+   
+   

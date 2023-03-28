@@ -1,0 +1,30 @@
+dachs.serialization
+===================
+
+.. automodule:: dachs.serialization
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      storagePaths
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

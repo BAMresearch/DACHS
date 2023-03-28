@@ -1,0 +1,38 @@
+dachs.metaclasses.ExperimentalSetupClass
+========================================
+
+.. currentmodule:: dachs.metaclasses
+
+.. autoclass:: ExperimentalSetupClass
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ExperimentalSetupClass.__init__
+      ~ExperimentalSetupClass.items
+      ~ExperimentalSetupClass.keys
+      ~ExperimentalSetupClass.pop
+      ~ExperimentalSetupClass.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExperimentalSetupClass.ID
+      ~ExperimentalSetupClass.Name
+      ~ExperimentalSetupClass.Description
+      ~ExperimentalSetupClass.EquipmentList
+   
+   

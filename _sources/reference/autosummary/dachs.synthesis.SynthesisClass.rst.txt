@@ -1,0 +1,43 @@
+dachs.synthesis.SynthesisClass
+==============================
+
+.. currentmodule:: dachs.synthesis
+
+.. autoclass:: SynthesisClass
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SynthesisClass.__init__
+      ~SynthesisClass.items
+      ~SynthesisClass.keys
+      ~SynthesisClass.pop
+      ~SynthesisClass.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SynthesisClass.ID
+      ~SynthesisClass.Name
+      ~SynthesisClass.Description
+      ~SynthesisClass.ChemicalReaction
+      ~SynthesisClass.RawLog
+      ~SynthesisClass.SynthesisLog
+      ~SynthesisClass.SourceDOI
+      ~SynthesisClass.ExtraInformation
+      ~SynthesisClass.DerivedParameters
+   
+   

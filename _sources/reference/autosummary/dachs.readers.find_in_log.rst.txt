@@ -1,0 +1,6 @@
+dachs.readers.find\_in\_log
+===========================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: find_in_log

@@ -1,0 +1,52 @@
+dachs.reagent.Mixture
+=====================
+
+.. currentmodule:: dachs.reagent
+
+.. autoclass:: Mixture
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Mixture.AddMixture
+      ~Mixture.AddReagent
+      ~Mixture.ComponentConcentration
+      ~Mixture.ComponentConcentrations
+      ~Mixture.ComponentMoles
+      ~Mixture.PricePerMass
+      ~Mixture.TotalMoles
+      ~Mixture.__init__
+      ~Mixture.items
+      ~Mixture.keys
+      ~Mixture.pop
+      ~Mixture.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Mixture.ID
+      ~Mixture.Name
+      ~Mixture.Description
+      ~Mixture.ComponentList
+      ~Mixture.ComponentMasses
+      ~Mixture.PreparationDate
+      ~Mixture.StorageConditions
+      ~Mixture.Synthesis
+      ~Mixture.Container
+      ~Mixture.TotalMass
+      ~Mixture.TotalPrice
+   
+   

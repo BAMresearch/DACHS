@@ -1,0 +1,38 @@
+dachs.reagent.Product
+=====================
+
+.. currentmodule:: dachs.reagent
+
+.. autoclass:: Product
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Product.__init__
+      ~Product.items
+      ~Product.keys
+      ~Product.pop
+      ~Product.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Product.ID
+      ~Product.Chemical
+      ~Product.Mass
+      ~Product.Purity
+   
+   

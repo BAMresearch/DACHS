@@ -1,0 +1,6 @@
+dachs.serialization.storagePaths
+================================
+
+.. currentmodule:: dachs.serialization
+
+.. autofunction:: storagePaths

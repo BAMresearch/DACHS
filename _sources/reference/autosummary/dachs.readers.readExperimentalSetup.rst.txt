@@ -1,0 +1,6 @@
+dachs.readers.readExperimentalSetup
+===================================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: readExperimentalSetup

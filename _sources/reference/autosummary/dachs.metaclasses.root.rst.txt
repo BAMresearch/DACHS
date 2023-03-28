@@ -1,0 +1,41 @@
+dachs.metaclasses.root
+======================
+
+.. currentmodule:: dachs.metaclasses
+
+.. autoclass:: root
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~root.__init__
+      ~root.items
+      ~root.keys
+      ~root.pop
+      ~root.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~root.ID
+      ~root.Name
+      ~root.Description
+      ~root.Chemicals
+      ~root.Synthesis
+      ~root.Characterizations
+      ~root.ExperimentalSetup
+   
+   

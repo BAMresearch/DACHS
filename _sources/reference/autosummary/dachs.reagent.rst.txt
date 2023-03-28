@@ -1,0 +1,34 @@
+dachs.reagent
+=============
+
+.. automodule:: dachs.reagent
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: class.rst
+   
+      Chemical
+      Mixture
+      Product
+      Reagent
+   
+   
+
+   
+   
+   
+
+
+

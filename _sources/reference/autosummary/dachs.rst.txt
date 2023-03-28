@@ -1,0 +1,39 @@
+﻿dachs
+=====
+
+.. automodule:: dachs
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   dachs.additemstoattrs
+   dachs.dachsvalidators
+   dachs.equipment
+   dachs.metaclasses
+   dachs.readers
+   dachs.reagent
+   dachs.serialization
+   dachs.synthesis
+

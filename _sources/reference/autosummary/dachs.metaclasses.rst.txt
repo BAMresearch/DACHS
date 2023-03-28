@@ -1,0 +1,34 @@
+dachs.metaclasses
+=================
+
+.. automodule:: dachs.metaclasses
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: class.rst
+   
+      ChemicalsClass
+      EnvironmentClass
+      ExperimentalSetupClass
+      root
+   
+   
+
+   
+   
+   
+
+
+

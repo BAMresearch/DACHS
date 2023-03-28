@@ -1,0 +1,45 @@
+dachs.equipment.Equipment
+=========================
+
+.. currentmodule:: dachs.equipment
+
+.. autoclass:: Equipment
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Equipment.PricePerUnit
+      ~Equipment.__init__
+      ~Equipment.items
+      ~Equipment.keys
+      ~Equipment.pop
+      ~Equipment.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Equipment.ID
+      ~Equipment.Name
+      ~Equipment.Manufacturer
+      ~Equipment.ModelName
+      ~Equipment.ModelNumber
+      ~Equipment.Description
+      ~Equipment.UnitPrice
+      ~Equipment.UnitSize
+      ~Equipment.PVs
+      ~Equipment.AlternativeIDs
+   
+   

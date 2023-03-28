@@ -1,0 +1,41 @@
+dachs.reagent.Chemical
+======================
+
+.. currentmodule:: dachs.reagent
+
+.. autoclass:: Chemical
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Chemical.__init__
+      ~Chemical.items
+      ~Chemical.keys
+      ~Chemical.pop
+      ~Chemical.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Chemical.ID
+      ~Chemical.Name
+      ~Chemical.ChemicalFormula
+      ~Chemical.MolarMass
+      ~Chemical.Density
+      ~Chemical.Substance
+      ~Chemical.SourceDOI
+   
+   

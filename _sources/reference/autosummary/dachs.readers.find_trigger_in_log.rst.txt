@@ -1,0 +1,6 @@
+dachs.readers.find\_trigger\_in\_log
+====================================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: find_trigger_in_log

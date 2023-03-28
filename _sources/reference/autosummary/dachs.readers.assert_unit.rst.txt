@@ -1,0 +1,6 @@
+dachs.readers.assert\_unit
+==========================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: assert_unit

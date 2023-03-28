@@ -1,0 +1,6 @@
+dachs.readers.readRawMessageLog
+===============================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: readRawMessageLog

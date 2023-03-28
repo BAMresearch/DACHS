@@ -1,0 +1,41 @@
+dachs.equipment.pv
+==================
+
+.. currentmodule:: dachs.equipment
+
+.. autoclass:: pv
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~pv.__init__
+      ~pv.items
+      ~pv.keys
+      ~pv.pop
+      ~pv.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~pv.ID
+      ~pv.Name
+      ~pv.Setpoint
+      ~pv.Actual
+      ~pv.Description
+      ~pv.CalibrationFactor
+      ~pv.CalibrationOffset
+   
+   

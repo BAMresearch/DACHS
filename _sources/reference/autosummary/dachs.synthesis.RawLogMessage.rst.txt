@@ -1,0 +1,43 @@
+dachs.synthesis.RawLogMessage
+=============================
+
+.. currentmodule:: dachs.synthesis
+
+.. autoclass:: RawLogMessage
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RawLogMessage.__init__
+      ~RawLogMessage.items
+      ~RawLogMessage.keys
+      ~RawLogMessage.pop
+      ~RawLogMessage.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RawLogMessage.Index
+      ~RawLogMessage.TimeStamp
+      ~RawLogMessage.MessageLevel
+      ~RawLogMessage.ExperimentID
+      ~RawLogMessage.SampleID
+      ~RawLogMessage.Message
+      ~RawLogMessage.Quantity
+      ~RawLogMessage.Value
+      ~RawLogMessage.Unit
+   
+   

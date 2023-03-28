@@ -1,0 +1,50 @@
+dachs.reagent.Reagent
+=====================
+
+.. currentmodule:: dachs.reagent
+
+.. autoclass:: Reagent
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Reagent.MassByVolume
+      ~Reagent.MolesByMass
+      ~Reagent.PricePerMass
+      ~Reagent.PricePerMole
+      ~Reagent.PricePerUnit
+      ~Reagent.__init__
+      ~Reagent.items
+      ~Reagent.keys
+      ~Reagent.pop
+      ~Reagent.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Reagent.ID
+      ~Reagent.Chemical
+      ~Reagent.CASNumber
+      ~Reagent.Brand
+      ~Reagent.UNNumber
+      ~Reagent.MinimumPurity
+      ~Reagent.OpenDate
+      ~Reagent.StorageConditions
+      ~Reagent.UnitPrice
+      ~Reagent.UnitSize
+      ~Reagent.Used
+   
+   

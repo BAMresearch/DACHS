@@ -1,0 +1,29 @@
+dachs.additemstoattrs.addItemsToAttrs
+=====================================
+
+.. currentmodule:: dachs.additemstoattrs
+
+.. autoclass:: addItemsToAttrs
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~addItemsToAttrs.__init__
+      ~addItemsToAttrs.items
+      ~addItemsToAttrs.keys
+      ~addItemsToAttrs.pop
+      ~addItemsToAttrs.values
+   
+   
+
+   
+   
+   

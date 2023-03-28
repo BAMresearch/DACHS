@@ -1,0 +1,39 @@
+dachs.metaclasses.ChemicalsClass
+================================
+
+.. currentmodule:: dachs.metaclasses
+
+.. autoclass:: ChemicalsClass
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ChemicalsClass.__init__
+      ~ChemicalsClass.items
+      ~ChemicalsClass.keys
+      ~ChemicalsClass.pop
+      ~ChemicalsClass.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ChemicalsClass.starting_compounds
+      ~ChemicalsClass.mixtures
+      ~ChemicalsClass.final_product
+      ~ChemicalsClass.target_product
+      ~ChemicalsClass.ChemicalYield
+   
+   

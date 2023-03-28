@@ -1,0 +1,6 @@
+dachs.readers.ReadStartingCompounds
+===================================
+
+.. currentmodule:: dachs.readers
+
+.. autofunction:: ReadStartingCompounds
