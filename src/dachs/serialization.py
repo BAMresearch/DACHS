@@ -13,6 +13,7 @@ __status__ = "beta"
 
 from pathlib import PurePosixPath
 
+
 def storagePaths(name, objlst):
     prefix = PurePosixPath(name)
     # handle unnamed lists by default, catch single objects here
@@ -20,10 +21,13 @@ def storagePaths(name, objlst):
         objlst = (objlst,)
     pathlst = {}
     for idx, obj in enumerate(objlst):
-        for mem in getattr(obj, '_storeKeys', ()):
+        for mem in getattr(obj, "_storeKeys", ()):
             pathlst.update(
-                {prefix/(str(idx)/m if len(objlst) > 1 else m): v
-                for m,v in storagePaths(mem, getattr(obj, mem)).items()})
+                {
+                    prefix / (str(idx) / m if len(objlst) > 1 else m): v
+                    for m, v in storagePaths(mem, getattr(obj, mem)).items()
+                }
+            )
         if not len(pathlst):
-            pathlst.update({prefix:obj})
+            pathlst.update({prefix: obj})
     return pathlst

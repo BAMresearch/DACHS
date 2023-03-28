@@ -23,24 +23,15 @@ import chempy
 
 NoneType = type(None)
 
+
 @define
 class RawLogMessage(addItemsToAttrs):
     Index: int = field(default=0, validator=validators.instance_of(int))
-    TimeStamp: Timestamp = field(
-        default=None, validator=validators.instance_of(Timestamp)
-    )
-    MessageLevel: str = field(
-        default="", validator=validators.instance_of(str), converter=str
-    )
-    ExperimentID: str = field(
-        default="", validator=validators.instance_of(str), converter=str
-    )
-    SampleID: str = field(
-        default="", validator=validators.instance_of(str), converter=str
-    )
-    Message: str = field(
-        default="", validator=validators.instance_of(str), converter=str
-    )
+    TimeStamp: Timestamp = field(default=None, validator=validators.instance_of(Timestamp))
+    MessageLevel: str = field(default="", validator=validators.instance_of(str), converter=str)
+    ExperimentID: str = field(default="", validator=validators.instance_of(str), converter=str)
+    SampleID: str = field(default="", validator=validators.instance_of(str), converter=str)
+    Message: str = field(default="", validator=validators.instance_of(str), converter=str)
     Quantity: Optional[ureg.Quantity] = field(
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
@@ -56,6 +47,7 @@ class RawLogMessage(addItemsToAttrs):
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
+
 @define
 class DerivedParameter(addItemsToAttrs):
     """
@@ -66,9 +58,7 @@ class DerivedParameter(addItemsToAttrs):
     """
 
     Name: str = field(default="", validator=validators.instance_of(str), converter=str)
-    Description: str = field(
-        default="", validator=validators.instance_of(str), converter=str
-    )
+    Description: str = field(default="", validator=validators.instance_of(str), converter=str)
     RawMessages: List[int] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
@@ -159,8 +149,7 @@ class SynthesisClass(addItemsToAttrs):
         converter=str,
     )
     ChemicalReaction: Optional[chempy.Reaction] = field(
-        default=None,
-        validator=validators.optional(validators.instance_of(chempy.Reaction))
+        default=None, validator=validators.optional(validators.instance_of(chempy.Reaction))
     )
     RawLog: Optional[List[RawLogMessage]] = field(
         default=None,

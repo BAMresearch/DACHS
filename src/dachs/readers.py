@@ -27,52 +27,50 @@ from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 from dachs.__init__ import ureg
 
-def readExperimentalSetup(filename:Path, SetupName:str='AMSET_6')-> ExperimentalSetupClass:
+
+def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> ExperimentalSetupClass:
     #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
     # SetupName='AMSET_6'
 
     assert filename.exists()
 
     # read equipment list:
-    eq = pd.read_excel(
-        filename, sheet_name="Equipment", index_col=None, header=0
-    )
-    eq = eq.dropna(how="all") 
-    eqDict={}
-    for rowi,equip in eq.iterrows():
+    eq = pd.read_excel(filename, sheet_name="Equipment", index_col=None, header=0)
+    eq = eq.dropna(how="all")
+    eqDict = {}
+    for rowi, equip in eq.iterrows():
         try:
-            eqItem=Equipment(
-                ID=str(equip['Equipment ID']),
-                Name=str(equip['Equipment Name']),
-                Manufacturer=str(equip['Manufacturer']),
-                ModelName=str(equip['Model Name']),
-                ModelNumber=str(equip['Model Number']),
-                UnitPrice=ureg.Quantity(str(equip['Unit Price']) + " " + str(equip['Price Unit'])),
-                UnitSize=ureg.Quantity(str(equip['Unit Size']) + " " + str(equip['Unit'])),
-                Description=str(equip['Description']),
-                PVs=[]
+            eqItem = Equipment(
+                ID=str(equip["Equipment ID"]),
+                Name=str(equip["Equipment Name"]),
+                Manufacturer=str(equip["Manufacturer"]),
+                ModelName=str(equip["Model Name"]),
+                ModelNumber=str(equip["Model Number"]),
+                UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
+                UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
+                Description=str(equip["Description"]),
+                PVs=[],
             )
-            eqDict.update({str(equip['Equipment ID']): eqItem})
+            eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
             print(f'Failure reading {equip["Equipment ID"]=}\n {str(e)}')
 
     # read setup configuration:
-    df = pd.read_excel(
-        filename, sheet_name="Setup", index_col=None, header=0
-    )
+    df = pd.read_excel(filename, sheet_name="Setup", index_col=None, header=0)
     df = df.dropna(how="all")
-    dfRow = df.loc[df.SetupID==SetupName].copy()
-    assert len(dfRow==1), f'More or less than one entry found for {SetupName=} in {filename=}'
+    dfRow = df.loc[df.SetupID == SetupName].copy()
+    assert len(dfRow == 1), f"More or less than one entry found for {SetupName=} in {filename=}"
     # get all equipment for the setup
-    itemList = [dfRow[i].item() for i in dfRow.keys() if 'ID_' in i]
-    eqList=[eqDict[item] for item in itemList if item in eqDict.keys()]
+    itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
+    eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
-        ID=dfRow['SetupID'],
-        Name=dfRow['Name'],
-        Description=dfRow['Description'],
-        EquipmentList=eqList
+        ID=dfRow["SetupID"],
+        Name=dfRow["Name"],
+        Description=dfRow["Description"],
+        EquipmentList=eqList,
     )
     return expSetup
+
 
 def readRawMessageLog(filename: Path) -> List:
     # filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
@@ -87,11 +85,7 @@ def readRawMessageLog(filename: Path) -> List:
         condition = 0
         Val, U, Q = None, None, None
         if row["Value"].strip() != "-":
-            Val = (
-                yaml.safe_load(row["Value"])
-                if isinstance(row["Value"], str)
-                else row["Value"]
-            )
+            Val = yaml.safe_load(row["Value"]) if isinstance(row["Value"], str) else row["Value"]
             condition += 1
         if row["Unit"].strip() != "-":
             U = row["Unit"].strip()
@@ -135,8 +129,8 @@ def ReadStartingCompounds(filename) -> List:
     # Turn the specified chemicals into a list of starting compounds
     cList = []
     for idx, row in df.iterrows():
-        #print(f"{idx=}, {row=}")
-        s=chempy.Substance.from_formula(row["Formula"])
+        # print(f"{idx=}, {row=}")
+        s = chempy.Substance.from_formula(row["Formula"])
         cList += [
             Reagent(
                 ID=str(row["Reagent ID"]),
@@ -145,7 +139,9 @@ def ReadStartingCompounds(filename) -> List:
                     Name=row["Name"],
                     ChemicalFormula=row["Formula"],
                     Substance=s,
-                    MolarMass=ureg.Quantity(str(s.molar_mass())).to('g/mol'), # assert_unit(row["Molar Mass"], "g/mol"),
+                    MolarMass=ureg.Quantity(str(s.molar_mass())).to(
+                        "g/mol"
+                    ),  # assert_unit(row["Molar Mass"], "g/mol"),
                     Density=ureg.Quantity(str(row["Density"]) + " g/cm^3"),
                 ),
                 CASNumber=row["CAS-Number"],
@@ -167,7 +163,7 @@ def assert_unit(value, default_unit: str) -> str:
     if the value is not in string format yet
     (and therefore does not yet have a unit)
     """
-    #print(f"{value=}, {default_unit=}")
+    # print(f"{value=}, {default_unit=}")
     if not isinstance(value, str):
         return str(value) + " " + str(default_unit)
     else:
@@ -186,9 +182,7 @@ def find_trigger_in_log(logEntry: synthesisStep, triggerList=["Weight"]) -> bool
     return triggerFound
 
 
-def find_reagent_in_rawmessage(
-    searchString: str, ReagentList: List[Reagent]
-) -> Optional[Reagent]:
+def find_reagent_in_rawmessage(searchString: str, ReagentList: List[Reagent]) -> Optional[Reagent]:
     """
     Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
@@ -202,20 +196,22 @@ def find_reagent_in_rawmessage(
 def find_in_log(
     log: List[RawLogMessage],
     searchString: Union[str, list],
-    Highlander:bool=True,  # there can be only one if Highlander is True
-    Which:str='first' # if highlander, specify if first or last
+    Highlander: bool = True,  # there can be only one if Highlander is True
+    Which: str = "first",  # if highlander, specify if first or last
 ) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
     Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
     """
     answers = []
-    if isinstance(searchString, str): searchString=[searchString]
+    if isinstance(searchString, str):
+        searchString = [searchString]
     for RLM in log:
         if all(i.lower() in RLM.Message.lower() for i in searchString):
             if Highlander:
                 answers = RLM
-                if Which.lower() == 'first': return RLM
+                if Which.lower() == "first":
+                    return RLM
             else:
                 answers += [RLM]
     return answers

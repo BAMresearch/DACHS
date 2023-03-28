@@ -131,9 +131,7 @@ class Equipment(addItemsToAttrs):
     #     super().__attrs_post_init__()
 
     def PricePerUnit(self):
-        assert (self.UnitPrice is not None) and (
-            self.UnitSize is not None
-        ), logging.warning(
+        assert (self.UnitPrice is not None) and (self.UnitSize is not None), logging.warning(
             "PricePerUnit can only be calculated when both UnitSize and UnitPrice are set"
         )
         return self.UnitPrice / self.UnitSize

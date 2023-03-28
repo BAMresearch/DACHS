@@ -16,7 +16,7 @@ import logging
 from attrs import define, validators, field, Factory
 from typing import List, Optional  # , Optional
 
-from dachs.reagent import Chemical, Mixture, Product, Reagent # , ReagentMixture
+from dachs.reagent import Chemical, Mixture, Product, Reagent  # , ReagentMixture
 from dachs.additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
 
@@ -60,9 +60,11 @@ class ExperimentalSetupClass(addItemsToAttrs):
     #     # auto-generate the store and load key lists:
     #     super().__attrs_post_init__()
 
+
 @define
 class EnvironmentClass(addItemsToAttrs):
     """Calss for storing environmental parameters including stirring speed"""
+
     ID: str = field(
         default=None,
         validator=validators.instance_of(str),
@@ -124,8 +126,7 @@ class ChemicalsClass(addItemsToAttrs):
         ), logging.warning(
             "Yield can only be calculated when both target mass and actual mass are set"
         )
-        assert (self.target_product.Chemical ==
-            self.final_product.Chemical), logging.warning(
+        assert self.target_product.Chemical == self.final_product.Chemical, logging.warning(
             "Yield can only be calculated when target and final Chemicals are the same "
         )
         # maybe not a required assertion:
@@ -133,6 +134,7 @@ class ChemicalsClass(addItemsToAttrs):
         #     "target (ideal) mass has to be bigger than final product mass"
         # )
         return self.final_product.Mass / self.target_product.Mass
+
 
 # @define
 # class DocumentationClass(addItemsToAttrs):
