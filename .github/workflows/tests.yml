@@ -1,0 +1,67 @@
+name: Tests
+
+# Controls when the action will run.
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  workflow_call:
+
+jobs:
+  # defining this job separately allows to refer to it later as job.needs dependency
+  tests:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python_arch: ['x64']
+        python:
+          - [3, 10]
+        # os: ['ubuntu', 'windows', 'macos']
+        os: ['ubuntu']
+    env:
+      PYTHON: ${{ join(matrix.python, '.') }}  # e.g. '3.11'
+      TOX_ENV: ${{ format('{0}{1}', 'py', join(matrix.python, '')) }}  # e.g. 'py311'
+    runs-on: ${{ format('{0}-latest', matrix.os) }}
+    name: "Test py-${{ join(matrix.python, '.') }} (${{ matrix.os }})"
+    steps:
+
+      - name: Checking out the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # see *py_ver* in ci/update.py
+      - name: Setting up Python ${{ env.PYTHON }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: '${{ env.PYTHON }}'
+          architecture: '${{ matrix.python_arch }}'
+          cache: pip
+          cache-dependency-path: |
+            ci/requirements.txt
+            tests/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --progress-bar=off -r ci/requirements.txt
+
+      - name: Show installed package details
+        run: |
+          virtualenv --version
+          pip --version
+          tox --version
+          pip list --format=freeze
+
+      - name: Run tests
+        run: tox -e ${{ env.TOX_ENV }} -v
+
+      - name: Rename coverage data uniquely
+        run: mv .coverage coverage.${{ env.TOX_ENV }}.${{ matrix.os }}
+
+      - name: Upload coverage data for next step
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage.*
