@@ -3,8 +3,6 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-import pytest
-import yaml
 
 from dachs.__init__ import ureg
 from dachs.equipment import Equipment, pv
@@ -88,7 +86,7 @@ def test_readEquipment() -> None:
     # get all equipment for the setup
     itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
-    expSetup = ExperimentalSetupClass(
+    _ = ExperimentalSetupClass(
         ID=dfRow["SetupID"],
         Name=dfRow["Name"],
         Description=dfRow["Description"],

@@ -19,6 +19,7 @@ from typing import List, Optional, Union
 
 import chempy
 import pandas as pd
+import pint
 import yaml
 
 from dachs.__init__ import ureg
@@ -95,7 +96,7 @@ def readRawMessageLog(filename: Path) -> List:
         if condition == 2:  # both value and unit are present
             try:
                 Q = ureg.Quantity(Val, str(U))
-            except:  # conversion fail
+            except pint.PintError:  # conversion fail
                 Q = None
 
         msgList += [

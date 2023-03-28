@@ -12,19 +12,16 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/15"
 __status__ = "beta"
 
-import dataclasses
 import logging
 
-# from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
 # import logging
-from dataclasses import dataclass
 from typing import List, Optional  # , Optional
 
 from attrs import Factory, define, field, validators
 
 from dachs.additemstoattrs import addItemsToAttrs
 from dachs.equipment import Equipment
-from dachs.reagent import Chemical, Mixture, Product, Reagent  # , ReagentMixture
+from dachs.reagent import Mixture, Product, Reagent  # , ReagentMixture
 from dachs.synthesis import SynthesisClass
 
 from .__init__ import ureg  # get importError when using: "from . import ureg"

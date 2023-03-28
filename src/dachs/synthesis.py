@@ -11,12 +11,11 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/07"
 __status__ = "beta"
 
-import logging
 from typing import List, Optional, Union
 
 import chempy
 from attrs import Factory, define, field, validators
-from pandas import DatetimeIndex, Timestamp
+from pandas import Timestamp
 
 from .__init__ import ureg  # get importError when using: "from . import ureg"
 from .additemstoattrs import addItemsToAttrs

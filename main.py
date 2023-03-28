@@ -7,13 +7,11 @@ import argparse
 import logging
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
 
 import chempy  # we only need a tiny bit, but it does offer options...
 import pandas as pd
 
-import dachs as dachs
 from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
 from dachs.metaclasses import ChemicalsClass, root
 from dachs.readers import (
@@ -95,7 +93,7 @@ if __name__ == "__main__":
 
     adict = vars(args)
 
-    ## main code for generating the autoMOF structure follows:
+    # main code for generating the autoMOF structure follows:
     # Input excel sheet, containing all necessary information:
     logging.info(f"{os.getcwd()}")
     # S0File = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
@@ -205,17 +203,18 @@ if __name__ == "__main__":
     DACHS.Synthesis = SynthesisClass(
         ID="MOF_synthesis_1",
         Name="MOF standard synthesis in MeOH, room temperature, nominally 20 minute residence time",
-        Description="""
-            note: these are nominal conditions for the series, but variations in injection quantities, speeds,
-            reaction times, temperatures and post-processing have been applied. For exact conditions for this particular synthesis,
-            please consult the log and metadata.
+        Description=r"""
+            **Note**: These are nominal conditions for the series, but variations in injection quantities,
+            speeds, reaction times, temperatures and post-processing have been applied. For exact conditions
+            for this particular synthesis, please consult the log and metadata.
 
             ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,
             the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting
             of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon
             tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient
             laboratory temperature of around 25$^{\circ}$C.
-            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis concentration list.
+            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis
+            concentration list.
             After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,
             and subsequently dried at 60$^{\circ}$C for 22 hours.
 
@@ -223,7 +222,8 @@ if __name__ == "__main__":
         RawLog=readRawMessageLog(filename),
     )
 
-    #### After our discussion, we've decided not to focus on including derived parameters just yet. We still need a few things though.
+    # After our discussion, we've decided not to focus on including derived parameters just yet.
+    # We still need a few things though.
     logging.info("Extracting the derived parameters")
     # df = pd.read_excel(
     #     filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
@@ -232,7 +232,7 @@ if __name__ == "__main__":
 
     # minimal derived information:
     # add the reaction mixtures to Chemicals.mixtures
-    ## for the start time we need the last "start injection of solution" timestamp
+    # for the start time we need the last "start injection of solution" timestamp
     ReactionStart = find_in_log(
         DACHS.Synthesis.RawLog,
         "Start injection of solution",
@@ -253,7 +253,7 @@ if __name__ == "__main__":
         {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
     )
 
-    ## now we can create a new mixture
+    # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix_0",
         Name="Reaction Mixture 0",
@@ -262,7 +262,7 @@ if __name__ == "__main__":
         StorageConditions="RT",
         Container=[i for i in DACHS.ExperimentalSetup.EquipmentList if "falcon tube" in i.Name.lower()][-1],
     )
-    ## to this we need to find the volume and density of which solution for the injections
+    # to this we need to find the volume and density of which solution for the injections
     allVolumes = find_in_log(DACHS.Synthesis.RawLog, "Solution volume set", Highlander=False)
     assert len(allVolumes) != 0, "No injection volume specified in log"
     assert (
@@ -281,7 +281,7 @@ if __name__ == "__main__":
     # Add to the structure.
     DACHS.Chemicals.mixtures += [mix]
 
-    # # calculate the weight of Product:
+    # calculate the weight of Product:
     WeightRLMs = find_in_log(DACHS.Synthesis.RawLog, ["Weight", "Falcon"], Highlander=False)
     # targets = ["Weight", "Falcon"]
     # # find me the messages containing both those words:
@@ -348,9 +348,6 @@ if __name__ == "__main__":
     if mcsas3Path not in sys.path:
         sys.path.insert(0, str(mcsas3Path))
     # print(sys.path)
-    # locate any warnings during processing
-    import warnings
-
     import mcsas3.McHDF as McHDF
 
     # warnings.filterwarnings("error")

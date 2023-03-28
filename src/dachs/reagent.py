@@ -78,7 +78,8 @@ class Chemical(addItemsToAttrs):
 @define
 class Product(addItemsToAttrs):
     """
-    Defines a chemical Product as having a chemical structure, with a target mass (100% conversion) and an actual mass
+    Defines a chemical Product as having a chemical structure, with a target mass (100% conversion)
+    and an actual mass.
     """
 
     ID: str = field(
@@ -238,7 +239,8 @@ class Reagent(addItemsToAttrs):
 
 @define
 class Mixture(addItemsToAttrs):
-    """This class supersedes the ReagentMixture class, and allows mixtures of Reagents as well as mixtures of mixtures."""
+    """This class supersedes the ReagentMixture class, and allows mixtures of Reagents as well as mixtures of
+    mixtures."""
 
     ID: str = field(
         default=None,
