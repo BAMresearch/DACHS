@@ -348,7 +348,7 @@ class Mixture(addItemsToAttrs):
         Finds the concentration of a component defined by its entry in the total mixture
         This concentration will be in mole fraction.
         """
-        return self.componentMoles(MatchComponent) / self.TotalMoles
+        return self.ComponentMoles(MatchComponent) / self.TotalMoles()
 
     
     @property

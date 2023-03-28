@@ -148,12 +148,12 @@ def test_product()->None:
         ID='Zif-8',
         Name='Zif-8',
         ChemicalFormula="ZnSomething",
-        MolarMass="229 g/mol",
-        Density="0.335 g/cc",
+        MolarMass=ureg.Quantity("229 g/mol"),
+        Density=ureg.Quantity("0.335 g/cc"),
         SourceDOI="something",
     )
     _=Product(
-                ID="ZIF-8", Chemical=zifChemical, Mass="12.5 mg", Purity="99 percent"
+                ID="ZIF-8", Chemical=zifChemical, Mass=ureg.Quantity("12.5 mg"), Purity="99 percent"
             )
     return
 
@@ -169,8 +169,8 @@ def test_reagent() -> None:
             ID='MeOH',
             Name="Methanol",
             ChemicalFormula="CH3OH",
-            MolarMass="32.04 g/mol",
-            Density="0.79 g/ml",
+            MolarMass=ureg.Quantity("32.04 g/mol"),
+            Density=ureg.Quantity("0.79 g/ml"),
         ),
         CASNumber="67-56-1",
         Brand="Chemsolute",
@@ -187,8 +187,8 @@ def test_reagent() -> None:
             ID='2-MIM',
             Name="2-methylimidazole",
             ChemicalFormula="C4H6N2",
-            MolarMass="82.11 g/mol",
-            Density="1.096 g/ml",
+            MolarMass=ureg.Quantity("82.11 g/mol"),
+            Density=ureg.Quantity("1.096 g/ml"),
         ),
         CASNumber="693-98-1",
         Brand="Sigma-Aldrich",
