@@ -6,8 +6,9 @@ A dataclass for specifying a Reagent, Reagentmixture or Product.
 """
 from __future__ import annotations
 
-from dachs.equipment import Equipment
 import chempy
+
+from dachs.equipment import Equipment
 
 # from dachs.metaclasses import EnvironmentClass # to get around using Mixture typing inside the Mixture class
 
@@ -18,14 +19,15 @@ __date__ = "2022/11/07"
 __status__ = "beta"
 
 
-from attrs import define, validators, field, Factory
+import logging
 from typing import List, Optional, Union
+
+from attrs import Factory, define, field, validators
 
 from dachs.synthesis import SynthesisClass
 
-from .additemstoattrs import addItemsToAttrs
 from .__init__ import ureg  # get importError when using: "from . import ureg"
-import logging
+from .additemstoattrs import addItemsToAttrs
 
 # from dachsvalidators import isQuantity
 

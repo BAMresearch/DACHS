@@ -1,35 +1,23 @@
-from datetime import datetime
-import os
-from pathlib import Path
-import numpy as np
-import pytest
-import dachs as dachs
 import logging
+import os
 import sys
+from datetime import datetime
+from pathlib import Path
 
 import chempy  # we only need a tiny bit, but it does offer options...
-
+import numpy as np
 import pandas as pd
-from dachs.readers import (
-    ReadStartingCompounds,
-    assert_unit,
-    find_in_log,
-    find_reagent_in_rawmessage,
-    find_trigger_in_log,
-    readExperimentalSetup,
-    readRawMessageLog,
-)
-from dachs.reagent import (
-    Chemical,
-    Product,
-    Reagent,
-    Mixture,
-    # ReagentByMass,
-    # ReagentByVolume,
-    # ReagentMixture,
-)
-from dachs.metaclasses import root, ChemicalsClass
+import pytest
+
+import dachs as dachs
+from dachs.metaclasses import ChemicalsClass, root
+from dachs.readers import (ReadStartingCompounds, assert_unit, find_in_log,
+                           find_reagent_in_rawmessage, find_trigger_in_log, readExperimentalSetup,
+                           readRawMessageLog)
+from dachs.reagent import (Chemical, Mixture,  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
+                           Product, Reagent)
 from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
+
 from .__init__ import ureg  # get importError when using: "from . import ureg"
 
 
@@ -345,10 +333,10 @@ def test_integral() -> None:
     if mcsas3Path not in sys.path:
         sys.path.insert(0, str(mcsas3Path))
     # print(sys.path)
-    import mcsas3.McHDF as McHDF
-
     # locate any warnings during processing
     import warnings
+
+    import mcsas3.McHDF as McHDF
 
     # warnings.filterwarnings("error")
 

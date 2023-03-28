@@ -12,9 +12,10 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/07"
 __status__ = "beta"
 
-from attrs import fields
-from typing import Any, NoReturn
 from collections.abc import Iterable
+from typing import Any, NoReturn
+
+from attrs import fields
 
 # Mixin class for making a dict-like object out of an attrs class
 # from: https://github.com/python-attrs/attrs/issues/879

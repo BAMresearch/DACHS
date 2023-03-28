@@ -11,11 +11,13 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/15"
 __status__ = "beta"
 
-from attrs import define, validators, field, Factory
-from typing import List, Optional
-from .additemstoattrs import addItemsToAttrs
-from .__init__ import ureg  # get importError when using: "from . import ureg"
 import logging
+from typing import List, Optional
+
+from attrs import Factory, define, field, validators
+
+from .__init__ import ureg  # get importError when using: "from . import ureg"
+from .additemstoattrs import addItemsToAttrs
 
 
 @define

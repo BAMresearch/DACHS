@@ -11,15 +11,16 @@ __license__ = "GPLv3+"
 __date__ = "2022/11/07"
 __status__ = "beta"
 
-from attrs import define, validators, field, Factory
+import logging
 from typing import List, Optional, Union
 
-from pandas import DatetimeIndex, Timestamp
-from .additemstoattrs import addItemsToAttrs
-from .__init__ import ureg  # get importError when using: "from . import ureg"
-import logging
-from .equipment import pv
 import chempy
+from attrs import Factory, define, field, validators
+from pandas import DatetimeIndex, Timestamp
+
+from .__init__ import ureg  # get importError when using: "from . import ureg"
+from .additemstoattrs import addItemsToAttrs
+from .equipment import pv
 
 NoneType = type(None)
 

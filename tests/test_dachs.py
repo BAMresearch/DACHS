@@ -1,19 +1,17 @@
 import logging
-from pathlib import Path
 import sys
+from pathlib import Path
+
 import pandas as pd
 import pytest
 import yaml
+
 from dachs.__init__ import ureg
 from dachs.equipment import Equipment, pv
 from dachs.metaclasses import ExperimentalSetupClass, root
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
-from dachs.reagent import (
-    Mixture,
-    Product,
-    Reagent,
-    Chemical,
-)  # ReagentByMass, ReagentByVolume, ReagentMixture,
+from dachs.reagent import (Chemical, Mixture,  # ReagentByMass, ReagentByVolume, ReagentMixture,
+                           Product, Reagent)
 
 # from dachs.synthesis import RawLogMessage
 

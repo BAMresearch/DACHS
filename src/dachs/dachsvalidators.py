@@ -1,5 +1,6 @@
-from __init__ import ureg
 import logging
+
+from __init__ import ureg
 
 
 def isQuantity(instance, attribute, value):

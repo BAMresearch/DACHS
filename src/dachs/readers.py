@@ -18,14 +18,14 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 import chempy
-
 import pandas as pd
 import yaml
+
+from dachs.__init__ import ureg
 from dachs.equipment import Equipment
 from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
-from dachs.__init__ import ureg
 
 
 def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> ExperimentalSetupClass:
