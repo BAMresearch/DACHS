@@ -2,8 +2,6 @@
 # coding: utf-8
 
 """
-Overview:
-========
 An add=on that will add an items() method to an attrs-created dataclass.
 Useful for iterating over keys, for example for storing in an HDF5 file.
 """

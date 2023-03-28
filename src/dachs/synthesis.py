@@ -2,8 +2,6 @@
 # coding: utf-8
 
 """
-Overview:
-========
 A dataclass for describing a synthesis
 """
 

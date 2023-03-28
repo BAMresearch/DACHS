@@ -2,8 +2,6 @@
 # coding: utf-8
 
 """
-Overview:
-========
 Contains readers for loading and interpreting the excel files of Glen and the log files of RoWaN
 """
 

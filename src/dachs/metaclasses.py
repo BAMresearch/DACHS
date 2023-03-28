@@ -2,8 +2,6 @@
 # coding: utf-8
 
 """
-Overview:
-========
 A dataclass for specifying metaclasses, superclasses that consist of collections of the end classes. 
 ExperimentalSetup: a collection of equipment that make up an experimental setup.
 """

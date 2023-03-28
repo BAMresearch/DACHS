@@ -2,8 +2,6 @@
 # coding: utf-8
 
 """
-Overview:
-========
 A dataclass for specifying a Reagent, Reagentmixture or Product.
 """
 from __future__ import annotations
