@@ -22,7 +22,7 @@ import pandas as pd
 import pint
 import yaml
 
-from dachs.__init__ import ureg
+from dachs import ureg
 from dachs.equipment import Equipment
 from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent

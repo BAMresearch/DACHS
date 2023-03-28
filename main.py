@@ -12,7 +12,7 @@ from pathlib import Path
 import chempy  # we only need a tiny bit, but it does offer options...
 import pandas as pd
 
-from dachs.__init__ import ureg  # get importError when using: "from . import ureg"
+from dachs import ureg
 from dachs.metaclasses import ChemicalsClass, root
 from dachs.readers import (
     ReadStartingCompounds,

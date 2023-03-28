@@ -1,6 +1,6 @@
 import logging
 
-from __init__ import ureg
+from dachs import ureg
 
 
 def isQuantity(instance, attribute, value):

@@ -16,8 +16,8 @@ from typing import List, Optional
 
 from attrs import Factory, define, field, validators
 
-from .__init__ import ureg  # get importError when using: "from . import ureg"
-from .additemstoattrs import addItemsToAttrs
+from dachs import ureg  # get importError when using: "from . import ureg"
+from dachs.additemstoattrs import addItemsToAttrs
 
 
 @define

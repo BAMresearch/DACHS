@@ -6,6 +6,7 @@ from pathlib import Path
 import chempy  # we only need a tiny bit, but it does offer options...
 import pandas as pd
 
+from dachs import ureg
 from dachs.metaclasses import ChemicalsClass, root
 from dachs.readers import (
     ReadStartingCompounds,
@@ -18,8 +19,6 @@ from dachs.readers import (
 from dachs.reagent import Mixture  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
 from dachs.reagent import Chemical, Product
 from dachs.synthesis import SynthesisClass, synthesisStep
-
-from .__init__ import ureg  # get importError when using: "from . import ureg"
 
 
 def test_integral() -> None:

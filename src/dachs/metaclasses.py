@@ -19,12 +19,11 @@ from typing import List, Optional  # , Optional
 
 from attrs import Factory, define, field, validators
 
+from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
 from dachs.equipment import Equipment
 from dachs.reagent import Mixture, Product, Reagent  # , ReagentMixture
 from dachs.synthesis import SynthesisClass
-
-from .__init__ import ureg  # get importError when using: "from . import ureg"
 
 
 @define

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from dachs.__init__ import ureg
+from dachs import ureg
 from dachs.equipment import Equipment, pv
 from dachs.metaclasses import ExperimentalSetupClass, root
 from dachs.readers import ReadStartingCompounds, readRawMessageLog

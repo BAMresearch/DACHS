@@ -17,9 +17,9 @@ import chempy
 from attrs import Factory, define, field, validators
 from pandas import Timestamp
 
-from .__init__ import ureg  # get importError when using: "from . import ureg"
-from .additemstoattrs import addItemsToAttrs
-from .equipment import pv
+from dachs import ureg  # get importError when using: "from . import ureg"
+from dachs.additemstoattrs import addItemsToAttrs
+from dachs.equipment import pv
 
 NoneType = type(None)
 
