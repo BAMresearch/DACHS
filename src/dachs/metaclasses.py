@@ -2,7 +2,7 @@
 # coding: utf-8
 
 """
-A dataclass for specifying metaclasses, superclasses that consist of collections of the end classes. 
+A dataclass for specifying metaclasses, superclasses that consist of collections of the end classes.
 ExperimentalSetup: a collection of equipment that make up an experimental setup.
 """
 

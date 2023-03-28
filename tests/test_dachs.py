@@ -10,8 +10,8 @@ from dachs.__init__ import ureg
 from dachs.equipment import Equipment, pv
 from dachs.metaclasses import ExperimentalSetupClass, root
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
-from dachs.reagent import (Chemical, Mixture,  # ReagentByMass, ReagentByVolume, ReagentMixture,
-                           Product, Reagent)
+from dachs.reagent import Mixture  # ReagentByMass, ReagentByVolume, ReagentMixture,
+from dachs.reagent import Chemical, Product, Reagent
 
 # from dachs.synthesis import RawLogMessage
 
@@ -102,9 +102,9 @@ def test_root() -> None:
         ID="AutoMOF5",
         Name="Automatic MOF Exploration series 5",
         Description="""
-            In this series, MOFs are synthesised in methanol from two stock solutions, 
+            In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
-            The injection rate and injection order are varied. Centrifugation and drying 
+            The injection rate and injection order are varied. Centrifugation and drying
             is performed manually. Residence times are 20 minutes after start of second injection.
         """,
     )

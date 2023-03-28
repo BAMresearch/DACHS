@@ -11,11 +11,17 @@ import pytest
 
 import dachs as dachs
 from dachs.metaclasses import ChemicalsClass, root
-from dachs.readers import (ReadStartingCompounds, assert_unit, find_in_log,
-                           find_reagent_in_rawmessage, find_trigger_in_log, readExperimentalSetup,
-                           readRawMessageLog)
-from dachs.reagent import (Chemical, Mixture,  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
-                           Product, Reagent)
+from dachs.readers import (
+    ReadStartingCompounds,
+    assert_unit,
+    find_in_log,
+    find_reagent_in_rawmessage,
+    find_trigger_in_log,
+    readExperimentalSetup,
+    readRawMessageLog,
+)
+from dachs.reagent import Mixture  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
+from dachs.reagent import Chemical, Product, Reagent
 from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
 
 from .__init__ import ureg  # get importError when using: "from . import ureg"
@@ -57,9 +63,9 @@ def test_integral() -> None:
         ID="AutoMOF5",
         Name="Automatic MOF Exploration series 5",
         Description="""
-            In this series, MOFs are synthesised in methanol from two stock solutions, 
+            In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
-            The injection rate and injection order are varied. Centrifugation and drying 
+            The injection rate and injection order are varied. Centrifugation and drying
             is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
         Chemicals=ChemicalsClass(
@@ -157,19 +163,19 @@ def test_integral() -> None:
         ID="MOF_synthesis_1",
         Name="MOF standard synthesis in MeOH, room temperature, nominally 20 minute residence time",
         Description="""
-            note: these are nominal conditions for the series, but variations in injection quantities, speeds, 
-            reaction times, temperatures and post-processing have been applied. For exact conditions for this particular synthesis, 
+            note: these are nominal conditions for the series, but variations in injection quantities, speeds,
+            reaction times, temperatures and post-processing have been applied. For exact conditions for this particular synthesis,
             please consult the log and metadata.
-            
-            ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions, 
-            the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting 
-            of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon 
-            tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient 
-            laboratory temperature of around 25$^{\circ}$C. 
-            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis concentration list. 
+
+            ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,
+            the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting
+            of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon
+            tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient
+            laboratory temperature of around 25$^{\circ}$C.
+            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis concentration list.
             After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,
             and subsequently dried at 60$^{\circ}$C for 22 hours.
-        
+
         """,
         RawLog=readRawMessageLog(filename),
     )
