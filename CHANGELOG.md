@@ -15,7 +15,7 @@ Changelog
 * **project:** Readme updated ([`caed30c`](https://github.com/BAMresearch/DACHS/commit/caed30c33f9528cc7471fabca92d0e01549ea4a3))
 
 
-## 0.1.0 (2023-03-17)
+## v0.1.0 (2023-03-17)
 
 * First release
 * Some classes describing the experimental setup and involved materials
