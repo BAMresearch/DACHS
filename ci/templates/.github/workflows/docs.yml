@@ -20,6 +20,9 @@ jobs:
 
       {{ ci.set_version() }}
 
+      - name: Install additional system packages
+        run: sudo apt-get -y install graphviz
+
       - name: Check
         run: tox -e check -v
 

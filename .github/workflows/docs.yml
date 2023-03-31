@@ -46,6 +46,9 @@ jobs:
           cv = get_current_version()
           print(f"Setting current version '{cv}':", set_new_version(cv))
 
+      - name: Install additional system packages
+        run: sudo apt-get -y install graphviz
+
       - name: Check
         run: tox -e check -v
 
