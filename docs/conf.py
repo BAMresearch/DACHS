@@ -23,7 +23,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "myst_parser",
 ]
-inheritance_edge_attrs = dict(color='gray') # readable in darkmode too
+inheritance_edge_attrs = dict(color="gray")  # readable in darkmode too
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 templates_path = ["_templates"]
 source_suffix = ".rst"
