@@ -14,20 +14,23 @@ __status__ = "beta"
 from pathlib import PurePosixPath
 
 
-def storagePaths(name, objlst):
+def storagePaths(name, objlst, lvl=0):
     prefix = PurePosixPath(name)
     # handle unnamed lists by default, catch single objects here
     if type(objlst) not in (list, tuple):
         objlst = (objlst,)
     pathlst = {}
+    # indent = "".join(["  " for _ in range(lvl)])
     for idx, obj in enumerate(objlst):
-        for mem in getattr(obj, "_storeKeys", ()):
-            pathlst.update(
-                {
-                    prefix / (str(idx) / m if len(objlst) > 1 else m): v
-                    for m, v in storagePaths(mem, getattr(obj, mem)).items()
-                }
-            )
-        if not len(pathlst):
-            pathlst.update({prefix: obj})
+        # print(indent,"=>",idx, obj)
+        subpath = prefix
+        if len(objlst) > 1:  # we have more than one item
+            subpath /= str(idx)
+        if hasattr(obj, "_storeKeys"):
+            for mem in getattr(obj, "_storeKeys", ()):
+                # print(indent,"->", mem, len(objlst))
+                items = {(subpath / m): v for m, v in storagePaths(mem, getattr(obj, mem), lvl + 1).items()}
+                pathlst.update(items)
+        else:
+            pathlst.update({subpath: obj})
     return pathlst
