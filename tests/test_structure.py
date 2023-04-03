@@ -306,14 +306,7 @@ def test_integral() -> None:
     name = "DACHS"
     dump = storagePaths(name, locals()[name])
 
-    # quick&dirty imports for testing
-    # make sure mcsas3 is in PYTHONPATH (for now)
-    mcsas3Path = Path("../mcsas3").resolve()
-    if mcsas3Path not in sys.path:
-        sys.path.insert(0, str(mcsas3Path))
-    # print(sys.path)
-
-    import mcsas3.McHDF as McHDF
+    from mcsas3 import McHDF
 
     # warnings.filterwarnings("error")
 
