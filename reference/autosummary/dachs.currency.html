@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.readers.find_in_log" href="dachs.readers.find_in_log.html" /><link rel="prev" title="dachs.readers.ReadStartingCompounds" href="dachs.readers.ReadStartingCompounds.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.additemstoattrs" href="dachs.additemstoattrs.html" /><link rel="prev" title="dachs" href="dachs.html" />
 
     <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
-        <title>dachs.readers.assert_unit - DACHS 0.1.2 documentation</title>
+        <title>dachs.currency - DACHS 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -161,7 +161,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current has-children"><a class="reference internal" href="dachs.html">dachs</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dachs.currency.html">dachs.currency</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">dachs.currency</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="dachs.additemstoattrs.html">dachs.additemstoattrs</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.additemstoattrs.addItemsToAttrs.html">dachs.additemstoattrs.addItemsToAttrs</a></li>
 </ul>
@@ -182,9 +182,9 @@
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.root.html">dachs.metaclasses.root</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="dachs.readers.html">dachs.readers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.readers.html">dachs.readers</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.ReadStartingCompounds.html">dachs.readers.ReadStartingCompounds</a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">dachs.readers.assert_unit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dachs.readers.assert_unit.html">dachs.readers.assert_unit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.find_in_log.html">dachs.readers.find_in_log</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.find_reagent_in_rawmessage.html">dachs.readers.find_reagent_in_rawmessage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.find_trigger_in_log.html">dachs.readers.find_trigger_in_log</a></li>
@@ -251,15 +251,12 @@
           </label>
         </div>
         <article role="main">
-          <section id="dachs-readers-assert-unit">
-<h1>dachs.readers.assert_unit<a class="headerlink" href="#dachs-readers-assert-unit" title="Permalink to this heading">#</a></h1>
+          <section id="dachs-currency">
+<h1>dachs.currency<a class="headerlink" href="#dachs-currency" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="dachs.readers.assert_unit">
-<span class="sig-prename descclassname"><span class="pre">dachs.readers.</span></span><span class="sig-name descname"><span class="pre">assert_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/dachs/readers.html#assert_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dachs.readers.assert_unit" title="Permalink to this definition">#</a></dt>
-<dd><p>adds a default unit string for interpretation by pint
-if the value is not in string format yet
-(and therefore does not yet have a unit)</p>
-</dd></dl>
+<dt class="sig sig-object py" id="dachs.currency">
+<span class="sig-prename descclassname"><span class="pre">dachs.</span></span><span class="sig-name descname"><span class="pre">currency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dachs.html#currency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dachs.currency" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 
@@ -268,23 +265,23 @@ if the value is not in string format yet
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="dachs.readers.find_in_log.html">
+          <a class="next-page" href="dachs.additemstoattrs.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">dachs.readers.find_in_log</div>
+                <div class="title">dachs.additemstoattrs</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="dachs.readers.ReadStartingCompounds.html">
+          <a class="prev-page" href="dachs.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">dachs.readers.ReadStartingCompounds</div>
+                <div class="title">dachs</div>
                 
               </div>
             </a>
@@ -319,8 +316,8 @@ if the value is not in string format yet
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">dachs.readers.assert_unit</a><ul>
-<li><a class="reference internal" href="#dachs.readers.assert_unit"><code class="docutils literal notranslate"><span class="pre">assert_unit()</span></code></a></li>
+<li><a class="reference internal" href="#">dachs.currency</a><ul>
+<li><a class="reference internal" href="#dachs.currency"><code class="docutils literal notranslate"><span class="pre">currency()</span></code></a></li>
 </ul>
 </li>
 </ul>

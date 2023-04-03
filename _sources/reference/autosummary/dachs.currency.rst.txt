@@ -1,0 +1,6 @@
+dachs.currency
+==============
+
+.. currentmodule:: dachs
+
+.. autofunction:: currency

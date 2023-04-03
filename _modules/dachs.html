@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
 
     <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
-        <title>Overview: module code - DACHS 0.1.2 documentation</title>
+        <title>dachs - DACHS 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -249,17 +249,40 @@
           </label>
         </div>
         <article role="main">
-          <h1>All modules for which code is available</h1>
-<ul><li><a href="dachs.html">dachs</a></li>
-<ul><li><a href="dachs/additemstoattrs.html">dachs.additemstoattrs</a></li>
-<li><a href="dachs/dachsvalidators.html">dachs.dachsvalidators</a></li>
-<li><a href="dachs/equipment.html">dachs.equipment</a></li>
-<li><a href="dachs/metaclasses.html">dachs.metaclasses</a></li>
-<li><a href="dachs/readers.html">dachs.readers</a></li>
-<li><a href="dachs/reagent.html">dachs.reagent</a></li>
-<li><a href="dachs/serialization.html">dachs.serialization</a></li>
-<li><a href="dachs/synthesis.html">dachs.synthesis</a></li>
-</ul></ul>
+          <h1>Source code for dachs</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># __init__.py</span>
+
+<span class="kn">import</span> <span class="nn">pint</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.2&quot;</span>
+
+<span class="n">ureg</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span><span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;percent = 0.01 = %&quot;</span><span class="p">)</span>
+<span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;item = 1&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="currency"><a class="viewcode-back" href="../reference/autosummary/dachs.currency.html#dachs.currency">[docs]</a><span class="k">def</span> <span class="nf">currency</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">aliases</span><span class="p">):</span>
+    <span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span>
+        <span class="n">pint</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">plain</span><span class="o">.</span><span class="n">UnitDefinition</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">symbol</span><span class="p">,</span>
+            <span class="n">aliases</span><span class="p">,</span>
+            <span class="n">pint</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">plain</span><span class="o">.</span><span class="n">ScaleConverter</span><span class="p">,</span>
+            <span class="c1"># a separate dimension for each currency, forces exchange rates between them</span>
+            <span class="n">pint</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;[currency_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}),</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="n">currency</span><span class="p">(</span><span class="s2">&quot;USD&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Dollar&quot;</span><span class="p">,</span> <span class="s2">&quot;dollar&quot;</span><span class="p">,</span> <span class="s2">&quot;usd&quot;</span><span class="p">))</span>
+<span class="n">currency</span><span class="p">(</span><span class="s2">&quot;JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;¥&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Yen&quot;</span><span class="p">,</span> <span class="s2">&quot;yen&quot;</span><span class="p">))</span>
+<span class="n">currency</span><span class="p">(</span><span class="s2">&quot;EUR&quot;</span><span class="p">,</span> <span class="s2">&quot;€&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Euro&quot;</span><span class="p">,</span> <span class="s2">&quot;euro&quot;</span><span class="p">,</span> <span class="s2">&quot;Eur&quot;</span><span class="p">,</span> <span class="s2">&quot;eur&quot;</span><span class="p">))</span>
+
+<span class="c1"># set the exchange rates as of 23 Apr.3</span>
+<span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s2">&quot;EUR = 1.09 USD&quot;</span><span class="p">)</span>
+<span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s2">&quot;JPY = .0075 USD&quot;</span><span class="p">)</span>
+</pre></div>
         </article>
       </div>
       <footer>
