@@ -65,6 +65,10 @@ https://BAMresearch.github.io/DACHS
 Development
 ===========
 
-To run tests only::
+To run tests only in a clean environment::
 
     tox -e py
+
+For testing generation of the complete data structure in the local environment with stdout&stderr run::
+
+    rm *.h5; pytest -rP --show-capture=all --capture=sys -k test_integral
