@@ -305,6 +305,8 @@ def test_integral() -> None:
 
     name = "DACHS"
     dump = storagePaths(name, locals()[name])
+    # from pprint import pprint
+    # pprint(dump)
 
     from mcsas3 import McHDF
 
