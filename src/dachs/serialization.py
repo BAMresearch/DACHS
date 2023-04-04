@@ -22,6 +22,7 @@ def storagePaths(name, objlst, lvl=0):
     pathlst = {}
     # indent = "".join(["  " for _ in range(lvl)])
     for idx, obj in enumerate(objlst):
+        idx = getattr(obj, "ID", idx)
         # print(indent,"=>",idx, obj)
         subpath = prefix
         if len(objlst) > 1:  # we have more than one item
