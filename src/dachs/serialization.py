@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+# serialization.py
 
 """
 Utility function to serialize data and meta classes for export, to a HDF5 file, for example.
