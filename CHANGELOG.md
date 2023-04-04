@@ -4,6 +4,14 @@ Changelog
 
 % <!--next-version-placeholder-->
 
+## v0.2.0 (2023-04-04)
+### Feature
+* **ComponentMasses:** Store as dict associated to their respective Component ([`a797b0b`](https://github.com/BAMresearch/DACHS/commit/a797b0b61bbd754eed46d80b1aafdc63d5898b0f))
+* **serialization:** Use object IDs instead of numerical index where available ([`fef04b0`](https://github.com/BAMresearch/DACHS/commit/fef04b051529510867843ab1721398acced6d3ce))
+
+### Documentation
+* **readme:** Info & reminder how to get stdout/stderr with pytest ([`20fc960`](https://github.com/BAMresearch/DACHS/commit/20fc9601a9675882fdc4119349291f2c2a6a1fb6))
+
 ## v0.1.2 (2023-04-03)
 ### Fix
 * **Serialization:** Store lists of quantities, fixes #7 ([`d311d5b`](https://github.com/BAMresearch/DACHS/commit/d311d5bd075cb5c9c465819301b5fb8d38652eaf))
