@@ -20,7 +20,7 @@ __status__ = "beta"
 
 
 import logging
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from attrs import Factory, define, field, validators
 
@@ -262,9 +262,9 @@ class Mixture(addItemsToAttrs):
             validator=validators.instance_of(list),
         )
     )
-    ComponentMasses: List[Union[ureg.Quantity, None]] = field(  # masses of the aforementioned components.
-        default=Factory(list),
-        validator=validators.instance_of(list),
+    ComponentMasses: Dict[str, Union[ureg.Quantity, None]] = field(  # masses of the aforementioned components.
+        default=Factory(dict),
+        validator=validators.instance_of(dict),
     )
     PreparationDate: str = field(
         default=None,
@@ -300,7 +300,7 @@ class Mixture(addItemsToAttrs):
     def AddReagent(self, reag: Reagent, ReagentMass: ureg.Quantity) -> None:
         """Adds a reagent to the mixture"""
         self.ComponentList += [reag]
-        self.ComponentMasses += [ReagentMass]
+        self.ComponentMasses[reag.ID] = ReagentMass
         # mark the reagent as actually in use:
         reag.Used = True
         return
@@ -329,13 +329,13 @@ class Mixture(addItemsToAttrs):
         MassFractionOfTotal = (AddMixtureMass / mix.TotalMass).to("gram/gram")
         for ci, component in enumerate(mix.ComponentList):
             self.ComponentList += [component]
-            self.ComponentMasses += [mix.ComponentMasses[ci] * MassFractionOfTotal]
+            self.ComponentMasses[component.ID] = mix.ComponentMasses[component.ID] * MassFractionOfTotal
         return
 
     def ComponentMoles(self, MatchComponent: Reagent) -> ureg.Quantity:
         componentMoles = 0
         for ci, component in enumerate(self.ComponentList):
-            theseMoles = component.MolesByMass(self.ComponentMasses[ci])
+            theseMoles = component.MolesByMass(self.ComponentMasses[component.ID])
             if component == MatchComponent:
                 componentMoles = theseMoles
         if componentMoles == 0:
@@ -345,7 +345,7 @@ class Mixture(addItemsToAttrs):
     def TotalMoles(self) -> ureg.Quantity:
         totalMoles = 0
         for ci, component in enumerate(self.ComponentList):
-            theseMoles = component.MolesByMass(self.ComponentMasses[ci])
+            theseMoles = component.MolesByMass(self.ComponentMasses[component.ID])
             totalMoles += theseMoles
         return totalMoles
 
@@ -360,7 +360,7 @@ class Mixture(addItemsToAttrs):
     def TotalMass(self) -> ureg.Quantity:
         # returns the total mass of the mixture
         TMass = ureg.Quantity("0 gram")
-        for mass in self.ComponentMasses:
+        for mass in self.ComponentMasses.values():
             TMass += mass
         return TMass
 
@@ -370,7 +370,7 @@ class Mixture(addItemsToAttrs):
         # assert False, 'Price calculation Not implemented yet.'
         TPrice = 0
         for ci, component in enumerate(self.ComponentList):
-            TPrice += component.PricePerMass() * self.ComponentMasses[ci]
+            TPrice += component.PricePerMass() * self.ComponentMasses[component.ID]
         return TPrice
 
     def PricePerMass(self) -> ureg.Quantity:

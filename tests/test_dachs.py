@@ -222,13 +222,16 @@ def test_reagent() -> None:
         PreparationDate="2022.07.27",
         StorageConditions="air conditioned lab",
         ComponentList=[solvent, linker],
-        ComponentMasses=[ureg.Quantity("4.5767 g"), solvent.MassByVolume(ureg.Quantity("500 ml"))],
+        ComponentMasses={
+            solvent.ID: ureg.Quantity("4.5767 g"),
+            linker.ID: solvent.MassByVolume(ureg.Quantity("500 ml")),
+        },
     )
 
     # print(f'{r1.Reagent.MolarMass=}')
     logging.info(
         [
-            f"{c.MolesByMass(mixture.ComponentMasses[ci]):.3f} of {c.Chemical.Name} in"
+            f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.Name} in"
             f" {mixture.Name} at mole concentration"
             f" {mixture.ComponentConcentration(MatchComponent=c):0.03e}"
             for ci, c in enumerate(mixture.ComponentList)
