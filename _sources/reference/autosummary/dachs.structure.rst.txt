@@ -1,0 +1,30 @@
+dachs.structure
+===============
+
+.. automodule:: dachs.structure
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      create
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

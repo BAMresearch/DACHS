@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="d_a44f0ac069e85531_test_structure_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.2.2">coverage.py v7.2.2</a>,
-            created at 2023-04-04 16:27 +0000
+            created at 2023-04-05 16:31 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -90,7 +90,7 @@
     <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span> <span class="key">import</span> <span class="nam">ureg</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">equipment</span> <span class="key">import</span> <span class="nam">Equipment</span><span class="op">,</span> <span class="nam">pv</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">metaclasses</span> <span class="key">import</span> <span class="nam">ExperimentalSetupClass</span><span class="op">,</span> <span class="nam">root</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">metaclasses</span> <span class="key">import</span> <span class="nam">Experiment</span><span class="op">,</span> <span class="nam">ExperimentalSetupClass</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">readers</span> <span class="key">import</span> <span class="nam">ReadStartingCompounds</span><span class="op">,</span> <span class="nam">readRawMessageLog</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">reagent</span> <span class="key">import</span> <span class="nam">Mixture</span>  <span class="com"># ReagentByMass, ReagentByVolume, ReagentMixture,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">from</span> <span class="nam">dachs</span><span class="op">.</span><span class="nam">reagent</span> <span class="key">import</span> <span class="nam">Chemical</span><span class="op">,</span> <span class="nam">Product</span><span class="op">,</span> <span class="nam">Reagent</span>&nbsp;</span><span class="r"></span></p>
@@ -179,8 +179,8 @@
     <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">    <span class="nam">print</span><span class="op">(</span><span class="nam">filename</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t"><span class="key">def</span> <span class="nam">test_root</span><span class="op">(</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">    <span class="nam">_</span> <span class="op">=</span> <span class="nam">root</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t"><span class="key">def</span> <span class="nam">test_experiment</span><span class="op">(</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">    <span class="nam">_</span> <span class="op">=</span> <span class="nam">Experiment</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">        <span class="nam">ID</span><span class="op">=</span><span class="str">"AutoMOF5"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">Name</span><span class="op">=</span><span class="str">"Automatic MOF Exploration series 5"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">Description</span><span class="op">=</span><span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -332,7 +332,7 @@
             <a id="nextFileLink" class="nav" href="d_a44f0ac069e85531_test_structure_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.2.2">coverage.py v7.2.2</a>,
-            created at 2023-04-04 16:27 +0000
+            created at 2023-04-05 16:31 +0000
         </p>
     </div>
 </footer>

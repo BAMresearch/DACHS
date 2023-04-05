@@ -1,0 +1,41 @@
+dachs.metaclasses.Experiment
+============================
+
+.. currentmodule:: dachs.metaclasses
+
+.. autoclass:: Experiment
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Experiment.__init__
+      ~Experiment.items
+      ~Experiment.keys
+      ~Experiment.pop
+      ~Experiment.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Experiment.ID
+      ~Experiment.Name
+      ~Experiment.Description
+      ~Experiment.Chemicals
+      ~Experiment.Synthesis
+      ~Experiment.Characterizations
+      ~Experiment.ExperimentalSetup
+   
+   

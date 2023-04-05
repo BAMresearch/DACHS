@@ -42,5 +42,6 @@
    dachs.readers
    dachs.reagent
    dachs.serialization
+   dachs.structure
    dachs.synthesis
 

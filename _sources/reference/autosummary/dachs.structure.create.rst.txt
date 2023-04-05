@@ -1,0 +1,6 @@
+dachs.structure.create
+======================
+
+.. currentmodule:: dachs.structure
+
+.. autofunction:: create

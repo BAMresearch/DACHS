@@ -14,7 +14,7 @@ dachs.serialization
    .. autosummary::
       :toctree:
    
-      storagePaths
+      dumpKV
    
    
 

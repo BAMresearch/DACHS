@@ -21,8 +21,8 @@ dachs.metaclasses
    
       ChemicalsClass
       EnvironmentClass
+      Experiment
       ExperimentalSetupClass
-      root
    
    
 
