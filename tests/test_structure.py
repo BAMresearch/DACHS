@@ -7,7 +7,7 @@ import chempy  # we only need a tiny bit, but it does offer options...
 import pandas as pd
 
 from dachs import ureg
-from dachs.metaclasses import ChemicalsClass, root
+from dachs.metaclasses import ChemicalsClass, Experiment
 from dachs.readers import (
     ReadStartingCompounds,
     find_in_log,
@@ -53,7 +53,7 @@ def test_integral() -> None:
     )
 
     # Start with a root
-    DACHS = root(
+    DACHS = Experiment(
         ID="AutoMOF5",
         Name="Automatic MOF Exploration series 5",
         Description="""

@@ -6,7 +6,7 @@ import pandas as pd
 
 from dachs import ureg
 from dachs.equipment import Equipment, pv
-from dachs.metaclasses import ExperimentalSetupClass, root
+from dachs.metaclasses import Experiment, ExperimentalSetupClass
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
 from dachs.reagent import Mixture  # ReagentByMass, ReagentByVolume, ReagentMixture,
 from dachs.reagent import Chemical, Product, Reagent
@@ -95,8 +95,8 @@ def test_readEquipment() -> None:
     print(filename)
 
 
-def test_root() -> None:
-    _ = root(
+def test_experiment() -> None:
+    _ = Experiment(
         ID="AutoMOF5",
         Name="Automatic MOF Exploration series 5",
         Description="""

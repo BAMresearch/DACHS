@@ -142,7 +142,7 @@ class ChemicalsClass(addItemsToAttrs):
 
 
 @define
-class root(addItemsToAttrs):
+class Experiment(addItemsToAttrs):
     ID: str = field(
         default=None,
         validator=validators.instance_of(str),
