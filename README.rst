@@ -56,6 +56,12 @@ You can also install the in-development version with::
 
     pip install git+https://github.com/BAMresearch/DACHS.git@main
 
+Usage
+=====
+
+To invoke the command line interface for processing experimental log files to the DACHS hierarchical structure and to HDF5 output, run the following to show the usage help::
+
+    python -m dachs -h
 
 Documentation
 =============
@@ -65,10 +71,16 @@ https://BAMresearch.github.io/DACHS
 Development
 ===========
 
-To run tests only in a clean environment::
+Assuming the current working directory is the top-level source directory:
+
+1. To run tests only in a clean environment::
 
     tox -e py
 
-For testing generation of the complete data structure in the local environment with stdout&stderr run::
+2. For testing generation of the complete data structure in the local environment with stdout&stderr run::
 
     rm *.h5; pytest -rP --show-capture=all --capture=sys -k test_integral
+
+3. Without *pytest* and without installation, the command line interface can be run by::
+
+    PYTHONPATH=src python -m dachs -h
