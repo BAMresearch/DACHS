@@ -89,11 +89,4 @@ if __name__ == "__main__":
     # from pprint import pprint
     # pprint(dump)
     logging.info(f"Writing structure to '{args.outfile}'.")
-
-    for key, value in dump.items():
-        # extracting path from keys could be added to McHDF.storeKVPairs()
-        try:
-            McHDF.storeKV(filename=args.outfile, path=key, value=value)
-        except Exception:
-            print(f"Error for path {key} and value '{value}' of type {type(value)}.")
-            raise
+    McHDF.storeKVPairs(args.outfile, "", dump.items())

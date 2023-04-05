@@ -23,13 +23,4 @@ def test_integral() -> None:
     dump = dachs.serialization.dumpKV("DACHS", exp)
     # from pprint import pprint
     # pprint(dump)
-
-    # warnings.filterwarnings("error")
-
-    for key, value in dump.items():
-        # extracting path from keys could be added to McHDF.storeKVPairs()
-        try:
-            McHDF.storeKV(filename=f"{exp.ID}_H005.h5", path=key, value=value)
-        except Exception:
-            print(f"Error for path {key} and value '{value}' of type {type(value)}.")
-            raise
+    McHDF.storeKVPairs(f"{exp.ID}_H005.h5", "", dump.items())
