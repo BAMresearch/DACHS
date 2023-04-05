@@ -131,7 +131,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path) -> Experiment:
         # and we can add the synthesis used to make this mixture:
         print(f"{solutionId=}")
 
-    logging.info(exp.Chemicals.mixtures)
+    # logging.info(exp.Chemicals.mixtures)
 
     logging.info("defining the synthesis log")
 
@@ -243,7 +243,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path) -> Experiment:
     exp.Synthesis.ExtraInformation.update({"MetalToMethanolRatio": TotalMetalMoles / TotalMethanolMoles})
 
     exp.Chemicals.target_product.Mass = TotalMetalMoles * exp.Chemicals.target_product.Chemical.MolarMass
-    print(exp.Chemicals.ChemicalYield)
+    print(f"{exp.Chemicals.ChemicalYield=}")
     exp.Chemicals._storeKeys += ["ChemicalYield"]
     # maybe later
     # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")

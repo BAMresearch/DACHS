@@ -3,7 +3,9 @@
 
 from pathlib import Path
 
-import dachs
+from mcsas3 import McHDF
+
+import dachs.structure
 
 
 def test_integral() -> None:
@@ -21,11 +23,8 @@ def test_integral() -> None:
     from dachs.serialization import storagePaths
 
     dump = storagePaths("DACHS", exp)
-    from pprint import pprint
-
-    pprint(dump)
-
-    from mcsas3 import McHDF
+    # from pprint import pprint
+    # pprint(dump)
 
     # warnings.filterwarnings("error")
 
