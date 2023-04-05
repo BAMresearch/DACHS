@@ -26,10 +26,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path) -> Experiment:
     """
     Construction of a test structure from Glen's excel files using the available dataclasses,
     the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.
+
     It now defines:
         - base Chemicals and
-        - mixtures,
-    todo:
+        - mixtures
+
+    **TODO**:
         - write synthesis log
         - write or (perhaps better) link to SAS data structure.
         - write or (perhaps better) link to analysis results?
