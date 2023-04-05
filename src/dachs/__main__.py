@@ -7,8 +7,8 @@ from pathlib import Path
 
 from mcsas3 import McHDF
 
+import dachs.serialization
 import dachs.structure
-from dachs.serialization import storagePaths
 
 
 def outfileFromInput(infn, suffix="h5"):
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog)
 
-    dump = storagePaths("DACHS", exp)
+    dump = dachs.serialization.dumpKV("DACHS", exp)
     # from pprint import pprint
     # pprint(dump)
     logging.info(f"Writing structure to '{args.outfile}'.")

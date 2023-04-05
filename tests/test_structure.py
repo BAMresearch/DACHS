@@ -5,6 +5,7 @@ from pathlib import Path
 
 from mcsas3 import McHDF
 
+import dachs.serialization
 import dachs.structure
 
 
@@ -19,10 +20,7 @@ def test_integral() -> None:
         basepath / "AutoMOFs05_H005.xlsx",
     )
 
-    # Export everything finally
-    from dachs.serialization import storagePaths
-
-    dump = storagePaths("DACHS", exp)
+    dump = dachs.serialization.dumpKV("DACHS", exp)
     # from pprint import pprint
     # pprint(dump)
 
