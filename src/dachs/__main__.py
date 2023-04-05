@@ -47,7 +47,7 @@ def configureParser() -> argparse.ArgumentParser:
         "--s0file",
         type=validate_file,
         default=defaultPath / "AutoMOFs05_Solution0.csv",
-        help="File containing the syntheiss log of Solution 0",
+        help="File containing the synthesis log of Solution 0",
         required=True,
     )
     parser.add_argument(
@@ -55,7 +55,7 @@ def configureParser() -> argparse.ArgumentParser:
         "--s1file",
         type=validate_file,
         default=defaultPath / "AutoMOFs05_Solution1.csv",
-        help="File containing the syntheiss log of Solution 1",
+        help="File containing the synthesis log of Solution 1",
         required=True,
     )
     parser.add_argument(
