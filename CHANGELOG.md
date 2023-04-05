@@ -4,6 +4,17 @@ Changelog
 
 % <!--next-version-placeholder-->
 
+## v0.3.0 (2023-04-05)
+### Feature
+* **command line:** New parameter -o allows to specify location and name of HDF5 output file ([`fab741a`](https://github.com/BAMresearch/DACHS/commit/fab741a09d924e59d24f53d5375c62b9dc758e2d))
+
+### Fix
+* **command line:** Typo in usage texts ([`cf39d14`](https://github.com/BAMresearch/DACHS/commit/cf39d142785de9b0c767dfa5d83f1eed019c61cd))
+
+### Documentation
+* **structure:** Fix format ([`4ccaf91`](https://github.com/BAMresearch/DACHS/commit/4ccaf91e6bd81e263ca4b438e4a76d2573868046))
+* **readme:** Notes on command line usage ([`4d11686`](https://github.com/BAMresearch/DACHS/commit/4d11686b0921027590e370c64ffad94c9699599a))
+
 ## v0.2.0 (2023-04-04)
 ### Feature
 * **ComponentMasses:** Store as dict associated to their respective Component ([`a797b0b`](https://github.com/BAMresearch/DACHS/commit/a797b0b61bbd754eed46d80b1aafdc63d5898b0f))

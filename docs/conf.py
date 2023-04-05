@@ -32,7 +32,7 @@ project = "DACHS"
 year = "2022-2023"
 author = "Brian R. Pauw"
 copyright = "{0}, {1}".format(year, author)
-version = "0.2.0"
+version = "0.3.0"
 release = version
 commit_id = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("ascii")
 
