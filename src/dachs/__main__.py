@@ -2,11 +2,17 @@
 # coding: utf-8
 
 import argparse
+import logging
 from pathlib import Path
 
 from mcsas3 import McHDF
 
 import dachs.structure
+from dachs.serialization import storagePaths
+
+
+def outfileFromInput(infn, suffix="h5"):
+    return Path(infn).resolve().with_suffix(f".{suffix}")
 
 
 def configureParser() -> argparse.ArgumentParser:
@@ -18,13 +24,14 @@ def configureParser() -> argparse.ArgumentParser:
 
     # process input arguments
     parser = argparse.ArgumentParser(
+        prog=__package__,
         description="""
             Creates an archival HDF5 structure containing synthesis details from a RoWaN AutoMOF synthesis.
 
             Released under a GPLv3+ license.
-            """
+            """,
     )
-    defaultPath = Path(__file__).absolute().parent / "tests" / "testData"
+    defaultPath = Path(__file__).resolve().parent.parent.parent / "tests" / "testData"
     # TODO: add info about output files to be created ...
     parser.add_argument(
         "-l",
@@ -52,48 +59,41 @@ def configureParser() -> argparse.ArgumentParser:
         required=True,
     )
     parser.add_argument(
-        "-f",
-        "--filename",
+        "-s",
+        "--synlog",
         type=validate_file,
         default=defaultPath / "AutoMOFs05_H005.csv",
         help="File containing the synthesis log of the MOF itself.",
         required=True,
     )
-
+    parser.add_argument(
+        "-o",
+        "--outfile",
+        help=(
+            "Output file containing structured HDF5 data. "
+            "If omitted, it is written to the same directory "
+            "and with the same basename as *synlog* above, but with .h5 suffix."
+        ),
+    )
     return parser
 
 
 if __name__ == "__main__":
-    parser = configureParser()
+    args = configureParser().parse_args()
+    if not args.outfile:
+        args.outfile = outfileFromInput(args.synlog)
 
-    try:
-        args = parser.parse_args()
-    except SystemExit:
-        raise
-    adict = vars(args)
-
-    exp = dachs.structure.create(
-        adict["logbook"],
-        [
-            adict["s0file"],
-            adict["s1file"],
-        ],
-        adict["filename"],
-    )
-
-    # Export everything finally
-    from dachs.serialization import storagePaths
+    exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog)
 
     dump = storagePaths("DACHS", exp)
     # from pprint import pprint
     # pprint(dump)
-    ofname = adict["filename"].absolute().with_suffix(".h5")
-    print(f"{ofname=}")
+    logging.info(f"Writing structure to '{args.outfile}'.")
 
     for key, value in dump.items():
         # extracting path from keys could be added to McHDF.storeKVPairs()
         try:
-            McHDF.storeKV(filename=ofname, path=key, value=value)
+            McHDF.storeKV(filename=args.outfile, path=key, value=value)
         except Exception:
             print(f"Error for path {key} and value '{value}' of type {type(value)}.")
             raise

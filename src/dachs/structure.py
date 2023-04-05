@@ -39,7 +39,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path) -> Experiment:
     :param synFile: The synthesis robot log file.
     """
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-    logging.info(f"{os.getcwd()}")
+    logging.info(f"Working in '{os.getcwd()}'.")
 
     # define a zif Chemical:
     z8 = chempy.Substance.from_formula("ZnC8H12N4")
