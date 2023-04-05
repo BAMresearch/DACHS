@@ -14,8 +14,9 @@ __status__ = "beta"
 from pathlib import PurePosixPath
 
 
-def dumpKV(prefix: PurePosixPath, objlst, lvl=0):
+def dumpKV(prefix: PurePosixPath, objlst: object, lvl: int = 0):
     """Serializes the given hierarchical DACHS structure as key-value pairs (a dict).
+
     :param prefix: A word to prepended to all generated keys, a top-level name.
     :param objlst: A hierarchical instance for traversal.
     :param lvl: The current level of invocation, tracks the recursion depth for debugging.
