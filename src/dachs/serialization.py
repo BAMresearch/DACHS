@@ -14,15 +14,17 @@ __status__ = "beta"
 from pathlib import PurePosixPath
 
 
-def dumpKV(prefix: PurePosixPath, objlst: object, lvl: int = 0):
+def dumpKV(objlst: object, prefix: PurePosixPath = None, lvl: int = 0):
     """Serializes the given hierarchical DACHS structure as key-value pairs (a dict).
 
-    :param prefix: A word to prepended to all generated keys, a top-level name.
     :param objlst: A hierarchical instance for traversal.
+    :param prefix: Optional, a word to prepend to all generated keys, a top-level name.
+        It is replaced by the *ID* attribute if available.
     :param lvl: The current level of invocation, tracks the recursion depth for debugging.
     """
     # handle unnamed lists by default, catch single objects here
     if type(objlst) not in (list, tuple):
+        prefix = getattr(objlst, "ID", prefix)
         objlst = (objlst,)
     pathlst = {}
     # indent = "".join(["  " for _ in range(lvl)])
@@ -35,7 +37,7 @@ def dumpKV(prefix: PurePosixPath, objlst: object, lvl: int = 0):
         if hasattr(obj, "_storeKeys"):
             for mem in getattr(obj, "_storeKeys", ()):
                 # print(indent, "->", mem, len(objlst))
-                items = {(subpath / m): v for m, v in dumpKV(mem, getattr(obj, mem), lvl + 1).items()}
+                items = {(subpath / m): v for m, v in dumpKV(getattr(obj, mem), mem, lvl + 1).items()}
                 pathlst.update(items)
         else:
             pathlst.update({subpath: obj})

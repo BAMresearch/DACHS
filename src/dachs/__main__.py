@@ -84,8 +84,7 @@ if __name__ == "__main__":
         args.outfile = outfileFromInput(args.synlog)
 
     exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog)
-
-    dump = dachs.serialization.dumpKV("DACHS", exp)
+    dump = dachs.serialization.dumpKV(exp)
     # from pprint import pprint
     # pprint(dump)
     logging.info(f"Writing structure to '{args.outfile}'.")

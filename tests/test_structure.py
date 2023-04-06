@@ -20,7 +20,7 @@ def test_integral() -> None:
         basepath / "AutoMOFs05_H005.xlsx",
     )
 
-    dump = dachs.serialization.dumpKV("DACHS", exp)
+    dump = dachs.serialization.dumpKV(exp)
     # from pprint import pprint
     # pprint(dump)
     McHDF.storeKVPairs(f"{exp.ID}_H005.h5", "", dump.items())
