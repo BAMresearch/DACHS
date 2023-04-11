@@ -29,6 +29,10 @@ from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 
 
+def whitespaceCleanup(text):
+    return " ".join(text.split())
+
+
 def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> ExperimentalSetupClass:
     #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
     # SetupName='AMSET_6'
@@ -67,7 +71,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     expSetup = ExperimentalSetupClass(
         ID=dfRow.SetupID.item(),
         Name=dfRow.Name.item(),
-        Description=dfRow.Description.item(),
+        Description=whitespaceCleanup(dfRow.Description.item()),
         EquipmentList=eqList,
     )
     return expSetup
