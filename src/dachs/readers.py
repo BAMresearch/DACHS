@@ -65,9 +65,9 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
-        ID=dfRow["SetupID"],
-        Name=dfRow["Name"],
-        Description=dfRow["Description"],
+        ID=dfRow.SetupID.item(),
+        Name=dfRow.Name.item(),
+        Description=dfRow.Description.item(),
         EquipmentList=eqList,
     )
     return expSetup
