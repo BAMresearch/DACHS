@@ -62,7 +62,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
 
     # read setup configuration:
     df = pd.read_excel(filename, sheet_name="Setup", index_col=None, header=0)
-    df = df.dropna(how="all")
+    df = df.dropna(how="all")  # "If all values are NA, drop that row or column." - right?
     dfRow = df.loc[df.SetupID == SetupName].copy()
     assert len(dfRow == 1), f"More or less than one entry found for {SetupName=} in {filename=}"
     # get all equipment for the setup
