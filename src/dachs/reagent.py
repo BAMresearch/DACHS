@@ -9,6 +9,7 @@ from __future__ import annotations
 import chempy
 
 from dachs.equipment import Equipment
+from dachs.helpers import whitespaceCleanup
 
 # from dachs.metaclasses import EnvironmentClass # to get around using Mixture typing inside the Mixture class
 
@@ -254,7 +255,7 @@ class Mixture(addItemsToAttrs):
     Description: str = field(
         default=None,
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     ComponentList: List[Union[Reagent, None]] = (
         field(  # list of Reagents, there is a method to add mixtures (as individual reagents)

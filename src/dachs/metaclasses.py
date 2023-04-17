@@ -22,6 +22,7 @@ from attrs import Factory, define, field, validators
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
 from dachs.equipment import Equipment
+from dachs.helpers import whitespaceCleanup
 from dachs.reagent import Mixture, Product, Reagent  # , ReagentMixture
 from dachs.synthesis import SynthesisClass
 
@@ -41,7 +42,7 @@ class ExperimentalSetupClass(addItemsToAttrs):
     Description: str = field(
         default=None,
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     EquipmentList: List[Equipment] = field(
         default=None,
@@ -156,7 +157,7 @@ class Experiment(addItemsToAttrs):
     Description: str = field(
         default=None,
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     Chemicals: Optional[ChemicalsClass] = field(
         default=None,

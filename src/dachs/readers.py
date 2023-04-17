@@ -24,13 +24,10 @@ import yaml
 
 from dachs import ureg
 from dachs.equipment import Equipment
+from dachs.helpers import whitespaceCleanup
 from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
-
-
-def whitespaceCleanup(text):
-    return " ".join(text.split())
 
 
 def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> ExperimentalSetupClass:
@@ -53,7 +50,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 ModelNumber=str(equip["Model Number"]),
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
-                Description=str(equip["Description"]),
+                Description=whitespaceCleanup(equip["Description"]),
                 PVs=[],
             )
             eqDict.update({str(equip["Equipment ID"]): eqItem})

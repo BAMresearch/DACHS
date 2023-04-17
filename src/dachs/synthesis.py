@@ -20,6 +20,7 @@ from pandas import Timestamp
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
 from dachs.equipment import pv
+from dachs.helpers import whitespaceCleanup
 
 NoneType = type(None)
 
@@ -56,7 +57,7 @@ class DerivedParameter(addItemsToAttrs):
     """
 
     Name: str = field(default="", validator=validators.instance_of(str), converter=str)
-    Description: str = field(default="", validator=validators.instance_of(str), converter=str)
+    Description: str = field(default="", validator=validators.instance_of(str), converter=whitespaceCleanup)
     RawMessages: List[int] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
@@ -103,7 +104,7 @@ class synthesisStep(addItemsToAttrs):
     stepDescription: str = field(
         default=None,
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     EquipmentId: Optional[str] = field(
         default=Factory(str),
@@ -142,7 +143,7 @@ class SynthesisClass(addItemsToAttrs):
     )
     Description: str = field(
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     ChemicalReaction: Optional[chempy.Reaction] = field(
         default=None, validator=validators.optional(validators.instance_of(chempy.Reaction))
