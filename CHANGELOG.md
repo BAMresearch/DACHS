@@ -4,6 +4,19 @@ Changelog
 
 % <!--next-version-placeholder-->
 
+## v0.4.0 (2023-04-17)
+### Feature
+* **serialization:** Use the ID for path prefix at singular objects as well ([`60a08eb`](https://github.com/BAMresearch/DACHS/commit/60a08eb256f6a920d0e7e047025fa28418029e29))
+
+### Fix
+* **data import:** Whitespace cleanup for texts/descriptions ([`005be00`](https://github.com/BAMresearch/DACHS/commit/005be006aed3f8055db566804e0ac71e0a9f7226))
+* **ExperimentalSetupClass:** Removing redundant whitespace from description ([`5429102`](https://github.com/BAMresearch/DACHS/commit/542910217cd0c5bf1b1e96ac919a00739aa6ccce))
+* **readers:** Unwanted DataFrame string formatting ([`880ca0d`](https://github.com/BAMresearch/DACHS/commit/880ca0d1195f90cd244ef05189019149a314785b))
+
+### Documentation
+* **visualization:** Generate SVG Graph in __main__ ([`31f38f9`](https://github.com/BAMresearch/DACHS/commit/31f38f9fbea9fd16d87a65f7c908253a970d5f8c))
+* **visualization:** Graph building code added, WIP ([`1e1ffed`](https://github.com/BAMresearch/DACHS/commit/1e1ffed5c129ba8d6299fbf2bf0148b2ab4afd08))
+
 ## v0.3.0 (2023-04-05)
 ### Feature
 * **command line:** New parameter -o allows to specify location and name of HDF5 output file ([`fab741a`](https://github.com/BAMresearch/DACHS/commit/fab741a09d924e59d24f53d5375c62b9dc758e2d))
