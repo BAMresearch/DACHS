@@ -21,6 +21,7 @@ def test_integral() -> None:
     )
 
     dump = dachs.serialization.dumpKV(exp)
+    storeItems = {k: v for k, v in dachs.serialization.filterStoragePaths(dump.items())}
     # from pprint import pprint
     # pprint(dump)
-    McHDF.storeKVPairs(f"{exp.ID}_H005.h5", "", dump.items())
+    McHDF.storeKVPairs(f"{exp.ID}_H005.h5", "", storeItems.items())

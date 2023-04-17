@@ -84,12 +84,9 @@ if __name__ == "__main__":
         args.outfile = outfileFromInput(args.synlog)
 
     exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog)
-    dump = dachs.serialization.dumpKV(exp)
-    # from pprint import pprint
-    # pprint(dump)
+    paths = dachs.serialization.dumpKV(exp, dbg=False)
     logging.info(f"Writing structure to '{args.outfile}'.")
-    McHDF.storeKVPairs(args.outfile, "", dump.items())
-    print("Types found in McHDF serialized data:", {type(value) for path, value in dump.items()})
-    paths, graph = dachs.serialization.buildGraph2(exp, dbg=True)
+    storeItems = {k: v for k, v in dachs.serialization.filterStoragePaths(paths.items())}
+    # pprint(storeItems)
+    McHDF.storeKVPairs(args.outfile, "", storeItems.items())
     dachs.serialization.graphKV(paths)
-    graph.render(graph.name, cleanup=True)
