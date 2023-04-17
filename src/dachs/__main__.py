@@ -89,3 +89,7 @@ if __name__ == "__main__":
     # pprint(dump)
     logging.info(f"Writing structure to '{args.outfile}'.")
     McHDF.storeKVPairs(args.outfile, "", dump.items())
+    print("Types found in McHDF serialized data:", {type(value) for path, value in dump.items()})
+    paths, graph = dachs.serialization.buildGraph2(exp, dbg=True)
+    dachs.serialization.graphKV(paths)
+    graph.render(graph.name, cleanup=True)
