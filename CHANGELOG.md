@@ -4,6 +4,11 @@ Changelog
 
 % <!--next-version-placeholder-->
 
+## v0.4.1 (2023-04-18)
+### Fix
+* **GitHub Actions:** Make new release only if tests succeed ([`94f7a25`](https://github.com/BAMresearch/DACHS/commit/94f7a25b9bb0021b27b267d7e717921d015a185a))
+* **requirements:** Graphviz added for tests ([`a06f87d`](https://github.com/BAMresearch/DACHS/commit/a06f87de270810c613f822c3168b409fba201e78))
+
 ## v0.4.0 (2023-04-17)
 ### Feature
 * **serialization:** Use the ID for path prefix at singular objects as well ([`60a08eb`](https://github.com/BAMresearch/DACHS/commit/60a08eb256f6a920d0e7e047025fa28418029e29))

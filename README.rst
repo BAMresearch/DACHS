@@ -14,8 +14,8 @@ Database for Automation and Consistent Holistic Synthesis
     :target: https://test.pypi.org/project/dachs
     :alt: PyPI Package latest release
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/BAMresearch/DACHS/v0.4.0.svg
-    :target: https://github.com/BAMresearch/DACHS/compare/v0.4.0...main
+.. |commits-since| image:: https://img.shields.io/github/commits-since/BAMresearch/DACHS/v0.4.1.svg
+    :target: https://github.com/BAMresearch/DACHS/compare/v0.4.1...main
     :alt: Commits since latest release
 
 .. |license| image:: https://img.shields.io/pypi/l/dachs.svg
