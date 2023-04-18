@@ -9,3 +9,4 @@ chempy
 pint
 openpyxl
 h5py
+graphviz
