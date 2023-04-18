@@ -1,0 +1,6 @@
+dachs.helpers.whitespaceCleanup
+===============================
+
+.. currentmodule:: dachs.helpers
+
+.. autofunction:: whitespaceCleanup

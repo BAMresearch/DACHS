@@ -1,7 +1,7 @@
-dachs.serialization
-===================
+dachs.helpers
+=============
 
-.. automodule:: dachs.serialization
+.. automodule:: dachs.helpers
 
    
    
@@ -14,7 +14,7 @@ dachs.serialization
    .. autosummary::
       :toctree:
    
-      dumpKV
+      whitespaceCleanup
    
    
 

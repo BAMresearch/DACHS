@@ -1,6 +1,0 @@
-dachs.serialization.dumpKV
-==========================
-
-.. currentmodule:: dachs.serialization
-
-.. autofunction:: dumpKV

@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.metaclasses" href="dachs.metaclasses.html" /><link rel="prev" title="dachs.equipment.Equipment" href="dachs.equipment.Equipment.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.helpers" href="dachs.helpers.html" /><link rel="prev" title="dachs.equipment.Equipment" href="dachs.equipment.Equipment.html" />
 
     <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
-        <title>dachs.equipment.pv - DACHS 0.3.0 documentation</title>
+        <title>dachs.equipment.pv - DACHS 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">DACHS 0.3.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">DACHS 0.4.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">DACHS 0.3.0 documentation</span>
+  <span class="sidebar-brand-text">DACHS 0.4.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -175,14 +175,18 @@
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">dachs.equipment.pv</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.metaclasses.html">dachs.metaclasses</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.helpers.html">dachs.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="dachs.helpers.whitespaceCleanup.html">dachs.helpers.whitespaceCleanup</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.metaclasses.html">dachs.metaclasses</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.ChemicalsClass.html">dachs.metaclasses.ChemicalsClass</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.EnvironmentClass.html">dachs.metaclasses.EnvironmentClass</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.Experiment.html">dachs.metaclasses.Experiment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.ExperimentalSetupClass.html">dachs.metaclasses.ExperimentalSetupClass</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.readers.html">dachs.readers</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.readers.html">dachs.readers</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.ReadStartingCompounds.html">dachs.readers.ReadStartingCompounds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.assert_unit.html">dachs.readers.assert_unit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.find_in_log.html">dachs.readers.find_in_log</a></li>
@@ -192,15 +196,11 @@
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.readRawMessageLog.html">dachs.readers.readRawMessageLog</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.reagent.html">dachs.reagent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.reagent.html">dachs.reagent</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.reagent.Chemical.html">dachs.reagent.Chemical</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.reagent.Mixture.html">dachs.reagent.Mixture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.reagent.Product.html">dachs.reagent.Product</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.reagent.Reagent.html">dachs.reagent.Reagent</a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.serialization.html">dachs.serialization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="dachs.serialization.dumpKV.html">dachs.serialization.dumpKV</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="dachs.structure.html">dachs.structure</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -330,12 +330,12 @@ PV_real = PV_set * calibrationFactor + calibrationOffset</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="dachs.metaclasses.html">
+          <a class="next-page" href="dachs.helpers.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">dachs.metaclasses</div>
+                <div class="title">dachs.helpers</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -360,7 +360,7 @@ PV_real = PV_set * calibrationFactor + calibrationOffset</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on Apr 05, 2023 (git fb4bc0d)</div>
+              Last updated on Apr 18, 2023 (git 69e2f6b)</div>
           </div>
           <div class="right-details">
             
