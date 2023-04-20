@@ -4,6 +4,13 @@ Changelog
 
 % <!--next-version-placeholder-->
 
+## v0.4.2 (2023-04-20)
+### Fix
+* **serialization:** Graph SVG with transparent background ([`366287c`](https://github.com/BAMresearch/DACHS/commit/366287c12109ded89c39dc91519c9e955ed27806))
+
+### Documentation
+* **general:** Logo ([`febf8f0`](https://github.com/BAMresearch/DACHS/commit/febf8f04f9d5bf59652e3dcba269659e85d6f40a))
+
 ## v0.4.1 (2023-04-18)
 ### Fix
 * **GitHub Actions:** Make new release only if tests succeed ([`94f7a25`](https://github.com/BAMresearch/DACHS/commit/94f7a25b9bb0021b27b267d7e717921d015a185a))
