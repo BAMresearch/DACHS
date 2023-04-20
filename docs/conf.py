@@ -46,6 +46,7 @@ autodoc_mock_imports = [
     "h5py",
     "pint",
     "chempy",
+    "graphviz",
 ]
 
 pygments_style = "trac"
@@ -54,6 +55,7 @@ extlinks = {
     "pr": (join(project_meta["project"]["urls"]["repository"], "pull", "%s"), "PR #%s"),
 }
 html_theme = "furo"
+html_logo = "img/dachs-wscale.png"
 
 html_use_smartypants = True
 html_last_updated_fmt = f"%b %d, %Y (git {commit_id})"
