@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Authors" href="authors.html" />
 
     <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
-        <title>Changelog - DACHS 0.4.1 documentation</title>
+        <title>Changelog - DACHS 0.4.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">DACHS 0.4.1 documentation</div></a>
+      <a href="index.html"><div class="brand">DACHS 0.4.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,8 +146,11 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/dachs-wscale.png" alt="Logo"/>
+  </div>
   
-  <span class="sidebar-brand-text">DACHS 0.4.1 documentation</span>
+  <span class="sidebar-brand-text">DACHS 0.4.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -203,11 +206,18 @@
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.reagent.Reagent.html">dachs.reagent.Reagent</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.structure.html">dachs.structure</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.serialization.html">dachs.serialization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.dumpKV.html">dachs.serialization.dumpKV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.filterStoragePaths.html">dachs.serialization.filterStoragePaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.fixSVG.html">dachs.serialization.fixSVG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.graphKV.html">dachs.serialization.graphKV</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.structure.html">dachs.structure</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.structure.create.html">dachs.structure.create</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.synthesis.html">dachs.synthesis</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.synthesis.html">dachs.synthesis</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.synthesis.DerivedParameter.html">dachs.synthesis.DerivedParameter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.synthesis.RawLogMessage.html">dachs.synthesis.RawLogMessage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.synthesis.SynthesisClass.html">dachs.synthesis.SynthesisClass</a></li>
@@ -257,10 +267,25 @@
         <article role="main">
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
-<section id="v0-4-1-2023-04-18">
-<h2>v0.4.1 (2023-04-18)<a class="headerlink" href="#v0-4-1-2023-04-18" title="Permalink to this heading">#</a></h2>
+<section id="v0-4-2-2023-04-20">
+<h2>v0.4.2 (2023-04-20)<a class="headerlink" href="#v0-4-2-2023-04-20" title="Permalink to this heading">#</a></h2>
 <section id="fix">
 <h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>serialization:</strong> Graph SVG with transparent background (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/366287c12109ded89c39dc91519c9e955ed27806"><code class="docutils literal notranslate"><span class="pre">366287c</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>general:</strong> Logo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/febf8f04f9d5bf59652e3dcba269659e85d6f40a"><code class="docutils literal notranslate"><span class="pre">febf8f0</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-1-2023-04-18">
+<h2>v0.4.1 (2023-04-18)<a class="headerlink" href="#v0-4-1-2023-04-18" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Fix<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>GitHub Actions:</strong> Make new release only if tests succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/94f7a25b9bb0021b27b267d7e717921d015a185a"><code class="docutils literal notranslate"><span class="pre">94f7a25</span></code></a>)</p></li>
 <li><p><strong>requirements:</strong> Graphviz added for tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a06f87de270810c613f822c3168b409fba201e78"><code class="docutils literal notranslate"><span class="pre">a06f87d</span></code></a>)</p></li>
@@ -275,16 +300,16 @@
 <li><p><strong>serialization:</strong> Use the ID for path prefix at singular objects as well (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/60a08eb256f6a920d0e7e047025fa28418029e29"><code class="docutils literal notranslate"><span class="pre">60a08eb</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id1">
-<h3>Fix<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h3>Fix<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>data import:</strong> Whitespace cleanup for texts/descriptions (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/005be006aed3f8055db566804e0ac71e0a9f7226"><code class="docutils literal notranslate"><span class="pre">005be00</span></code></a>)</p></li>
 <li><p><strong>ExperimentalSetupClass:</strong> Removing redundant whitespace from description (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/542910217cd0c5bf1b1e96ac919a00739aa6ccce"><code class="docutils literal notranslate"><span class="pre">5429102</span></code></a>)</p></li>
 <li><p><strong>readers:</strong> Unwanted DataFrame string formatting (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/880ca0d1195f90cd244ef05189019149a314785b"><code class="docutils literal notranslate"><span class="pre">880ca0d</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h3>
+<section id="id3">
+<h3>Documentation<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>visualization:</strong> Generate SVG Graph in <strong>main</strong> (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/31f38f9fbea9fd16d87a65f7c908253a970d5f8c"><code class="docutils literal notranslate"><span class="pre">31f38f9</span></code></a>)</p></li>
 <li><p><strong>visualization:</strong> Graph building code added, WIP (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1e1ffed5c129ba8d6299fbf2bf0148b2ab4afd08"><code class="docutils literal notranslate"><span class="pre">1e1ffed</span></code></a>)</p></li>
@@ -293,20 +318,20 @@
 </section>
 <section id="v0-3-0-2023-04-05">
 <h2>v0.3.0 (2023-04-05)<a class="headerlink" href="#v0-3-0-2023-04-05" title="Permalink to this heading">#</a></h2>
-<section id="id2">
-<h3>Feature<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<section id="id4">
+<h3>Feature<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>command line:</strong> New parameter -o allows to specify location and name of HDF5 output file (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fab741a09d924e59d24f53d5375c62b9dc758e2d"><code class="docutils literal notranslate"><span class="pre">fab741a</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>Fix<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<section id="id5">
+<h3>Fix<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>command line:</strong> Typo in usage texts (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/cf39d142785de9b0c767dfa5d83f1eed019c61cd"><code class="docutils literal notranslate"><span class="pre">cf39d14</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Documentation<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<section id="id6">
+<h3>Documentation<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>structure:</strong> Fix format (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4ccaf91e6bd81e263ca4b438e4a76d2573868046"><code class="docutils literal notranslate"><span class="pre">4ccaf91</span></code></a>)</p></li>
 <li><p><strong>readme:</strong> Notes on command line usage (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4d11686b0921027590e370c64ffad94c9699599a"><code class="docutils literal notranslate"><span class="pre">4d11686</span></code></a>)</p></li>
@@ -315,15 +340,15 @@
 </section>
 <section id="v0-2-0-2023-04-04">
 <h2>v0.2.0 (2023-04-04)<a class="headerlink" href="#v0-2-0-2023-04-04" title="Permalink to this heading">#</a></h2>
-<section id="id5">
-<h3>Feature<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<section id="id7">
+<h3>Feature<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>ComponentMasses:</strong> Store as dict associated to their respective Component (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a797b0b61bbd754eed46d80b1aafdc63d5898b0f"><code class="docutils literal notranslate"><span class="pre">a797b0b</span></code></a>)</p></li>
 <li><p><strong>serialization:</strong> Use object IDs instead of numerical index where available (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fef04b051529510867843ab1721398acced6d3ce"><code class="docutils literal notranslate"><span class="pre">fef04b0</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id6">
-<h3>Documentation<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<section id="id8">
+<h3>Documentation<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>readme:</strong> Info &amp; reminder how to get stdout/stderr with pytest (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/20fc9601a9675882fdc4119349291f2c2a6a1fb6"><code class="docutils literal notranslate"><span class="pre">20fc960</span></code></a>)</p></li>
 </ul>
@@ -331,15 +356,15 @@
 </section>
 <section id="v0-1-2-2023-04-03">
 <h2>v0.1.2 (2023-04-03)<a class="headerlink" href="#v0-1-2-2023-04-03" title="Permalink to this heading">#</a></h2>
-<section id="id7">
-<h3>Fix<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<section id="id9">
+<h3>Fix<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Serialization:</strong> Store lists of quantities, fixes #7 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d311d5bd075cb5c9c465819301b5fb8d38652eaf"><code class="docutils literal notranslate"><span class="pre">d311d5b</span></code></a>)</p></li>
 <li><p><strong>EquipmentList:</strong> Price unit parsing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/971a54d6b98e47e27b55520604f356f83d05f525"><code class="docutils literal notranslate"><span class="pre">971a54d</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id8">
-<h3>Documentation<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<section id="id10">
+<h3>Documentation<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>General:</strong> Inheritance diagram in reference (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/946cdd838430b619c4fe9bee53039774b17ef98e"><code class="docutils literal notranslate"><span class="pre">946cdd8</span></code></a>)</p></li>
 </ul>
@@ -347,14 +372,14 @@
 </section>
 <section id="v0-1-1-2023-03-28">
 <h2>v0.1.1 (2023-03-28)<a class="headerlink" href="#v0-1-1-2023-03-28" title="Permalink to this heading">#</a></h2>
-<section id="id9">
-<h3>Fix<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+<section id="id11">
+<h3>Fix<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>reagent:</strong> Adjust units and method names for tests to succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0b5b21eb4985955f03629e385b979244e4f0a3e0"><code class="docutils literal notranslate"><span class="pre">0b5b21e</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>Documentation<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<section id="id12">
+<h3>Documentation<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>general:</strong> Disable link check temporarily (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/332a112064f4727461a7e2dd3b4de4cd829bf0d3"><code class="docutils literal notranslate"><span class="pre">332a112</span></code></a>)</p></li>
 <li><p><strong>general:</strong> Remove section title (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d1fd17b119e2765e014e6f929b0cfccd1061a1b3"><code class="docutils literal notranslate"><span class="pre">d1fd17b</span></code></a>)</p></li>
@@ -401,7 +426,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on Apr 18, 2023 (git 69e2f6b)</div>
+              Last updated on Apr 20, 2023 (git 6a38896)</div>
           </div>
           <div class="right-details">
             
@@ -423,35 +448,40 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#v0-4-1-2023-04-18">v0.4.1 (2023-04-18)</a><ul>
+<li><a class="reference internal" href="#v0-4-2-2023-04-20">v0.4.2 (2023-04-20)</a><ul>
 <li><a class="reference internal" href="#fix">Fix</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-1-2023-04-18">v0.4.1 (2023-04-18)</a><ul>
+<li><a class="reference internal" href="#id1">Fix</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-4-0-2023-04-17">v0.4.0 (2023-04-17)</a><ul>
 <li><a class="reference internal" href="#feature">Feature</a></li>
-<li><a class="reference internal" href="#id1">Fix</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#id2">Fix</a></li>
+<li><a class="reference internal" href="#id3">Documentation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-3-0-2023-04-05">v0.3.0 (2023-04-05)</a><ul>
-<li><a class="reference internal" href="#id2">Feature</a></li>
-<li><a class="reference internal" href="#id3">Fix</a></li>
-<li><a class="reference internal" href="#id4">Documentation</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#v0-2-0-2023-04-04">v0.2.0 (2023-04-04)</a><ul>
-<li><a class="reference internal" href="#id5">Feature</a></li>
+<li><a class="reference internal" href="#id4">Feature</a></li>
+<li><a class="reference internal" href="#id5">Fix</a></li>
 <li><a class="reference internal" href="#id6">Documentation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#v0-1-2-2023-04-03">v0.1.2 (2023-04-03)</a><ul>
-<li><a class="reference internal" href="#id7">Fix</a></li>
+<li><a class="reference internal" href="#v0-2-0-2023-04-04">v0.2.0 (2023-04-04)</a><ul>
+<li><a class="reference internal" href="#id7">Feature</a></li>
 <li><a class="reference internal" href="#id8">Documentation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#v0-1-1-2023-03-28">v0.1.1 (2023-03-28)</a><ul>
+<li><a class="reference internal" href="#v0-1-2-2023-04-03">v0.1.2 (2023-04-03)</a><ul>
 <li><a class="reference internal" href="#id9">Fix</a></li>
 <li><a class="reference internal" href="#id10">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-1-1-2023-03-28">v0.1.1 (2023-03-28)</a><ul>
+<li><a class="reference internal" href="#id11">Fix</a></li>
+<li><a class="reference internal" href="#id12">Documentation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-1-0-2023-03-17">v0.1.0 (2023-03-17)</a></li>

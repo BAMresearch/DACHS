@@ -1,0 +1,6 @@
+dachs.serialization.fixSVG
+==========================
+
+.. currentmodule:: dachs.serialization
+
+.. autofunction:: fixSVG

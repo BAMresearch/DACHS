@@ -1,0 +1,33 @@
+dachs.serialization
+===================
+
+.. automodule:: dachs.serialization
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      dumpKV
+      filterStoragePaths
+      fixSVG
+      graphKV
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

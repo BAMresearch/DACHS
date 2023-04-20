@@ -1,0 +1,6 @@
+dachs.serialization.graphKV
+===========================
+
+.. currentmodule:: dachs.serialization
+
+.. autofunction:: graphKV
