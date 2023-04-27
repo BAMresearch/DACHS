@@ -123,6 +123,16 @@ class Equipment(addItemsToAttrs):
         default=Factory(list),
         validator=validators.instance_of(list),
     )
+    # TODO: These two should be put elsewhere ASAP:
+    CalibrationFactor: Optional[float] = field(
+        default=1.0,
+        validator=validators.optional(validators.instance_of(float)),
+        converter=float,
+    )
+    CalibrationOffset: Optional[ureg.Quantity] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+    )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)

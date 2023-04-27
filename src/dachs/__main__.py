@@ -75,6 +75,14 @@ def configureParser() -> argparse.ArgumentParser:
             "and with the same basename as *synlog* above, but with .h5 suffix."
         ),
     )
+    parser.add_argument(
+        "-a",
+        "--amset",
+        type=str,
+        default=None,
+        help="Equipment set AMSET identifier. If left none, it is read from the sample log",
+        # required=False,
+    )
     return parser
 
 
@@ -83,7 +91,7 @@ if __name__ == "__main__":
     if not args.outfile:
         args.outfile = outfileFromInput(args.synlog)
 
-    exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog)
+    exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog, args.amset)
     paths = dachs.serialization.dumpKV(exp, dbg=False)
     logging.info(f"Writing structure to '{args.outfile}'.")
     storeItems = {k: v for k, v in dachs.serialization.filterStoragePaths(paths.items())}

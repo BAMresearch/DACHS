@@ -52,6 +52,9 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=whitespaceCleanup(equip["Description"]),
                 PVs=[],
+                # todo remove these later once PVs are configured. 
+                CalibrationFactor=float(equip['Calibration Factor']),   
+                CalibrationOffset=ureg.Quantity(str(equip['Calibration Offset'])),   
             )
             eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
