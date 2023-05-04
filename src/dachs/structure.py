@@ -22,7 +22,7 @@ from dachs.reagent import Chemical, Product
 from dachs.synthesis import SynthesisClass, synthesisStep
 
 
-def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Experiment:
+def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None) -> Experiment:
     """
     Construction of a test structure from Glen's excel files using the available dataclasses,
     the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.

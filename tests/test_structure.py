@@ -18,6 +18,7 @@ def test_integral() -> None:
             basepath / "AutoMOFs05_Solution1.xlsx",
         ],
         basepath / "AutoMOFs05_H005.xlsx",
+        "AMSET_6",
     )
 
     dump = dachs.serialization.dumpKV(exp)
