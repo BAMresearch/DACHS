@@ -41,5 +41,7 @@ dachs.equipment.Equipment
       ~Equipment.UnitSize
       ~Equipment.PVs
       ~Equipment.AlternativeIDs
+      ~Equipment.CalibrationFactor
+      ~Equipment.CalibrationOffset
    
    
