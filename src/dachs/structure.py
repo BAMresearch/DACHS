@@ -197,25 +197,22 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
             exp.Synthesis.RawLog,
             "SetupID",
             Highlander=True,
-            Which='last',
-            #return_indices=True,
+            Which="last",
+            # return_indices=True,
         )
-        if LogEntry==[]:
-            logging.error('No AMSET configuration found in log, but also not specified as input argument.')
+        if LogEntry == []:
+            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
             raise SyntaxError
 
-        if 'AMSET' in LogEntry.Value:
+        if "AMSET" in LogEntry.Value:
             sun = amset
         else:
-            logging.error('No AMSET configuration found in log, but also not specified as input argument.')
+            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
             raise SyntaxError
 
     # At this point, we need the experimental setup as we need the falcon tube..
-    exp.ExperimentalSetup=readExperimentalSetup(
-            filename = logFile,
-            SetupName= sun
-        )
-    
+    exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
+
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix_0",
@@ -233,16 +230,17 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
     ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
     VolumeRLM = allVolumes[0]
     # find calibration factor and offset:
-    Syringe=[i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower()=='syringe'][-1]
-    CalibrationFactor=Syringe.CalibrationFactor
-    CalibrationOffset=Syringe.CalibrationOffset
+    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower() == "syringe"][-1]
+    CalibrationFactor = Syringe.CalibrationFactor
+    CalibrationOffset = Syringe.CalibrationOffset
     allSolutions = find_in_log(exp.Synthesis.RawLog, "Stop injection of solution", Highlander=False)
     # I don't have the densities yet, so we have to assume something for now
     for solutionRLM in allSolutions:
         solutionId = solutionRLM.Value
         mix.AddMixture(
             exp.Chemicals.mixtures[solutionId],
-            AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset,   # TODO: correction factor should be added in
+            AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor
+            + CalibrationOffset,  # TODO: correction factor should be added in
             MixtureDensity=ureg.Quantity("0.792 g/cc"),  # TODO: methanol density for now
         )
     # Add to the structure.
