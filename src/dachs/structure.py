@@ -57,8 +57,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
 
     # Start with a Experiment
     exp = Experiment(
-        ID="AutoMOF5",
-        Name="Automatic MOF Exploration series 5",
+        ID="DAHCS",
+        Name="Automatic MOF Exploration series",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
@@ -71,7 +71,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
             target_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),
             final_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),  # mass is set later.
         ),
-        ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName="AMSET_6"),
+        ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
     )
 
     logging.info("defining the mixtures based on mixtures of starting compounds")
