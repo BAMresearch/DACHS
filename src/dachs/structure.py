@@ -57,7 +57,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
 
     # Start with a Experiment
     exp = Experiment(
-        ID="DAHCS",
+        ID="DACHS", # this also defines the root at which the HDF5 tree starts
         Name="Automatic MOF Exploration series",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
@@ -113,12 +113,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
                 stepType="mixing",
                 ExperimentId=row["ExperimentID"],
             )
-            if find_trigger_in_log(sstep, triggerList=["Weight"]):
+            if find_trigger_in_log(sstep, triggerList=["mass of"]): # find_trigger_in_log(sstep, triggerList=["Weight"]) or 
                 # we found a component to add to the mixture
                 reag = find_reagent_in_rawmessage(sstep.RawMessage, exp.Chemicals.starting_compounds)
-                assert reag is not None, logging.warning(f"Reagent not found in {sstep.RawMessage=}")
-                # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                mix.AddReagent(reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"])))
+                if reag is not None: # logging.warning(f"Reagent not found in {sstep.RawMessage=}")
+                    # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
+                    mix.AddReagent(reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"])))
             synth += [sstep]
             stepId += 1
         # now we can define the mixture
@@ -205,7 +205,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
             raise SyntaxError
 
         if 'AMSET' in LogEntry.Value:
-            sun = amset
+            sun = LogEntry.Value
         else:
             logging.error('No AMSET configuration found in log, but also not specified as input argument.')
             raise SyntaxError
@@ -228,10 +228,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
     # to this we need to find the volume and density of which solution for the injections
     allVolumes = find_in_log(exp.Synthesis.RawLog, "Solution volume set", Highlander=False)
     assert len(allVolumes) != 0, "No injection volume specified in log"
-    assert (
-        len(allVolumes) == 1
-    ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
-    VolumeRLM = allVolumes[0]
+    # assert (
+    #     len(allVolumes) == 1
+    # ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
+    
     # find calibration factor and offset:
     Syringe=[i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower()=='syringe'][-1]
     CalibrationFactor=Syringe.CalibrationFactor
@@ -240,6 +240,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
     # I don't have the densities yet, so we have to assume something for now
     for solutionRLM in allSolutions:
         solutionId = solutionRLM.Value
+        # figure out which volume was used for this by looking at the index:
+        for volRLM in allVolumes:
+            if volRLM.Index < solutionRLM.Index: # the last time we set the volume before injection is the volume used. 
+                VolumeRLM=volRLM
+
+        # VolumeRLM = allVolumes[0]
         mix.AddMixture(
             exp.Chemicals.mixtures[solutionId],
             AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset,   # TODO: correction factor should be added in
@@ -249,20 +255,26 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
     exp.Chemicals.mixtures += [mix]
 
     # calculate the weight of Product:
-    WeightRLMs = find_in_log(exp.Synthesis.RawLog, ["Weight", "Falcon"], Highlander=False)
+    InitialWeight = find_in_log(exp.Synthesis.RawLog, ["empty Falcon tube"], excludeString=['+ dry sample', ' lid'], Highlander=True, Which='last')
+    FinalWeight = find_in_log(exp.Synthesis.RawLog, ["of Falcon tube + dry sample"], excludeString=['lid'], Highlander=True, Which='last')
+
+    # WeightRLMs = find_in_log(exp.Synthesis.RawLog, ["Weight", "Falcon"], Highlander=False)
     # targets = ["Weight", "Falcon"]
     # # find me the messages containing both those words:
     # dfMask = df["Readout"].apply(
     #     lambda sentence: all(word in sentence for word in targets)
     # )
     # mLocs = np.where(dfMask)[0]
-    print(WeightRLMs)
-    assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
-    exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
+    print(f' {InitialWeight=}, \n {FinalWeight=}')
+    # assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
+    # exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
+    exp.Chemicals.final_product.Mass = FinalWeight.Quantity - InitialWeight.Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
+    print(f'{len(mix.ComponentList)=}')
     for component in mix.ComponentList:
         aNumber = chempy.util.periodic.atomic_number("Zn")
+        print(f'{component.Chemical.Substance.composition.keys()=}')
         if aNumber in component.Chemical.Substance.composition.keys():
             # this is the component we're looking for. How many moles of atoms per moles of substance?
             metalMoles = component.Chemical.Substance.composition[aNumber]

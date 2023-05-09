@@ -37,9 +37,9 @@ class RawLogMessage(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
-    Value: Optional[Union[float, int]] = field(
+    Value: Optional[Union[float, int, str]] = field(
         default=None,
-        validator=validators.optional(validators.instance_of((int, float))),
+        validator=validators.optional(validators.instance_of((int, float, str))),
     )
     Unit: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
