@@ -22,7 +22,7 @@ from dachs.reagent import Chemical, Product
 from dachs.synthesis import SynthesisClass, synthesisStep
 
 
-def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Experiment:
+def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None) -> Experiment:
     """
     Construction of a test structure from Glen's excel files using the available dataclasses,
     the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.
@@ -205,25 +205,22 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
             exp.Synthesis.RawLog,
             "SetupID",
             Highlander=True,
-            Which='last',
-            #return_indices=True,
+            Which="last",
+            # return_indices=True,
         )
-        if LogEntry==[]:
-            logging.error('No AMSET configuration found in log, but also not specified as input argument.')
+        if LogEntry == []:
+            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
             raise SyntaxError
 
         if 'AMSET' in LogEntry.Value:
             sun = LogEntry.Value
         else:
-            logging.error('No AMSET configuration found in log, but also not specified as input argument.')
+            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
             raise SyntaxError
 
     # At this point, we need the experimental setup as we need the falcon tube..
-    exp.ExperimentalSetup=readExperimentalSetup(
-            filename = logFile,
-            SetupName= sun
-        )
-    
+    exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
+
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix_0",
@@ -256,7 +253,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str) -> Ex
         # VolumeRLM = allVolumes[0]
         mix.AddMixture(
             exp.Chemicals.mixtures[solutionId],
-            AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset,   # TODO: correction factor should be added in
+            AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor
+            + CalibrationOffset,  # TODO: correction factor should be added in
             MixtureDensity=ureg.Quantity("0.792 g/cc"),  # TODO: methanol density for now
         )
     # Add to the structure.
