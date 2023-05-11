@@ -91,11 +91,12 @@ class synthesisStep(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    TimeStamp: str = field(
-        default=None,
-        validator=validators.instance_of(str),
-        converter=str,
-    )
+    TimeStamp: Timestamp = field(default=None, validator=validators.instance_of(Timestamp))
+    # str = field(
+    #     default=None,
+    #     validator=validators.instance_of(str),
+    #     converter=str,
+    # )
     stepType: str = field(
         default=None,
         validator=validators.instance_of(str),

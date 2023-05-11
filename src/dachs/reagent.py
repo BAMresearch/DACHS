@@ -7,6 +7,7 @@ A dataclass for specifying a Reagent, Reagentmixture or Product.
 from __future__ import annotations
 
 import chempy
+from pandas import Timestamp
 
 from dachs.equipment import Equipment
 from dachs.helpers import whitespaceCleanup
@@ -267,11 +268,12 @@ class Mixture(addItemsToAttrs):
         default=Factory(dict),
         validator=validators.instance_of(dict),
     )
-    PreparationDate: str = field(
-        default=None,
-        validator=validators.instance_of(str),
-        converter=str,
-    )
+    PreparationDate: Timestamp = field(default=None, validator=validators.instance_of(Timestamp))
+    # str = field(
+    #     default=None,
+    #     validator=validators.instance_of(str),
+    #     converter=str,
+    # )
     StorageConditions: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
