@@ -219,7 +219,7 @@ def test_reagent() -> None:
         ID="stock_1",
         Name="linker stock solution",
         Description="Stock solution of linker at 78 g/mole",
-        PreparationDate="2022.07.27",
+        PreparationDate=pd.to_datetime("2022.07.27"),
         StorageConditions="air conditioned lab",
         ComponentList=[solvent, linker],
         ComponentMasses={
