@@ -16,7 +16,7 @@ def currency(name, symbol, aliases):
             name,
             symbol,
             aliases,
-            pint.facets.plain.ScaleConverter,
+            pint.facets.plain.ScaleConverter(1),
             # a separate dimension for each currency, forces exchange rates between them
             pint.util.UnitsContainer({f"[currency_{name}]": 1}),
         )
