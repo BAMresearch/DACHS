@@ -10,3 +10,9 @@ pint
 openpyxl
 h5py
 graphviz
+
+# for the notebook
+nexusformat
+plotly
+dash
+jupyter_dash
