@@ -14,6 +14,3 @@ do
         # python3 processingCode/datamerge/main.py -f "$f" -C "$toProcess/mergeConfig.yaml" -o "$toProcess/automatic.nxs" -g "20*.nxs"
         # python3 processingCode/scicatMergedDataUpload.py -f "$toProcess/merged-$groupNum.nxs"
 done
-
-
-
