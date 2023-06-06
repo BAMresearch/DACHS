@@ -82,7 +82,7 @@ def readRawMessageLog(filename: Path) -> List:
     assert filename.exists()
     df = pd.read_excel(filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"])
     df = df.dropna(how="all")
-    df.sort_values(by='Time', ignore_index=True, inplace=True)
+    df.sort_values(by="Time", ignore_index=True, inplace=True)
     msgList = []
     for idx, row in df.iterrows():
         condition = 0
@@ -199,7 +199,7 @@ def find_reagent_in_rawmessage(searchString: str, ReagentList: List[Reagent]) ->
 def find_in_log(
     log: List[RawLogMessage],
     searchString: Union[str, list],
-    excludeString: Union[str, list]='Dummy exclude string which will not be found',
+    excludeString: Union[str, list] = "Dummy exclude string which will not be found",
     Highlander: bool = True,  # there can be only one if Highlander is True
     Which: str = "first",  # if highlander, specify if first or last
 ) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
@@ -213,7 +213,9 @@ def find_in_log(
     if isinstance(excludeString, str):
         excludeString = [excludeString]
     for RLM in log:
-        if all(i.lower() in RLM.Message.lower() for i in searchString) and not any(j.lower() in RLM.Message.lower() for j in excludeString):
+        if all(i.lower() in RLM.Message.lower() for i in searchString) and not any(
+            j.lower() in RLM.Message.lower() for j in excludeString
+        ):
             if Highlander:
                 answers = RLM
                 if Which.lower() == "first":

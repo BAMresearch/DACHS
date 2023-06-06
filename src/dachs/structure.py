@@ -57,7 +57,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # Start with a Experiment
     exp = Experiment(
-        ID="DACHS", # this also defines the root at which the HDF5 tree starts
+        ID="DACHS",  # this also defines the root at which the HDF5 tree starts
         Name="Automatic MOF Exploration series",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
@@ -97,7 +97,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID=solutionId,
             Name="Mixture",
             Description="",
-            PreparationDate=pd.to_datetime('1980-12-31'),  # idx,  # will be replaced with last timestamp read
+            PreparationDate=pd.to_datetime("1980-12-31"),  # idx,  # will be replaced with last timestamp read
             StorageConditions="RT",
             # ComponentList=reagList,
             # Synthesis=None # will be filled in later
@@ -113,14 +113,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 stepType="mixing",
                 ExperimentId=row["ExperimentID"],
             )
-            if find_trigger_in_log(sstep, triggerList=["mass of"]): # find_trigger_in_log(sstep, triggerList=["Weight"]) or 
+            if find_trigger_in_log(sstep, triggerList=["mass of"]):  # triggerList=["Weight"]) or
                 # we found a component to add to the mixture
                 reag = find_reagent_in_rawmessage(sstep.RawMessage, exp.Chemicals.starting_compounds)
-                if reag is not None: # logging.warning(f"Reagent not found in {sstep.RawMessage=}")
+                if reag is not None:  # logging.warning(f"Reagent not found in {sstep.RawMessage=}")
                     # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                    mix.AddReagent(reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"])))
-            if find_trigger_in_log(sstep, triggerList=["mixed together"]): # in the one log, it's "Solutions mixed together", in the other "Solution components mixed together"...S
-                mix.PreparationDate=sstep.TimeStamp
+                    mix.AddReagent(
+                        reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"]))
+                    )
+            # in the one log, it's "Solutions mixed together",
+            # in the other "Solution components mixed together"
+            if find_trigger_in_log(sstep, triggerList=["mixed together"]):
+                mix.PreparationDate = sstep.TimeStamp
             synth += [sstep]
             stepId += 1
         # now we can define the mixture
@@ -212,7 +216,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             logging.error("No AMSET configuration found in log, but also not specified as input argument.")
             raise SyntaxError
 
-        if 'AMSET' in LogEntry.Value:
+        if "AMSET" in LogEntry.Value:
             sun = LogEntry.Value
         else:
             logging.error("No AMSET configuration found in log, but also not specified as input argument.")
@@ -236,19 +240,20 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # assert (
     #     len(allVolumes) == 1
     # ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
-    
+
     # find calibration factor and offset:
-    Syringe=[i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower()=='syringe'][-1]
-    CalibrationFactor=Syringe.CalibrationFactor
-    CalibrationOffset=Syringe.CalibrationOffset
+    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower() == "syringe"][-1]
+    CalibrationFactor = Syringe.CalibrationFactor
+    CalibrationOffset = Syringe.CalibrationOffset
     allSolutions = find_in_log(exp.Synthesis.RawLog, ["Stop", "injection of solution"], Highlander=False)
     # I don't have the densities yet, so we have to assume something for now
     for solutionRLM in allSolutions:
         solutionId = solutionRLM.Value
         # figure out which volume was used for this by looking at the index:
         for volRLM in allVolumes:
-            if volRLM.Index < solutionRLM.Index: # the last time we set the volume before injection is the volume used. 
-                VolumeRLM=volRLM
+            if volRLM.Index < solutionRLM.Index:
+                # the last time we set the volume before injection is the volume used.
+                VolumeRLM = volRLM
 
         # VolumeRLM = allVolumes[0]
         mix.AddMixture(
@@ -262,15 +267,37 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # calculate the age of solution0 and solution1 into the mix:
     exp.Synthesis.ExtraInformation.update(
-        {"MetalSolutionAge": ureg.Quantity((exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate).total_seconds(), "s")}
+        {
+            "MetalSolutionAge": ureg.Quantity(
+                (
+                    exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
+                ).total_seconds(),
+                "s",
+            )
+        }
     )
     exp.Synthesis.ExtraInformation.update(
-        {"LinkerSolutionAge": ureg.Quantity((exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate).total_seconds(), "s")}
+        {
+            "LinkerSolutionAge": ureg.Quantity(
+                (
+                    exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
+                ).total_seconds(),
+                "s",
+            )
+        }
     )
 
     # calculate the weight of Product:
-    InitialWeight = find_in_log(exp.Synthesis.RawLog, ["empty Falcon tube"], excludeString=['+ dry sample', ' lid'], Highlander=True, Which='last')
-    FinalWeight = find_in_log(exp.Synthesis.RawLog, ["of Falcon tube + dry sample"], excludeString=['lid'], Highlander=True, Which='last')
+    InitialWeight = find_in_log(
+        exp.Synthesis.RawLog,
+        ["empty Falcon tube"],
+        excludeString=["+ dry sample", " lid"],
+        Highlander=True,
+        Which="last",
+    )
+    FinalWeight = find_in_log(
+        exp.Synthesis.RawLog, ["of Falcon tube + dry sample"], excludeString=["lid"], Highlander=True, Which="last"
+    )
 
     # WeightRLMs = find_in_log(exp.Synthesis.RawLog, ["Weight", "Falcon"], Highlander=False)
     # targets = ["Weight", "Falcon"]
@@ -279,16 +306,16 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     #     lambda sentence: all(word in sentence for word in targets)
     # )
     # mLocs = np.where(dfMask)[0]
-    logging.debug(f' {InitialWeight=}, \n {FinalWeight=}')
+    logging.debug(f" {InitialWeight=}, \n {FinalWeight=}")
     # assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
     # exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
     exp.Chemicals.final_product.Mass = FinalWeight.Quantity - InitialWeight.Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
-    logging.debug(f'{len(mix.ComponentList)=}')
+    logging.debug(f"{len(mix.ComponentList)=}")
     for component in mix.ComponentList:
         aNumber = chempy.util.periodic.atomic_number("Zn")
-        logging.debug(f'{component.Chemical.Substance.composition.keys()=}')
+        logging.debug(f"{component.Chemical.Substance.composition.keys()=}")
         if aNumber in component.Chemical.Substance.composition.keys():
             # this is the component we're looking for. How many moles of atoms per moles of substance?
             metalMoles = component.Chemical.Substance.composition[aNumber]
