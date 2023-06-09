@@ -42,7 +42,7 @@ jobs:
         shell: sh
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then
-            apt install graphivz
+            sudo apt-get install -y graphivz
           fi
 
       - name: Show installed package details
