@@ -38,12 +38,7 @@ jobs:
 
       {{ ci.pip_install_req() }}
 
-      - name: Install required system packages
-        shell: sh
-        run: |
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            sudo apt-get install -y graphivz
-          fi
+      {{ ci.sys_install_req() }}
 
       - name: Show installed package details
         run: |

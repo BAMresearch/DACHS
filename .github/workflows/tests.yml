@@ -51,11 +51,11 @@ jobs:
         shell: sh
         run: |
           PLATFORM="$(echo "$RUNNER_OS" | tr '[:upper:]' '[:lower:]')"
-          echo "platform: '$PLATFORM'"
           if [ "$PLATFORM" = "linux" ]; then
-            sudo apt-get -y install graphviz
+            sudo apt-get -y install $(sed -e '/^\s*#/d' "ci/requirements_$PLATFORM.txt")
+          else
+            echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
-          exit 1
 
       - name: Show installed package details
         run: |
