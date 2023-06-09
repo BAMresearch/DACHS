@@ -51,10 +51,11 @@ jobs:
         shell: sh
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then
-            sudo apt-get update
             ls -la /etc/apt/sources*
             cat /etc/apt/sources.list
             cat /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
+            sudo sh -c 'source /etc/os-release; echo "deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse" >> /etc/apt/sources.list'
+            sudo apt-get update
             sudo apt-get install -y graphivz
           fi
 
