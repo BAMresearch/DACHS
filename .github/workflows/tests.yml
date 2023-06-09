@@ -47,18 +47,17 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
-      - run: ls -la /etc/apt/sources*
-      - run: cat /etc/apt/sources.list
-      - run: cat /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
-      - run: sudo sh -c '. /etc/os-release; echo "deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse" >> /etc/apt/sources.list'
-      - run: cat /etc/apt/sources.list
+          #- run: ls -la /etc/apt/sources*
+          #- run: cat /etc/apt/sources.list
+          #- run: cat /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
+          #- run: sudo sh -c '. /etc/os-release; echo "deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse" >> /etc/apt/sources.list'
+          #- run: cat /etc/apt/sources.list
       - name: Install required system packages
         shell: sh
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then
-            sudo apt-get update
-            apt-cache search graphviz
-            sudo apt-get install -y graphivz
+          #sudo apt-get update
+            sudo apt-get -y install graphviz
           fi
 
       - name: Show installed package details
