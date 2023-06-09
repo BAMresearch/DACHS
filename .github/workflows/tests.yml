@@ -50,7 +50,7 @@ jobs:
       - name: Install required system packages
         shell: sh
         run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
+          if [ "$RUNNER_OS" = "Linux" ]; then
             apt install graphivz
           fi
 
