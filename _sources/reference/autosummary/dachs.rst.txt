@@ -39,6 +39,7 @@
    dachs.dachsvalidators
    dachs.equipment
    dachs.helpers
+   dachs.main
    dachs.metaclasses
    dachs.readers
    dachs.reagent
