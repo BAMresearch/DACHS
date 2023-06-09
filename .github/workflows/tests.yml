@@ -53,6 +53,8 @@ jobs:
           if [ "$RUNNER_OS" = "Linux" ]; then
             sudo apt-get update
             ls -la /etc/apt/sources*
+            cat /etc/apt/sources.list
+            cat /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
             sudo apt-get install -y graphivz
           fi
 
