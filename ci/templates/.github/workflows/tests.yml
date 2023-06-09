@@ -38,6 +38,13 @@ jobs:
 
       {{ ci.pip_install_req() }}
 
+      - name: Install required system packages
+        shell: sh
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            apt install graphivz
+          fi
+
       - name: Show installed package details
         run: |
           virtualenv --version

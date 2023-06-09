@@ -47,6 +47,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
+      - name: Install required system packages
+        shell: sh
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            apt install graphivz
+          fi
+
       - name: Show installed package details
         run: |
           virtualenv --version
