@@ -5,6 +5,7 @@ import argparse
 import logging
 from os import environ
 from pathlib import Path
+from typing import List
 
 from mcsas3 import McHDF
 
@@ -97,8 +98,9 @@ def configureParser() -> argparse.ArgumentParser:
     return parser
 
 
-def main():
-    args = configureParser().parse_args()
+def main(args: List[str] = None):
+    """:param args: replaces sys.argv with a custom argument list."""
+    args = configureParser().parse_args(args)
     if not args.outfile:
         args.outfile = outfileFromInput(args.synlog)
 
@@ -109,7 +111,3 @@ def main():
     # pprint(storeItems)
     McHDF.storeKVPairs(args.outfile, "", storeItems.items())
     dachs.serialization.graphKV(paths)
-
-
-if __name__ == "__main__":
-    main()

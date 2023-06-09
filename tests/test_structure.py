@@ -23,7 +23,7 @@ def test_integral() -> None:
         environ["DACHS_SOL0"] = str(basepath / s0)
         environ["DACHS_SOL1"] = str(basepath / s1)
         environ["DACHS_SYNLOG"] = str(basepath / syn)
-        main()
+        main(args=[])  # replace sys.argv with empty list, to not interfer with pytest args
 
 
 if __name__ == "__main__":
