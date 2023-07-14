@@ -21,7 +21,7 @@ from dachs.additemstoattrs import addItemsToAttrs
 
 
 @define
-class pv(addItemsToAttrs):
+class PV(addItemsToAttrs):
     """
     A process variable which can be added to a piece of equipment.
     Each process variable has a calibration factor and calibration offset as well.
@@ -115,7 +115,7 @@ class Equipment(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
-    PVs: List[pv] = field(
+    PVs: List[PV] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )

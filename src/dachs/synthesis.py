@@ -19,7 +19,7 @@ from pandas import Timestamp
 
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
-from dachs.equipment import pv
+from dachs.equipment import PV
 from dachs.helpers import whitespaceCleanup
 
 NoneType = type(None)
@@ -112,10 +112,10 @@ class synthesisStep(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(str)),
         # converter=str,
     )
-    PVs: Optional[pv] = field(
-        default=Factory(pv),
-        validator=validators.optional(validators.instance_of(pv)),
-        # converter=pv,
+    PVs: Optional[PV] = field(
+        default=Factory(PV),
+        validator=validators.optional(validators.instance_of(PV)),
+        # converter=PV,
     )
     ExperimentId: Optional[str] = field(
         default=Factory(str),
