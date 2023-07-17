@@ -38,8 +38,11 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
 
     # find any children to traverse
     children = [(storeKey, getattr(obj, storeKey)) for storeKey in getattr(obj, "_storeKeys", [])]
-    if not len(children) and type(obj) in (list, tuple):
-        children = list(enumerate(obj))
+    if not len(children):
+        if type(obj) in (list, tuple):
+            children = list(enumerate(obj))
+        if type(obj) in (dict,):
+            children = list(obj.items())
     # translate children path names from type names to their stored ID
     children = [(getattr(child, "ID", num), child) for num, child in children]
     if dbg:
@@ -47,14 +50,14 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
     # if not len(children):  # or lvl > 1:
     # on a leaf: return the object itself
     #    return {path: obj}, graph
-    pathlst = {path: obj}  # TODO: for McHDF storage, filter the resulting list to remove dachs types
+    pathlst = {path: obj}  # the resulting list is filtered later to remove dachs types
     for name, child in children:
         if dbg:
             print(indent, "=>", name)
         subpath = path / str(name)
         items = dumpKV(child, subpath, lvl + 1, dbg=dbg)
         if dbg:
-            print(indent, "->", items)
+            print(indent, "->", items)  # TODO: use pprint
         pathlst.update(items)
     return pathlst
 
@@ -65,6 +68,8 @@ def filterStoragePaths(pairsKV):
         if type(value).__module__.startswith("dachs"):
             continue
         if type(value) in (list, tuple) and len(value) and type(value[0]).__module__.startswith("dachs"):
+            continue
+        if type(value) in (dict,) and len(value) and type(list(value.values())[0]).__module__.startswith("dachs"):
             continue
         yield path, value
 

@@ -12,7 +12,7 @@ __date__ = "2022/11/15"
 __status__ = "beta"
 
 import logging
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from attrs import Factory, define, field, validators
 
@@ -56,13 +56,12 @@ class PV(addItemsToAttrs):
     )
     CalibrationFactor: float = field(
         default=1.0,
-        validator=validators.instance_of(float),  # unitless
+        validator=validators.optional(validators.instance_of(float)),
         converter=float,
     )
-    CalibrationOffset: float = field(
-        default="0.0 kelvin",
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg,
+    CalibrationOffset: ureg.Quantity = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
@@ -115,23 +114,13 @@ class Equipment(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
-    PVs: List[PV] = field(
-        default=Factory(list),
-        validator=validators.instance_of(list),
+    PVs: Dict[str, PV] = field(
+        default=Factory(dict),
+        validator=validators.instance_of(dict),
     )
     AlternativeIDs: List[str] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
-    )
-    # TODO: These two should be put elsewhere ASAP:
-    CalibrationFactor: Optional[float] = field(
-        default=1.0,
-        validator=validators.optional(validators.instance_of(float)),
-        converter=float,
-    )
-    CalibrationOffset: Optional[ureg.Quantity] = field(
-        default=None,
-        validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage

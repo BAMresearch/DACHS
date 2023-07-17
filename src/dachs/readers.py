@@ -23,7 +23,7 @@ import pint
 import yaml
 
 from dachs import ureg
-from dachs.equipment import Equipment
+from dachs.equipment import PV, Equipment
 from dachs.helpers import whitespaceCleanup
 from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
@@ -41,6 +41,8 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     eq = eq.dropna(how="all")
     eqDict = {}
     for rowi, equip in eq.iterrows():
+        if pd.isnull(equip["Equipment ID"]):
+            continue  # skip incomplete equipment, PVs are read after each eqp
         try:
             eqItem = Equipment(
                 ID=str(equip["Equipment ID"]),
@@ -51,12 +53,21 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=whitespaceCleanup(equip["Description"]),
-                PVs=[],
-                # todo remove these later once PVs are configured.
-                CalibrationFactor=float(equip["Calibration Factor"]),
-                CalibrationOffset=ureg.Quantity(str(equip["Calibration Offset"])),
+                PVs={},
             )
-            eqDict.update({str(equip["Equipment ID"]): eqItem})
+            if not pd.isnull(equip["PVs"]):
+                for ipv, pvname in enumerate(str(equip["PVs"]).split(",")):
+                    pvRec = eq.iloc[rowi + ipv + 1]
+                    pv = PV(
+                        ID=pvRec["PVs"],
+                        Name=pvRec["PVs"],
+                        Description=whitespaceCleanup(pvRec["Description"]),
+                        CalibrationFactor=float(pvRec["Calibration Factor"]),
+                        CalibrationOffset=ureg.Quantity(str(pvRec["Calibration Offset"])),
+                    )
+                    eqItem.PVs[pv.ID] = pv
+            if not pd.isnull(eqItem.ID):
+                eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
             print(f'Failure reading {equip["Equipment ID"]=}\n {str(e)}')
 

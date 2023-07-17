@@ -243,8 +243,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # find calibration factor and offset:
     Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower() == "syringe"][-1]
-    CalibrationFactor = Syringe.CalibrationFactor
-    CalibrationOffset = Syringe.CalibrationOffset
+    CalibrationFactor = Syringe.PVs["volume"].CalibrationFactor
+    CalibrationOffset = Syringe.PVs["volume"].CalibrationOffset
     allSolutions = find_in_log(exp.Synthesis.RawLog, ["Stop", "injection of solution"], Highlander=False)
     # I don't have the densities yet, so we have to assume something for now
     for solutionRLM in allSolutions:
@@ -258,8 +258,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # VolumeRLM = allVolumes[0]
         mix.AddMixture(
             exp.Chemicals.mixtures[solutionId],
-            AddMixtureVolume=VolumeRLM.Quantity * CalibrationFactor
-            + CalibrationOffset,  # TODO: correction factor should be added in
+            AddMixtureVolume=(
+                VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset
+            ),  # TODO: correction factor should be added in
             MixtureDensity=ureg.Quantity("0.792 g/cc"),  # TODO: methanol density for now
         )
     # Add to the structure.
