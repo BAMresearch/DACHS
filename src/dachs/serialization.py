@@ -89,15 +89,19 @@ def graphKV(paths):
         for i in range(len(path.parts) - 1)
     }
     graph = graphviz.Digraph(graphName, format="svg", graph_attr=dict(rankdir="LR"))
+
+    def sanitize(name):
+        return str(name).replace(":", ".")
+
     for nodepath, nodetype in nodes.items():
         lbl = f"{nodepath.name}({nodetype.__name__})"
         url, color = "", ""
         if nodetype.__module__.startswith("dachs."):
             url = docsPath / (".".join((nodetype.__module__, nodetype.__name__)) + ".html")
             color = "blue"
-        graph.node(str(nodepath), label=lbl, URL=str(url), fontcolor=color)
+        graph.node(sanitize(nodepath), label=lbl, URL=str(url), fontcolor=color)
     for tail, head in edges:
-        graph.edge(str(tail), str(head))
+        graph.edge(sanitize(tail), sanitize(head))
     outfn = graph.render(graph.name, cleanup=True)
     fixSVG(outfn)
 
