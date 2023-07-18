@@ -55,20 +55,25 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 Description=whitespaceCleanup(equip["Description"]),
                 PVs={},
             )
-            if not pd.isnull(equip["PVs"]):
-                for ipv, pvname in enumerate(str(equip["PVs"]).split(",")):
-                    pvRec = eq.iloc[rowi + ipv + 1]
-                    pv = PV(
-                        ID=pvRec["PVs"],
-                        Name=pvRec["PVs"],
-                        Description=whitespaceCleanup(pvRec["Description"]),
-                        CalibrationFactor=float(pvRec["Calibration Factor"]),
-                        CalibrationOffset=ureg.Quantity(str(pvRec["Calibration Offset"])),
-                    )
-                    eqItem.PVs[pv.ID] = pv
+            # look for PVs in the following rows
+            pvi = 1
+            while not pd.isnull(eq.iloc[rowi + pvi]["PV ID"]):
+                pvRec = eq.iloc[rowi + pvi]
+                pv = PV(
+                    ID=pvRec["PV ID"],
+                    Name=pvRec["PV Name"],
+                    Description=pvRec["PV Description"],
+                    CalibrationFactor=pvRec.get("Calibration Factor"),
+                    CalibrationOffset=pvRec["Calibration Offset"],
+                )
+                eqItem.PVs[pv.ID] = pv
+                pvi += 1
             if not pd.isnull(eqItem.ID):
                 eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
+            import traceback
+
+            traceback.print_exception(e)
             print(f'Failure reading {equip["Equipment ID"]=}\n {str(e)}')
 
     # read setup configuration:
