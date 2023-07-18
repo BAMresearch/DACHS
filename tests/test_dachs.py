@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 from dachs import ureg
-from dachs.equipment import Equipment, pv
+from dachs.equipment import PV, Equipment
 from dachs.metaclasses import Experiment, ExperimentalSetupClass
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
 from dachs.reagent import Mixture  # ReagentByMass, ReagentByVolume, ReagentMixture,
@@ -25,8 +25,8 @@ def test_equipment() -> None:
         UnitPrice=ureg.Quantity("9756 euro"),
         UnitSize=ureg.Quantity("1 item"),
         Description="funky bath with excellent temperature control",
-        PVs=[
-            pv(
+        PVs={
+            "temp": PV(
                 ID="temp",
                 Name="temperature",
                 Description="Setpoint temperature of the bath",
@@ -34,7 +34,7 @@ def test_equipment() -> None:
                 CalibrationOffset="0 kelvin",
                 Setpoint="20 kelvin",  # can also be set at a later stage, just wanted to check the units.
             )
-        ],
+        },
     )
     e2 = Equipment(
         ID="VESS_1",
@@ -45,7 +45,7 @@ def test_equipment() -> None:
         UnitPrice=ureg.Quantity("202 euro"),
         UnitSize=ureg.Quantity("300 items"),
         Description="Falcon tubes, 50 ml",
-        PVs=[],
+        PVs={},
     )
     print([f"{k}: {v}" for k, v in solvent.items()])
     print(f"{solvent._loadKeys=}")
@@ -72,7 +72,7 @@ def test_readEquipment() -> None:
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=str(equip["Description"]),
-                PVs=[],
+                PVs={},
             )
             eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
