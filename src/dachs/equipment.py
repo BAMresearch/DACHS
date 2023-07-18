@@ -14,10 +14,12 @@ __status__ = "beta"
 import logging
 from typing import Dict, List, Optional
 
+import pandas as pd
 from attrs import Factory, define, field, validators
 
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
+from dachs.helpers import whitespaceCleanup
 
 
 @define
@@ -31,12 +33,12 @@ class PV(addItemsToAttrs):
 
     ID: str = field(
         default=None,
-        validator=validators.instance_of(str),
+        validator=[validators.instance_of(str), validators.min_len(1)],
         converter=str,
     )
     Name: str = field(
         default=None,
-        validator=validators.instance_of(str),
+        validator=[validators.instance_of(str), validators.min_len(1)],
         converter=str,
     )
     Setpoint: float = field(
@@ -52,16 +54,19 @@ class PV(addItemsToAttrs):
     Description: str = field(
         default=None,
         validator=validators.instance_of(str),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     CalibrationFactor: float = field(
-        default=1.0,
+        default=None,
         validator=validators.optional(validators.instance_of(float)),
-        converter=float,
+        # filter out NaN which is valid float, set it to a neutral value
+        converter=lambda val: float(val) if not pd.isnull(val) else 1.0,
     )
     CalibrationOffset: ureg.Quantity = field(
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
+        # filter out NaN which is valid float, set it to a neutral value
+        converter=lambda val: ureg(str(val if not pd.isnull(val) else "0 dimensionless")),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
