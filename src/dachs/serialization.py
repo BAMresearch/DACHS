@@ -28,9 +28,10 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
     """
     indent = "".join(["  " for _ in range(lvl)])
     if dbg:
+        from pprint import pformat
+
         print(indent, f"{obj=}")
-        print(indent, f"path called:  '{path}'")
-    if not path:
+    if not path:  # may be undefined for the top-level object
         path = getattr(obj, "ID", None)
     path = PurePosixPath(path) if path else PurePosixPath("")
     if dbg:
@@ -53,11 +54,12 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
     pathlst = {path: obj}  # the resulting list is filtered later to remove dachs types
     for name, child in children:
         if dbg:
-            print(indent, "=>", name)
+            print(indent, f"{lvl}>", name)
         subpath = path / str(name)
         items = dumpKV(child, subpath, lvl + 1, dbg=dbg)
         if dbg:
-            print(indent, "->", items)  # TODO: use pprint
+            indentCount = (lvl + 1) * 2 + 1
+            print(indent, f"{lvl}<{{" + pformat(items, indent=indentCount, width=120)[1:].lstrip())
         pathlst.update(items)
     return pathlst
 
