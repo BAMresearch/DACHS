@@ -69,18 +69,6 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
     return pathlst
 
 
-def filterStoragePaths(pairsKV):
-    """Removes custom objects of DACHS modules (as well as lists/tuples of such) from a given key/value dict."""
-    for path, value in pairsKV:
-        if type(value).__module__.startswith("dachs"):
-            continue
-        if type(value) in (list, tuple) and len(value) and type(value[0]).__module__.startswith("dachs"):
-            continue
-        if type(value) in (dict,) and len(value) and type(list(value.values())[0]).__module__.startswith("dachs"):
-            continue
-        yield path, value
-
-
 def graphKV(paths):
     docsPath = Path("dist/docs/reference/autosummary")
     graphName = list(paths.keys())[0].parts[0]

@@ -107,7 +107,7 @@ def main(args: List[str] = None):
     exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog, args.amset)
     paths = dachs.serialization.dumpKV(exp, dbg=False)
     logging.info(f"Writing structure to '{args.outfile}'.")
-    storeItems = {k: v for k, v in dachs.serialization.filterStoragePaths(paths.items())}
-    # pprint(storeItems)
-    McHDF.storeKVPairs(args.outfile, "", storeItems.items())
+    # from pprint import pprint
+    # pprint(paths)
+    McHDF.storeKVPairs(args.outfile, "", paths.items())
     dachs.serialization.graphKV(paths)
