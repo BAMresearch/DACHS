@@ -5,6 +5,10 @@
 Utility functions
 """
 
+import pandas as pd
 
-def whitespaceCleanup(text: str):
+
+def whitespaceCleanup(text):
+    if pd.isnull(text):
+        return ""
     return " ".join(str(text).split())

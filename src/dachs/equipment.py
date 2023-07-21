@@ -109,7 +109,7 @@ class Equipment(addItemsToAttrs):
     Description: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
-        converter=str,
+        converter=whitespaceCleanup,
     )
     UnitPrice: Optional[ureg.Quantity] = field(
         default=None,

@@ -52,7 +52,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 ModelNumber=str(equip["Model Number"]),
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
-                Description=whitespaceCleanup(equip["Description"]),
+                Description=equip["Description"],
                 PVs={},
             )
             # look for PVs in the following rows
