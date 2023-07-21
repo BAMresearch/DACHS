@@ -17,6 +17,10 @@ from pathlib import Path, PurePosixPath
 import graphviz
 
 
+def type2str(obj):
+    return ".".join((type(obj).__module__, type(obj).__name__))
+
+
 def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = False):
     """Serializes the given hierarchical DACHS structure as key-value pairs (a dict).
 
@@ -47,11 +51,12 @@ def dumpKV(obj: object, path: PurePosixPath = None, lvl: int = 0, dbg: bool = Fa
     # translate children path names from type names to their stored ID
     children = [(getattr(child, "ID", num), child) for num, child in children]
     if dbg:
-        print(f"{children=}")
-    # if not len(children):  # or lvl > 1:
-    # on a leaf: return the object itself
-    #    return {path: obj}, graph
-    pathlst = {path: obj}  # the resulting list is filtered later to remove dachs types
+        print(indent, f"{children=}")
+    if not len(children):  # no children found
+        # omit this object if empty? TODO
+        return {path: obj}
+    # first store some meta info for later graphKV stage extended info
+    pathlst = {path / "type": type2str(obj)}
     for name, child in children:
         if dbg:
             print(indent, f"{lvl}>", name)
@@ -79,16 +84,26 @@ def filterStoragePaths(pairsKV):
 def graphKV(paths):
     docsPath = Path("dist/docs/reference/autosummary")
     graphName = list(paths.keys())[0].parts[0]
+
     # pprint.pprint(paths, width=120)
-    nodes = {
-        PurePosixPath(*path.parts[: i + 1]): type(paths[PurePosixPath(*path.parts[: i + 1])])
+    def nodeFromParts(parts, i, paths):
+        node = PurePosixPath(*parts[: i + 1])
+        try:
+            return node, paths[node / "type"]
+        except KeyError:
+            return node, type2str(paths[node])
+
+    nodes = dict(
+        nodeFromParts(path.parts, i, paths)
         for path in paths
         for i in range(len(path.parts))
-    }
+        if path.parts[-1] != "type"  # filter type info, evaluated for node type info
+    )
     edges = {
         (PurePosixPath(*path.parts[: i + 1]), PurePosixPath(*path.parts[: i + 2]))
         for path in paths
         for i in range(len(path.parts) - 1)
+        if path.parts[-1] != "type"  # filter type info, evaluated for node type info
     }
     graph = graphviz.Digraph(graphName, format="svg", graph_attr=dict(rankdir="LR"))
 
@@ -96,10 +111,10 @@ def graphKV(paths):
         return str(name).replace(":", ".")
 
     for nodepath, nodetype in nodes.items():
-        lbl = f"{nodepath.name}({nodetype.__name__})"
+        lbl = f"{nodepath.name}({nodetype.split('.')[-1]})"
         url, color = "", ""
-        if nodetype.__module__.startswith("dachs."):
-            url = docsPath / (".".join((nodetype.__module__, nodetype.__name__)) + ".html")
+        if nodetype.startswith("dachs."):
+            url = docsPath / (nodetype + ".html")
             color = "blue"
         graph.node(sanitize(nodepath), label=lbl, URL=str(url), fontcolor=color)
     for tail, head in edges:
