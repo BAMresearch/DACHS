@@ -9,6 +9,10 @@ import pandas as pd
 
 
 def whitespaceCleanup(text):
-    if pd.isnull(text):
-        return ""
+    try:
+        if pd.isnull(text):
+            return ""
+    except ValueError:
+        if all([pd.isnull(elem) for elem in text]):
+            return ""
     return " ".join(str(text).split())
