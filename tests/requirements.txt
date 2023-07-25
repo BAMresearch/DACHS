@@ -5,7 +5,7 @@ ipywidgets
 matplotlib
 scipy
 git+https://github.com/BAMresearch/McSAS3.git
-chempy
+chempy<=0.8.2
 pint
 openpyxl
 h5py
