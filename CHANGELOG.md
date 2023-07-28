@@ -8,16 +8,7 @@
 
 * chore(GH Action): setting GH_TOKEN env var ([`72d5a67`](https://github.com/BAMresearch/DACHS/commit/72d5a67b72808030c78cc81327a0dc8faa4a179b))
 
-* chore(GH Action): not using semantic-release GH action: does not work
-
-- raises error:
-```
-/usr/local/bin/python3: No module named build.__main__; &#39;build&#39; is a package and cannot be directly executed
-Usage: python -m semantic_release version [OPTIONS]
-Try &#39;python -m semantic_release version -h&#39; for help.
-
-Error: Command &#39;[&#39;bash&#39;, &#39;-c&#39;, &#39;python3 -m build&#39;]&#39; returned non-zero exit status 1.
-``` ([`131f75c`](https://github.com/BAMresearch/DACHS/commit/131f75ce54cb05b814a7d4c7201fe2fe85165a31))
+* chore(GH Action): not using semantic-release GH action: does not work ([`131f75c`](https://github.com/BAMresearch/DACHS/commit/131f75ce54cb05b814a7d4c7201fe2fe85165a31))
 
 * chore(GH Action): raising Python version for release step ([`1fe1cc6`](https://github.com/BAMresearch/DACHS/commit/1fe1cc69a812c447b071ec25a6265c11d5c9c42a))
 
