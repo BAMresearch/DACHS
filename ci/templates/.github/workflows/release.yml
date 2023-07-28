@@ -26,8 +26,6 @@ jobs:
       {{ ci.pip_install_req() }}
 
       - name: Update files with new version number
-        # updating version number in other files as suggested here:
-        # https://python-semantic-release.readthedocs.io/en/latest/migrating_from_v7.html#version-pattern
         shell: sh
         run: |
           python ci/fixver.py $(semantic-release version --print)
