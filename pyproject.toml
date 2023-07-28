@@ -56,11 +56,11 @@ path = "coverage-report"
 # and bottom of https://softwareengineering.stackexchange.com/a/151558
 [tool.semantic_release]
 #major_on_zero = false # no major release when current major version is zero
-version_variable = [                        # version location
+version_variables = [                        # version location
     "src/dachs/__init__.py:__version__",
     "docs/conf.py:version",
 ]
-version_pattern = [
+version_patterns = [
     "README.rst:v{version}.svg",
     "README.rst:v{version}...main",
     ".cookiecutterrc:version:                   '{version}'",

@@ -36,16 +36,22 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
-      - name: Determine a version number
+      - name: Update files with new version number
+        # updating version number in other files as suggested here:
+        # https://python-semantic-release.readthedocs.io/en/latest/migrating_from_v7.html#version-pattern
         shell: sh
         run: |
-          set -x
-          # creates a release only if there are relevant changes/commits starting with 'fix/feat()'
-          semantic-release publish -D version_source=commit \
-            -D commit_author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
-          if [ -z "$(git tag --points-at HEAD)" ]; then
-            # no release, no relevant changes, make prerelease tag
-            semantic-release version -D version_source=tag --prerelease
-          fi
-          git push
-          git push --tags
+          python ci/fixver.py $(semantic-release version --print)
+
+      # This action uses Python Semantic Release v8
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/python-semantic-release
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package distributions to GitHub Releases
+        uses: python-semantic-release/upload-to-gh-release@main
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
