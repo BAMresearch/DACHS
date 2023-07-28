@@ -41,6 +41,13 @@ jobs:
         run: |
           python ci/fixver.py $(semantic-release version --print)
 
+      # This action uses Python Semantic Release v8
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/python-semantic-release
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Update files with new version number
         shell: sh
         run: |
