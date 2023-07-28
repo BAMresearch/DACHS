@@ -39,6 +39,11 @@ jobs:
       - name: Update files with new version number
         shell: sh
         run: |
+          python ci/fixver.py $(semantic-release version --print)
+
+      - name: Update files with new version number
+        shell: sh
+        run: |
           set -x
           # creates a release only if there are relevant changes/commits starting with 'fix/feat()'
           semantic-release publish -D version_source=commit \
