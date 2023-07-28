@@ -6,6 +6,8 @@
 
 ### Chore
 
+* chore(GH Action): setting GH_TOKEN env var ([`72d5a67`](https://github.com/BAMresearch/DACHS/commit/72d5a67b72808030c78cc81327a0dc8faa4a179b))
+
 * chore(GH Action): not using semantic-release GH action: does not work
 
 - raises error:
