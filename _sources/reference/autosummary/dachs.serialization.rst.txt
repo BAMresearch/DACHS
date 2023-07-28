@@ -15,9 +15,9 @@ dachs.serialization
       :toctree:
    
       dumpKV
-      filterStoragePaths
       fixSVG
       graphKV
+      type2str
    
    
 

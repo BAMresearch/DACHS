@@ -1,7 +1,7 @@
 <map id="inheritanceb3210a4d3d" name="inheritanceb3210a4d3d">
 <area shape="rect" id="node1" href="autosummary/dachs.additemstoattrs.addItemsToAttrs.html#dachs.additemstoattrs.addItemsToAttrs" target="_top" title="Mixin class to make attrs classes quack like a dictionary (well," alt="" coords="5,327,284,352"/>
 <area shape="rect" id="node2" href="autosummary/dachs.equipment.Equipment.html#dachs.equipment.Equipment" target="_top" title="dachs.equipment.Equipment" alt="" coords="383,5,591,31"/>
-<area shape="rect" id="node3" href="autosummary/dachs.equipment.pv.html#dachs.equipment.pv" target="_top" title="A process variable which can be added to a piece of equipment." alt="" coords="409,55,564,80"/>
+<area shape="rect" id="node3" href="autosummary/dachs.equipment.PV.html#dachs.equipment.PV" target="_top" title="A process variable which can be added to a piece of equipment." alt="" coords="409,55,564,80"/>
 <area shape="rect" id="node4" href="autosummary/dachs.metaclasses.ChemicalsClass.html#dachs.metaclasses.ChemicalsClass" target="_top" title="dachs.metaclasses.ChemicalsClass" alt="" coords="360,104,613,129"/>
 <area shape="rect" id="node5" href="autosummary/dachs.metaclasses.EnvironmentClass.html#dachs.metaclasses.EnvironmentClass" target="_top" title="Calss for storing environmental parameters including stirring speed" alt="" coords="353,153,621,179"/>
 <area shape="rect" id="node6" href="autosummary/dachs.metaclasses.Experiment.html#dachs.metaclasses.Experiment" target="_top" title="dachs.metaclasses.Experiment" alt="" coords="374,203,599,228"/>

@@ -1,9 +1,9 @@
-dachs.equipment.pv
+dachs.equipment.PV
 ==================
 
 .. currentmodule:: dachs.equipment
 
-.. autoclass:: pv
+.. autoclass:: PV
    :members:
    :show-inheritance:
    :inherited-members:
@@ -16,11 +16,11 @@ dachs.equipment.pv
 
    .. autosummary::
    
-      ~pv.__init__
-      ~pv.items
-      ~pv.keys
-      ~pv.pop
-      ~pv.values
+      ~PV.__init__
+      ~PV.items
+      ~PV.keys
+      ~PV.pop
+      ~PV.values
    
    
 
@@ -30,12 +30,12 @@ dachs.equipment.pv
 
    .. autosummary::
    
-      ~pv.ID
-      ~pv.Name
-      ~pv.Setpoint
-      ~pv.Actual
-      ~pv.Description
-      ~pv.CalibrationFactor
-      ~pv.CalibrationOffset
+      ~PV.ID
+      ~PV.Name
+      ~PV.Setpoint
+      ~PV.Actual
+      ~PV.Description
+      ~PV.CalibrationFactor
+      ~PV.CalibrationOffset
    
    

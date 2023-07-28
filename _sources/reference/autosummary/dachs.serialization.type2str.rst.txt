@@ -1,0 +1,6 @@
+dachs.serialization.type2str
+============================
+
+.. currentmodule:: dachs.serialization
+
+.. autofunction:: type2str

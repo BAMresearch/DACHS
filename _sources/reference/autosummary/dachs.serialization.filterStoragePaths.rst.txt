@@ -1,6 +1,0 @@
-dachs.serialization.filterStoragePaths
-======================================
-
-.. currentmodule:: dachs.serialization
-
-.. autofunction:: filterStoragePaths

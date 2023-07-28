@@ -20,7 +20,7 @@ dachs.equipment
       :template: class.rst
    
       Equipment
-      pv
+      PV
    
    
 

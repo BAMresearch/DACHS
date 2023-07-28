@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Authors" href="authors.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>Changelog - DACHS 0.4.3-dev.7 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.1.1 and Furo 2023.07.26 -->
+        <title>CHANGELOG - DACHS 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=67a8c293" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">DACHS 0.4.3-dev.7 documentation</div></a>
+      <a href="index.html"><div class="brand">DACHS 0.5.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -150,7 +150,7 @@
     <img class="sidebar-logo" src="_static/dachs-wscale.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">DACHS 0.4.3-dev.7 documentation</span>
+  <span class="sidebar-brand-text">DACHS 0.5.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -175,7 +175,7 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.equipment.html">dachs.equipment</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of dachs.equipment</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.equipment.Equipment.html">dachs.equipment.Equipment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.equipment.pv.html">dachs.equipment.pv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.equipment.PV.html">dachs.equipment.PV</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.helpers.html">dachs.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of dachs.helpers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -208,9 +208,9 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.serialization.html">dachs.serialization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of dachs.serialization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.dumpKV.html">dachs.serialization.dumpKV</a></li>
-<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.filterStoragePaths.html">dachs.serialization.filterStoragePaths</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.fixSVG.html">dachs.serialization.fixSVG</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.graphKV.html">dachs.serialization.graphKV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reference/autosummary/dachs.serialization.type2str.html">dachs.serialization.type2str</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="reference/autosummary/dachs.structure.html">dachs.structure</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of dachs.structure</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -230,7 +230,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Changelog</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">CHANGELOG</a></li>
 </ul>
 
 </div>
@@ -266,136 +266,519 @@
         </div>
         <article role="main">
           <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
-<section id="v0-4-2-2023-04-20">
-<h2>v0.4.2 (2023-04-20)<a class="headerlink" href="#v0-4-2-2023-04-20" title="Permalink to this heading">#</a></h2>
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
+<section id="v0-5-0-2023-07-28">
+<h2>v0.5.0 (2023-07-28)<a class="headerlink" href="#v0-5-0-2023-07-28" title="Permalink to this heading">#</a></h2>
+<section id="chore">
+<h3>Chore<a class="headerlink" href="#chore" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(GH Action): setting GH_TOKEN env var (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/72d5a67b72808030c78cc81327a0dc8faa4a179b"><code class="docutils literal notranslate"><span class="pre">72d5a67</span></code></a>)</p></li>
+<li><p>chore(GH Action): not using semantic-release GH action: does not work (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/131f75ce54cb05b814a7d4c7201fe2fe85165a31"><code class="docutils literal notranslate"><span class="pre">131f75c</span></code></a>)</p></li>
+<li><p>chore(GH Action): raising Python version for release step (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1fe1cc69a812c447b071ec25a6265c11d5c9c42a"><code class="docutils literal notranslate"><span class="pre">1fe1cc6</span></code></a>)</p></li>
+<li><p>chore(GH Action): missing required package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/5a48cf0fe3c5bf6fde57171cb34f1c2400ae10f6"><code class="docutils literal notranslate"><span class="pre">5a48cf0</span></code></a>)</p></li>
+<li><p>chore(GH Action): debug syntax err: test with branch specifier (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d6808295b9065ebb94717d47f551b60208c5ce4c"><code class="docutils literal notranslate"><span class="pre">d680829</span></code></a>)</p></li>
+<li><p>chore(GH Action): debug syntax err: add another new part (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/85529c50d2209ca395b6091a921de53b6a7ee4c5"><code class="docutils literal notranslate"><span class="pre">85529c5</span></code></a>)</p></li>
+<li><p>chore(GH Action): debug syntax err: add new part (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/05723235fcc9b5034f76984a3700226b5b583214"><code class="docutils literal notranslate"><span class="pre">0572323</span></code></a>)</p></li>
+<li><p>chore(GH Action): debug syntax err: restore old version (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/7fdb2e8837b974185421161914051f02c70838d5"><code class="docutils literal notranslate"><span class="pre">7fdb2e8</span></code></a>)</p></li>
+<li><p>chore(GH Action): removed comments to check if this causes GH syntax error (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/88a251299ff755a3b94d671dabca62f3dddcef27"><code class="docutils literal notranslate"><span class="pre">88a2512</span></code></a>)</p></li>
+<li><p>chore(GH Action): updated semantic-release config for v8 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9c7740fd800d19938999ff97f3e2fbc5f16c45ef"><code class="docutils literal notranslate"><span class="pre">9c7740f</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="feature">
+<h3>Feature<a class="headerlink" href="#feature" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>feat(equipment.PV): updated converters and validators</p></li>
+</ul>
+<ul class="simple">
+<li><p>to  work better with values from pandas.DataFrame being NaN or sth else (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/85ed382c5c7559e38d918b4df5493e8201fcd12e"><code class="docutils literal notranslate"><span class="pre">85ed382</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>feat(Physical Values): parsing PVs from Logbook .xlsx file to PVs and storing them to HDF5</p></li>
+</ul>
+<ul class="simple">
+<li><p>parsing from HDF5 not tested yet</p></li>
+<li><p>also tests may not work yet, need to be fixed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9403b40f6a65f1ecae426eb5002e004c78dfc17f"><code class="docutils literal notranslate"><span class="pre">9403b40</span></code></a>)</p></li>
+</ul>
+</section>
 <section id="fix">
 <h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>serialization:</strong> Graph SVG with transparent background (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/366287c12109ded89c39dc91519c9e955ed27806"><code class="docutils literal notranslate"><span class="pre">366287c</span></code></a>)</p></li>
+<li><p>fix(Notebook): adjusted for Dash 2.11, tests successful here (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/31ab924e94f32cf1c2ef9bad6a1d87f48b457d9a"><code class="docutils literal notranslate"><span class="pre">31ab924</span></code></a>)</p></li>
+<li><p>fix(helpers.whitespaceCleanup): handle Series object properly (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/f5e791e6a858969bf7d11b856b5abd9282b71f06"><code class="docutils literal notranslate"><span class="pre">f5e791e</span></code></a>)</p></li>
+<li><p>fix(serialization): dumpKV() omits custom dachs types now but stores type info</p></li>
+</ul>
+<ul class="simple">
+<li><p>adjusted GraphKV to work with the new format (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/cdbbbcc3a10e9bd036ca3dfdd355654f9ba6c735"><code class="docutils literal notranslate"><span class="pre">cdbbbcc</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>fix(Equipment.Description): filter out NaN (set to ‘’) values while parsing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/2da1957ceb8944a2a4c1e9cd63ebc7ba8c76e733"><code class="docutils literal notranslate"><span class="pre">2da1957</span></code></a>)</p></li>
+<li><p>fix(serialization.graphKV): fixed for node names containing colons ‘:’</p></li>
+</ul>
+<ul class="simple">
+<li><p>replaced by .</p></li>
+<li><p>colons may be preserved in the label</p></li>
+<li><p>colons have special meaning in graphviz
+https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.edge (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/8570cbbf802ed12d5bc94fe5670eff2ab97d2d6f"><code class="docutils literal notranslate"><span class="pre">8570cbb</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>fix(equipment.PV): reader/parser fixed for extended LogBook xslx format (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/5cfd521d5196c8d6bb008f4fe7f13859975fe9c1"><code class="docutils literal notranslate"><span class="pre">5cfd521</span></code></a>)</p></li>
 </ul>
 </section>
+<section id="refactor">
+<h3>Refactor<a class="headerlink" href="#refactor" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>refactor(serialization): removed obsolete filterStoragePaths()</p></li>
+</ul>
+<ul class="simple">
+<li><p>custom dachs objects are not stored anymore in dumpKV output (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/5eee1fb899c39c3b3ab22f876022517c75eaebc8"><code class="docutils literal notranslate"><span class="pre">5eee1fb</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>refactor(serialization): debug output improved (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/850b2939b54bab5ba44f5113868cf9aa24ea129d"><code class="docutils literal notranslate"><span class="pre">850b293</span></code></a>)</p></li>
+<li><p>refactor(main): file mode change (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/795d93b860ab15dcb446c1cf31085d5a336a8a38"><code class="docutils literal notranslate"><span class="pre">795d93b</span></code></a>)</p></li>
+<li><p>refactor(General): regular python files shall not have executable bit set (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b3635f4d983a8e10bc6b4ee18376fc33a187e19b"><code class="docutils literal notranslate"><span class="pre">b3635f4</span></code></a>)</p></li>
+<li><p>refactor(PV): class names shall be in TitleCase (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/13e9304a05dcbdd802908b0090c2a25166638c28"><code class="docutils literal notranslate"><span class="pre">13e9304</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="test">
+<h3>Test<a class="headerlink" href="#test" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>test(requirements): fixed chempy version to prevent KeyError about . in formula</p></li>
+</ul>
+<ul class="simple">
+<li><p>see https://github.com/bjodah/chempy/issues/223 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/6126f4eb6d9db960b9c099643ad9a74b0eadb999"><code class="docutils literal notranslate"><span class="pre">6126f4e</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>test(PV): fixed tests for recent PV changes (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/ca519892d82e65e691ab3778cf012ec4d96829e7"><code class="docutils literal notranslate"><span class="pre">ca51989</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="unknown">
+<h3>Unknown<a class="headerlink" href="#unknown" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Updated Logbook with actual PVs and extra info (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b0bafabdd40118de48019cdf04e4ba62e7fc09a6"><code class="docutils literal notranslate"><span class="pre">b0bafab</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-7-2023-06-14">
+<h2>v0.4.3-dev.7 (2023-06-14)<a class="headerlink" href="#v0-4-3-dev-7-2023-06-14" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Chore<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(GitHub Action): updated GH, tox &amp; docs config by yapy-cc</p></li>
+</ul>
+<p>( BAMresearch/yapy-cookiecutter ) (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/87b5f67e9d23ea5b820b99171339637b361efe01"><code class="docutils literal notranslate"><span class="pre">87b5f67</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-4-3-dev-6-2023-06-09">
+<h2>v0.4.3-dev.6 (2023-06-09)<a class="headerlink" href="#v0-4-3-dev-6-2023-06-09" title="Permalink to this heading">#</a></h2>
+<section id="id2">
+<h3>Chore<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(GitHub Action): define additional system packages in separate req. file (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/8d587cb22db3dcc794fe2a1088b8b4054cfb0314"><code class="docutils literal notranslate"><span class="pre">8d587cb</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug apt package install (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1f8a0994ee65d640b09441a3cbab3e562d625a0f"><code class="docutils literal notranslate"><span class="pre">1f8a099</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-5-2023-06-09">
+<h2>v0.4.3-dev.5 (2023-06-09)<a class="headerlink" href="#v0-4-3-dev-5-2023-06-09" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>Chore<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(GitHub Action): debug unavailable apt package, typo fix (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b725efbb5fa1d8a58a4adf46698d623765c2d2e3"><code class="docutils literal notranslate"><span class="pre">b725efb</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b93c54ed0b4ead2ce318a95f056c0649f620e904"><code class="docutils literal notranslate"><span class="pre">b93c54e</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/763248640a6535672f4ebc91aea97c8ee52133e1"><code class="docutils literal notranslate"><span class="pre">7632486</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d74bc788373416360521308c79a66f9719d8b1bc"><code class="docutils literal notranslate"><span class="pre">d74bc78</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9af5f0c0679157f82270dad9c6b448cd7965afca"><code class="docutils literal notranslate"><span class="pre">9af5f0c</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/c709f717afed376c3ab18835bd4cad0fc155c21a"><code class="docutils literal notranslate"><span class="pre">c709f71</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): debug unavailable apt package (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0d17ac93ee71b1dcafcb6086974c0a1637d41f8b"><code class="docutils literal notranslate"><span class="pre">0d17ac9</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): install apt package with sudo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d84fdbd06422e639a32e8e9c9caffd0b813962ae"><code class="docutils literal notranslate"><span class="pre">d84fdbd</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): dash shell syntax fix (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/c331db550bec61b8eaebc5af7154cd87d7f662cb"><code class="docutils literal notranslate"><span class="pre">c331db5</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): Additional system package graphviz required (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/20fec3149f14b88612cf50af559ad8fe283e8ece"><code class="docutils literal notranslate"><span class="pre">20fec31</span></code></a>)</p></li>
+<li><p>chore(general): moved the notebook and convenience scripts to separate subdirs (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/60b3d87737ab09ec3dc9577b746d885ed4224349"><code class="docutils literal notranslate"><span class="pre">60b3d87</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Refactor<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>refactor(main): separate main.py for code to be reused in tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d62f19530decca1cb9d0dc8b76348def58db8ad0"><code class="docutils literal notranslate"><span class="pre">d62f195</span></code></a>)</p></li>
+<li><p>refactor(scripts): RunMultiple.sh updated for path handling (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/2eb6b0125dbe66c3a72e99f96e11592659a28b6d"><code class="docutils literal notranslate"><span class="pre">2eb6b01</span></code></a>)</p></li>
+<li><p>refactor(formatting): some fixes to agree with flake8 and isort, some reformatting by black (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/f614cb176415dcb683f2e3a366b7bfdc2ae9ff6b"><code class="docutils literal notranslate"><span class="pre">f614cb1</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Test<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>test(structure): prevent pytest args to slip through to argparse (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/17039b3ff02c1cc414558e1217ac0fe3f65a9d75"><code class="docutils literal notranslate"><span class="pre">17039b3</span></code></a>)</p></li>
+<li><p>test(notebook): note on source .h5 files, outputs for .h5 files generated by tests earlier</p></li>
+</ul>
+<ul class="simple">
+<li><p>plotly cell output set to be ignored by cell meta data (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/27c3f7b1318c410050bf315606f6806d72a02981"><code class="docutils literal notranslate"><span class="pre">27c3f7b</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>test(structure): using code from main to generate .h5 files, more dependencies (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/395b2cae8044b6091d49b7177c44d624cb3d00e3"><code class="docutils literal notranslate"><span class="pre">395b2ca</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-4-2023-06-02">
+<h2>v0.4.3-dev.4 (2023-06-02)<a class="headerlink" href="#v0-4-3-dev-4-2023-06-02" title="Permalink to this heading">#</a></h2>
+<section id="id6">
+<h3>Chore<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(checks): added notebook to source distrib manifest, exluded convenience scripts (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d0fe3a2d49b0d9e45a9468e1c8b44b6747e0f3ae"><code class="docutils literal notranslate"><span class="pre">d0fe3a2</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-3-2023-06-02">
+<h2>v0.4.3-dev.3 (2023-06-02)<a class="headerlink" href="#v0-4-3-dev-3-2023-06-02" title="Permalink to this heading">#</a></h2>
+<section id="id7">
+<h3>Test<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>test(Pint): fix currency units definition for latest Pint 0.22 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/315222aae933d1242ca29a777536c3f57c306a17"><code class="docutils literal notranslate"><span class="pre">315222a</span></code></a>)</p></li>
+<li><p>test(reagent): fix PreparationDate argument (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/6bdeba5d597926e9346226a0f13e125622e1a6be"><code class="docutils literal notranslate"><span class="pre">6bdeba5</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Unknown<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of https://github.com/BAMresearch/DACHS (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/35379313ab1a2dfa3e450331f6778b87eab74b2b"><code class="docutils literal notranslate"><span class="pre">3537931</span></code></a>)</p></li>
+<li><p>Computation of solution age added to extraInfo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/df5dd859e0194f086018a030334890ca2e4e37e5"><code class="docutils literal notranslate"><span class="pre">df5dd85</span></code></a>)</p></li>
+<li><p>added test case for AutoMOF_6 series (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4fa9ec3ede82b8004abe6aac275a737895ff887d"><code class="docutils literal notranslate"><span class="pre">4fa9ec3</span></code></a>)</p></li>
+<li><p>preparing for AutoMOF 6&amp;7 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1d5380676c3679e4248b678183065f217cd2188e"><code class="docutils literal notranslate"><span class="pre">1d53806</span></code></a>)</p></li>
+<li><p>Shell script to run AutoMOF05 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/755431d90364df1cbfce1784aefd468e7650b25b"><code class="docutils literal notranslate"><span class="pre">755431d</span></code></a>)</p></li>
+<li><p>script to pick apart the raw logs from RoWan (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/5918e0dacaaadf0ac4921f26b1a8e2a6a894730b"><code class="docutils literal notranslate"><span class="pre">5918e0d</span></code></a>)</p></li>
+<li><p>Readin example jupyter notebook launching Dash (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/afa60659c206e583918d6ec1f8e1143d5734abc4"><code class="docutils literal notranslate"><span class="pre">afa6065</span></code></a>)</p></li>
+<li><p>making a read-in structure python notebook (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/09a1e550aa0cca0acfdd0bcdacb02f9af10ae908"><code class="docutils literal notranslate"><span class="pre">09a1e55</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-2-2023-05-04">
+<h2>v0.4.3-dev.2 (2023-05-04)<a class="headerlink" href="#v0-4-3-dev-2-2023-05-04" title="Permalink to this heading">#</a></h2>
+<section id="style">
+<h3>Style<a class="headerlink" href="#style" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(readers): trailing whitespace (W291) removed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/441a4c4fb65b9844d9436b095c642046c4a35409"><code class="docutils literal notranslate"><span class="pre">441a4c4</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-3-dev-1-2023-05-04">
+<h2>v0.4.3-dev.1 (2023-05-04)<a class="headerlink" href="#v0-4-3-dev-1-2023-05-04" title="Permalink to this heading">#</a></h2>
+<section id="id9">
+<h3>Style<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(structure): black formatter (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/81f160f875bdf0295a23aa2c7c99fd6f98552bbf"><code class="docutils literal notranslate"><span class="pre">81f160f</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Unknown<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>tests(structure): set AMSET in tests to succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/e7740a5dbf703ba20c1b931de9e41a4398be79cf"><code class="docutils literal notranslate"><span class="pre">e7740a5</span></code></a>)</p></li>
+<li><p>removing superfluous weight determination (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/5ff5fd99e5792818bf39c7136ea6bad0397b6f95"><code class="docutils literal notranslate"><span class="pre">5ff5fd9</span></code></a>)</p></li>
+<li><p>reimplementing calibration and CLI AMSET option (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9a4c70f8bbfb5fe53331188518e324068f91b6ff"><code class="docutils literal notranslate"><span class="pre">9a4c70f</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-2-2023-04-20">
+<h2>v0.4.2 (2023-04-20)<a class="headerlink" href="#v0-4-2-2023-04-20" title="Permalink to this heading">#</a></h2>
 <section id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>general:</strong> Logo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/febf8f04f9d5bf59652e3dcba269659e85d6f40a"><code class="docutils literal notranslate"><span class="pre">febf8f0</span></code></a>)</p></li>
+<li><p>docs(general): logo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/febf8f04f9d5bf59652e3dcba269659e85d6f40a"><code class="docutils literal notranslate"><span class="pre">febf8f0</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Fix<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>fix(serialization): Graph SVG with transparent background (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/366287c12109ded89c39dc91519c9e955ed27806"><code class="docutils literal notranslate"><span class="pre">366287c</span></code></a>)</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-4-1-2023-04-18">
 <h2>v0.4.1 (2023-04-18)<a class="headerlink" href="#v0-4-1-2023-04-18" title="Permalink to this heading">#</a></h2>
-<section id="id1">
-<h3>Fix<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<section id="id12">
+<h3>Fix<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>GitHub Actions:</strong> Make new release only if tests succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/94f7a25b9bb0021b27b267d7e717921d015a185a"><code class="docutils literal notranslate"><span class="pre">94f7a25</span></code></a>)</p></li>
-<li><p><strong>requirements:</strong> Graphviz added for tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a06f87de270810c613f822c3168b409fba201e78"><code class="docutils literal notranslate"><span class="pre">a06f87d</span></code></a>)</p></li>
+<li><p>fix(GitHub Actions): Make new release only if tests succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/94f7a25b9bb0021b27b267d7e717921d015a185a"><code class="docutils literal notranslate"><span class="pre">94f7a25</span></code></a>)</p></li>
+<li><p>fix(requirements): graphviz added for tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a06f87de270810c613f822c3168b409fba201e78"><code class="docutils literal notranslate"><span class="pre">a06f87d</span></code></a>)</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-4-0-2023-04-17">
 <h2>v0.4.0 (2023-04-17)<a class="headerlink" href="#v0-4-0-2023-04-17" title="Permalink to this heading">#</a></h2>
-<section id="feature">
-<h3>Feature<a class="headerlink" href="#feature" title="Permalink to this heading">#</a></h3>
+<section id="id13">
+<h3>Documentation<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>serialization:</strong> Use the ID for path prefix at singular objects as well (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/60a08eb256f6a920d0e7e047025fa28418029e29"><code class="docutils literal notranslate"><span class="pre">60a08eb</span></code></a>)</p></li>
+<li><p>docs(visualization): Generate SVG Graph in <strong>main</strong></p></li>
+</ul>
+<ul class="simple">
+<li><p>refactored serialization.dumpKV</p></li>
+<li><p>added serialization.filterStoragePaths</p></li>
+<li><p>first one generates a key/value dump with all custom objects (needed for type info later)</p>
+<ul>
+<li><p>second function filters custom objects out which are incompat. with mcsas.McHDF routines</p></li>
+<li><p>former key/value dump is used for graph generation (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/31f38f9fbea9fd16d87a65f7c908253a970d5f8c"><code class="docutils literal notranslate"><span class="pre">31f38f9</span></code></a>)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>docs(visualization): Graph building code added, WIP</p></li>
+</ul>
+<ul class="simple">
+<li><p>and for reference later, will next be cleaned up considerably (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1e1ffed5c129ba8d6299fbf2bf0148b2ab4afd08"><code class="docutils literal notranslate"><span class="pre">1e1ffed</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id2">
-<h3>Fix<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<section id="id14">
+<h3>Feature<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>data import:</strong> Whitespace cleanup for texts/descriptions (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/005be006aed3f8055db566804e0ac71e0a9f7226"><code class="docutils literal notranslate"><span class="pre">005be00</span></code></a>)</p></li>
-<li><p><strong>ExperimentalSetupClass:</strong> Removing redundant whitespace from description (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/542910217cd0c5bf1b1e96ac919a00739aa6ccce"><code class="docutils literal notranslate"><span class="pre">5429102</span></code></a>)</p></li>
-<li><p><strong>readers:</strong> Unwanted DataFrame string formatting (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/880ca0d1195f90cd244ef05189019149a314785b"><code class="docutils literal notranslate"><span class="pre">880ca0d</span></code></a>)</p></li>
+<li><p>feat(serialization): use the ID for path prefix at singular objects as well</p></li>
+</ul>
+<ul class="simple">
+<li><p>instead of the provided prefix (hope no side effects included) (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/60a08eb256f6a920d0e7e047025fa28418029e29"><code class="docutils literal notranslate"><span class="pre">60a08eb</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>Documentation<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<section id="id15">
+<h3>Fix<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>visualization:</strong> Generate SVG Graph in <strong>main</strong> (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/31f38f9fbea9fd16d87a65f7c908253a970d5f8c"><code class="docutils literal notranslate"><span class="pre">31f38f9</span></code></a>)</p></li>
-<li><p><strong>visualization:</strong> Graph building code added, WIP (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1e1ffed5c129ba8d6299fbf2bf0148b2ab4afd08"><code class="docutils literal notranslate"><span class="pre">1e1ffed</span></code></a>)</p></li>
+<li><p>fix(data import): whitespace cleanup for texts/descriptions</p></li>
+</ul>
+<ul class="simple">
+<li><p>added a helper function to be used in multiple places</p></li>
+<li><p>discussion needed if this is a wanted feature (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/005be006aed3f8055db566804e0ac71e0a9f7226"><code class="docutils literal notranslate"><span class="pre">005be00</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>fix(ExperimentalSetupClass): removing redundant whitespace from description (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/542910217cd0c5bf1b1e96ac919a00739aa6ccce"><code class="docutils literal notranslate"><span class="pre">5429102</span></code></a>)</p></li>
+<li><p>fix(readers): unwanted DataFrame string formatting (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/880ca0d1195f90cd244ef05189019149a314785b"><code class="docutils literal notranslate"><span class="pre">880ca0d</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Refactor<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>refactor(ExperimentalSetupClass): comment about intended behaviour (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9a41f7be0e57cf94f506e354c91f95acc2392ff7"><code class="docutils literal notranslate"><span class="pre">9a41f7b</span></code></a>)</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-3-0-2023-04-05">
 <h2>v0.3.0 (2023-04-05)<a class="headerlink" href="#v0-3-0-2023-04-05" title="Permalink to this heading">#</a></h2>
-<section id="id4">
-<h3>Feature<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<section id="id17">
+<h3>Documentation<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>command line:</strong> New parameter -o allows to specify location and name of HDF5 output file (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fab741a09d924e59d24f53d5375c62b9dc758e2d"><code class="docutils literal notranslate"><span class="pre">fab741a</span></code></a>)</p></li>
+<li><p>docs(structure): fix format (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4ccaf91e6bd81e263ca4b438e4a76d2573868046"><code class="docutils literal notranslate"><span class="pre">4ccaf91</span></code></a>)</p></li>
+<li><p>docs(readme): notes on command line usage (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4d11686b0921027590e370c64ffad94c9699599a"><code class="docutils literal notranslate"><span class="pre">4d11686</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id5">
-<h3>Fix<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<section id="id18">
+<h3>Feature<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>command line:</strong> Typo in usage texts (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/cf39d142785de9b0c767dfa5d83f1eed019c61cd"><code class="docutils literal notranslate"><span class="pre">cf39d14</span></code></a>)</p></li>
+<li><p>feat(command line): new parameter -o allows to specify location and name of HDF5 output file (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fab741a09d924e59d24f53d5375c62b9dc758e2d"><code class="docutils literal notranslate"><span class="pre">fab741a</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id6">
-<h3>Documentation<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<section id="id19">
+<h3>Fix<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>structure:</strong> Fix format (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4ccaf91e6bd81e263ca4b438e4a76d2573868046"><code class="docutils literal notranslate"><span class="pre">4ccaf91</span></code></a>)</p></li>
-<li><p><strong>readme:</strong> Notes on command line usage (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4d11686b0921027590e370c64ffad94c9699599a"><code class="docutils literal notranslate"><span class="pre">4d11686</span></code></a>)</p></li>
+<li><p>fix(command line): typo in usage texts (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/cf39d142785de9b0c767dfa5d83f1eed019c61cd"><code class="docutils literal notranslate"><span class="pre">cf39d14</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>Refactor<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>refactor(serialization): use McHDF.storeKVPairs avoids separate loop (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/34b9cd93aaf6a490ec24c2b2f88d510994c9b988"><code class="docutils literal notranslate"><span class="pre">34b9cd9</span></code></a>)</p></li>
+<li><p>refactor(serialization): add type info (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1e946d4ef2eb49c26fe465dd8d2a09bfbb6ae613"><code class="docutils literal notranslate"><span class="pre">1e946d4</span></code></a>)</p></li>
+<li><p>refactor(serialization): rename storagePaths() -&gt; dumpKV() (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4ac7f960cc7a9a1ffaa81d12fc2f4e505e0b2d79"><code class="docutils literal notranslate"><span class="pre">4ac7f96</span></code></a>)</p></li>
+<li><p>refactor(structure): main module reuses structure.create() (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/be723521685146a827e1d3b6dc59b83b07fd966c"><code class="docutils literal notranslate"><span class="pre">be72352</span></code></a>)</p></li>
+<li><p>refactor(structure): moved testing code to separate module for reuse (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/6b78abf927af108a02f6b080b6730575aaffcfdd"><code class="docutils literal notranslate"><span class="pre">6b78abf</span></code></a>)</p></li>
+<li><p>refactor(root): rename top-level class to more meaningful name <em>Experiment</em> (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0fe03dcc86a4ce08e7d1e8608792bb76fd27a426"><code class="docutils literal notranslate"><span class="pre">0fe03dc</span></code></a>)</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-2-0-2023-04-04">
 <h2>v0.2.0 (2023-04-04)<a class="headerlink" href="#v0-2-0-2023-04-04" title="Permalink to this heading">#</a></h2>
-<section id="id7">
-<h3>Feature<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<section id="id21">
+<h3>Documentation<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>ComponentMasses:</strong> Store as dict associated to their respective Component (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a797b0b61bbd754eed46d80b1aafdc63d5898b0f"><code class="docutils literal notranslate"><span class="pre">a797b0b</span></code></a>)</p></li>
-<li><p><strong>serialization:</strong> Use object IDs instead of numerical index where available (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fef04b051529510867843ab1721398acced6d3ce"><code class="docutils literal notranslate"><span class="pre">fef04b0</span></code></a>)</p></li>
+<li><p>docs(readme): info &amp; reminder how to get stdout/stderr with pytest (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/20fc9601a9675882fdc4119349291f2c2a6a1fb6"><code class="docutils literal notranslate"><span class="pre">20fc960</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id8">
-<h3>Documentation<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<section id="id22">
+<h3>Feature<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>readme:</strong> Info &amp; reminder how to get stdout/stderr with pytest (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/20fc9601a9675882fdc4119349291f2c2a6a1fb6"><code class="docutils literal notranslate"><span class="pre">20fc960</span></code></a>)</p></li>
+<li><p>feat(ComponentMasses): store as dict associated to their respective Component</p></li>
 </ul>
+<ul class="simple">
+<li><p>previously, ComponentMasses were stored indexed while the componentlists with their component IDs (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a797b0b61bbd754eed46d80b1aafdc63d5898b0f"><code class="docutils literal notranslate"><span class="pre">a797b0b</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>feat(serialization): use object IDs instead of numerical index where available (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/fef04b051529510867843ab1721398acced6d3ce"><code class="docutils literal notranslate"><span class="pre">fef04b0</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>Style<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(serialization): fix file header</p></li>
+</ul>
+<ul class="simple">
+<li><p>previous one indicates an executable python file, resulting in automatic file mode change (exec) by the editor (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/029c20c94823a30c92b20b468b1db5fd78cb8ebd"><code class="docutils literal notranslate"><span class="pre">029c20c</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>Unknown<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>tests(structure): commented core for dumping all storage paths</p></li>
+</ul>
+<p>for debugging (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/450d66084076d13b27028fbf5e328f86ce89be1a"><code class="docutils literal notranslate"><span class="pre">450d660</span></code></a>)</p>
 </section>
 </section>
 <section id="v0-1-2-2023-04-03">
 <h2>v0.1.2 (2023-04-03)<a class="headerlink" href="#v0-1-2-2023-04-03" title="Permalink to this heading">#</a></h2>
-<section id="id9">
-<h3>Fix<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+<section id="id25">
+<h3>Fix<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Serialization:</strong> Store lists of quantities, fixes #7 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d311d5bd075cb5c9c465819301b5fb8d38652eaf"><code class="docutils literal notranslate"><span class="pre">d311d5b</span></code></a>)</p></li>
-<li><p><strong>EquipmentList:</strong> Price unit parsing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/971a54d6b98e47e27b55520604f356f83d05f525"><code class="docutils literal notranslate"><span class="pre">971a54d</span></code></a>)</p></li>
+<li><p>fix(Serialization): store lists of quantities, fixes #7 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d311d5bd075cb5c9c465819301b5fb8d38652eaf"><code class="docutils literal notranslate"><span class="pre">d311d5b</span></code></a>)</p></li>
+<li><p>fix(EquipmentList): price unit parsing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/971a54d6b98e47e27b55520604f356f83d05f525"><code class="docutils literal notranslate"><span class="pre">971a54d</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>Documentation<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<section id="id26">
+<h3>Refactor<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>General:</strong> Inheritance diagram in reference (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/946cdd838430b619c4fe9bee53039774b17ef98e"><code class="docutils literal notranslate"><span class="pre">946cdd8</span></code></a>)</p></li>
+<li><p>refactor(Tests): mcsas3 can be installed with pip now</p></li>
+</ul>
+<ul class="simple">
+<li><p>remove relative local imports of mcsas3 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4d177680192e04ca0a9dcfba8ed339f22dc9008f"><code class="docutils literal notranslate"><span class="pre">4d17768</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-1-2-dev-3-2023-03-31">
+<h2>v0.1.2-dev.3 (2023-03-31)<a class="headerlink" href="#v0-1-2-dev-3-2023-03-31" title="Permalink to this heading">#</a></h2>
+<section id="id27">
+<h3>Style<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(documentation): comment formatting (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1129c56faf7ce26fabdc43f3f113a269ca54e8b8"><code class="docutils literal notranslate"><span class="pre">1129c56</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-1-2-dev-2-2023-03-31">
+<h2>v0.1.2-dev.2 (2023-03-31)<a class="headerlink" href="#v0-1-2-dev-2-2023-03-31" title="Permalink to this heading">#</a></h2>
+<section id="id28">
+<h3>Documentation<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>docs(General): inheritance diagram in reference (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/946cdd838430b619c4fe9bee53039774b17ef98e"><code class="docutils literal notranslate"><span class="pre">946cdd8</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id29">
+<h3>Style<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(changelog): version number prefixed by v (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/18407365ab6927c52d4fdecdf256ffc0f6c46c51"><code class="docutils literal notranslate"><span class="pre">1840736</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-1-2-dev-1-2023-03-28">
+<h2>v0.1.2-dev.1 (2023-03-28)<a class="headerlink" href="#v0-1-2-dev-1-2023-03-28" title="Permalink to this heading">#</a></h2>
+<section id="id30">
+<h3>Chore<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>chore(GitHub Action): handle empty pages branch (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/3d3a3d72b2877f948179c055bce701b2078137ba"><code class="docutils literal notranslate"><span class="pre">3d3a3d7</span></code></a>)</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-1-1-2023-03-28">
 <h2>v0.1.1 (2023-03-28)<a class="headerlink" href="#v0-1-1-2023-03-28" title="Permalink to this heading">#</a></h2>
-<section id="id11">
-<h3>Fix<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
+<section id="id31">
+<h3>Chore<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>reagent:</strong> Adjust units and method names for tests to succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0b5b21eb4985955f03629e385b979244e4f0a3e0"><code class="docutils literal notranslate"><span class="pre">0b5b21e</span></code></a>)</p></li>
+<li><p>chore(general): let git ignore hdf5 generated by tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9f83d1afa5003e297bffcf4f6efa19bb5e73904a"><code class="docutils literal notranslate"><span class="pre">9f83d1a</span></code></a>)</p></li>
+<li><p>chore(GitHub Action): workflow definitions and templates (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/ab175ac6e9227935360174c041558d648b71bfab"><code class="docutils literal notranslate"><span class="pre">ab175ac</span></code></a>)</p></li>
+<li><p>chore(general): pre-commit hook should exclude diagrams (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/774be5c4b706c5bf209a7885470595ed98e1536b"><code class="docutils literal notranslate"><span class="pre">774be5c</span></code></a>)</p></li>
+<li><p>chore(general): pre-commit hook config added (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/984a284900f15287700de8f0383e32cc78ae6a72"><code class="docutils literal notranslate"><span class="pre">984a284</span></code></a>)</p></li>
+<li><p>chore(project): removed incomplete and obsolete requirements on top level (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/55898d34e4e64c59e7991c21cb83afb5febb6be6"><code class="docutils literal notranslate"><span class="pre">55898d3</span></code></a>)</p></li>
+<li><p>chore(project): pyproject.toml replaces setup.* and versioneer</p></li>
+</ul>
+<ul class="simple">
+<li><p>moved dachs source code to <em>src</em> subdir (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/7e344619aee8cb87d25996d22dccf0ca0e6489cf"><code class="docutils literal notranslate"><span class="pre">7e34461</span></code></a>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>chore(project): cookiecutter config (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b79ab8d9aeee68a02f1a918450e7c0c857e04f39"><code class="docutils literal notranslate"><span class="pre">b79ab8d</span></code></a>)</p></li>
+<li><p>chore(project): gitignore updated (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/c0eae7a7971e783ec3ff8f4290fb4155fd5833ec"><code class="docutils literal notranslate"><span class="pre">c0eae7a</span></code></a>)</p></li>
+<li><p>chore(project): general notes on contributing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b46186224b5309fea87897110c5c70de68cd6890"><code class="docutils literal notranslate"><span class="pre">b461862</span></code></a>)</p></li>
+<li><p>chore(project): editor config (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1c603a932d3166e6c7c36dd81833893aa07499b3"><code class="docutils literal notranslate"><span class="pre">1c603a9</span></code></a>)</p></li>
 </ul>
 </section>
-<section id="id12">
-<h3>Documentation<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h3>
+<section id="id32">
+<h3>Documentation<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>general:</strong> Disable link check temporarily (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/332a112064f4727461a7e2dd3b4de4cd829bf0d3"><code class="docutils literal notranslate"><span class="pre">332a112</span></code></a>)</p></li>
-<li><p><strong>general:</strong> Remove section title (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d1fd17b119e2765e014e6f929b0cfccd1061a1b3"><code class="docutils literal notranslate"><span class="pre">d1fd17b</span></code></a>)</p></li>
-<li><p><strong>general:</strong> Initial setup (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a490cb1fb7210160eb52ae428de22b340ffb389d"><code class="docutils literal notranslate"><span class="pre">a490cb1</span></code></a>)</p></li>
-<li><p><strong>project:</strong> Readme updated (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/caed30c33f9528cc7471fabca92d0e01549ea4a3"><code class="docutils literal notranslate"><span class="pre">caed30c</span></code></a>)</p></li>
+<li><p>docs(general): disable link check temporarily (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/332a112064f4727461a7e2dd3b4de4cd829bf0d3"><code class="docutils literal notranslate"><span class="pre">332a112</span></code></a>)</p></li>
+<li><p>docs(general): remove section title (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d1fd17b119e2765e014e6f929b0cfccd1061a1b3"><code class="docutils literal notranslate"><span class="pre">d1fd17b</span></code></a>)</p></li>
+<li><p>docs(general): initial setup (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a490cb1fb7210160eb52ae428de22b340ffb389d"><code class="docutils literal notranslate"><span class="pre">a490cb1</span></code></a>)</p></li>
+<li><p>docs(project): readme updated (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/caed30c33f9528cc7471fabca92d0e01549ea4a3"><code class="docutils literal notranslate"><span class="pre">caed30c</span></code></a>)</p></li>
 </ul>
 </section>
-</section>
-<section id="v0-1-0-2023-03-17">
-<h2>v0.1.0 (2023-03-17)<a class="headerlink" href="#v0-1-0-2023-03-17" title="Permalink to this heading">#</a></h2>
+<section id="id33">
+<h3>Fix<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p>First release</p></li>
-<li><p>Some classes describing the experimental setup and involved materials</p></li>
-<li><p>Test data</p></li>
-<li><p>Test routines parsing the test data, building the object representation</p></li>
+<li><p>fix(reagent): adjust units and method names for tests to succeed (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0b5b21eb4985955f03629e385b979244e4f0a3e0"><code class="docutils literal notranslate"><span class="pre">0b5b21e</span></code></a>)</p></li>
 </ul>
+</section>
+<section id="id34">
+<h3>Refactor<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>refactor(general): fix ureg imports (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/38e7a1926bd94bf37d31ff26ec5528ed0dc339ef"><code class="docutils literal notranslate"><span class="pre">38e7a19</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id35">
+<h3>Style<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>style(general): satisfy flake8 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/ce44d649c5c3653a08d646b749b7f2c4bb3af68c"><code class="docutils literal notranslate"><span class="pre">ce44d64</span></code></a>)</p></li>
+<li><p>style(general): code formatting line length set to 115 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d01377318944d72a0a5911e933be4f42eb80a725"><code class="docutils literal notranslate"><span class="pre">d013773</span></code></a>)</p></li>
+<li><p>style(general): reformat main.py, whitespace fixes (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/7b9954b47594a953459e23042b518386916020f1"><code class="docutils literal notranslate"><span class="pre">7b9954b</span></code></a>)</p></li>
+<li><p>style(general): isort imports (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0467ca37972cf42e328e280ce4b97338e3e99e15"><code class="docutils literal notranslate"><span class="pre">0467ca3</span></code></a>)</p></li>
+<li><p>style(general): formatted with black (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/1b6761825cb0b2b8d0b800c25e8ce36d9b772611"><code class="docutils literal notranslate"><span class="pre">1b67618</span></code></a>)</p></li>
+<li><p>style(line length): 115) (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4b19763770de89ea4edc10d4cfd923399b02823a"><code class="docutils literal notranslate"><span class="pre">4b19763</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id36">
+<h3>Unknown<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>v0.1.0 (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/e9e288f0ffe678e5a65ad825167888f8c1b7c845"><code class="docutils literal notranslate"><span class="pre">e9e288f</span></code></a>)</p></li>
+<li><p>Many small fixes, now also runs from CLI (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a06bb98aadccb77f5146684e5c40b761398e0cd7"><code class="docutils literal notranslate"><span class="pre">a06bb98</span></code></a>)</p></li>
+<li><p>adding yield, ML ratio, more test cases (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/3fe80a9b5ebfd0a842c9fe6772734ede885a578f"><code class="docutils literal notranslate"><span class="pre">3fe80a9</span></code></a>)</p></li>
+<li><p>Fix for the DACHS paths issue and other minor (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/6dc1362117f9b8f1fa33b6faaf973e062842c539"><code class="docutils literal notranslate"><span class="pre">6dc1362</span></code></a>)</p></li>
+<li><p>added the reaction mixture and automatic mm calcs. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/36a90df5d1b97b0735d133698ef7da42632561b4"><code class="docutils literal notranslate"><span class="pre">36a90df</span></code></a>)</p></li>
+<li><p>tests passing (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/9aa39ef97ab85710f1709c5930b51d72aa83e882"><code class="docutils literal notranslate"><span class="pre">9aa39ef</span></code></a>)</p></li>
+<li><p>Mixture class operational, structure test broken. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/e5d8e7e953442abe59cf736ebf093fbca9890861"><code class="docutils literal notranslate"><span class="pre">e5d8e7e</span></code></a>)</p></li>
+<li><p>Updated naming and start on Mixture class. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/68466365c508b92a91e96b96673859e145be3b16"><code class="docutils literal notranslate"><span class="pre">6846636</span></code></a>)</p></li>
+<li><p>adjusting reagent, but will rewrite mixture (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/44f910817aeda882046b18dcefaf5161f5867081"><code class="docutils literal notranslate"><span class="pre">44f9108</span></code></a>)</p></li>
+<li><p>Provisioning some essential derived data on mixes (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/f657f79cb9e9ad25d54e05f36ad50235f83543a7"><code class="docutils literal notranslate"><span class="pre">f657f79</span></code></a>)</p></li>
+<li><p>added price per volume and mass to reagent (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a084f21a8305cc81f88a7b97bfc8cfff22ee8e67"><code class="docutils literal notranslate"><span class="pre">a084f21</span></code></a>)</p></li>
+<li><p>bugfixes (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/976b687297f60d8c009a570492b5a118e7c09301"><code class="docutils literal notranslate"><span class="pre">976b687</span></code></a>)</p></li>
+<li><p>equipment and experimentalSetup unit test (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/2750dcdec472c432c2ff2abea42314d130fee062"><code class="docutils literal notranslate"><span class="pre">2750dcd</span></code></a>)</p></li>
+<li><p>Merge branch ‘main’ of BAMresearch/DACHS (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/ced27a3ae63a09603c74a8238856e061b332b91a"><code class="docutils literal notranslate"><span class="pre">ced27a3</span></code></a>)</p></li>
+<li><p>Changed UID to ID and fixed excel read (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/a1ccde0d1d325fa5d441e7e09579df99d53953d5"><code class="docutils literal notranslate"><span class="pre">a1ccde0</span></code></a>)</p></li>
+<li><p>using updated McHDF.storeKV() (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/e7fa4ded170c1d42a796397d4ac3c3df283a6a2a"><code class="docutils literal notranslate"><span class="pre">e7fa4de</span></code></a>)</p></li>
+<li><p>disabled debug output (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4621d21a8296c1fbe15fc4178174d2d2905daaf7"><code class="docutils literal notranslate"><span class="pre">4621d21</span></code></a>)</p></li>
+<li><p>using PurePath for hdf5 path, to work in Windows as well (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/3c2f4d34ed784522e9743de1f6484d80b424ee25"><code class="docutils literal notranslate"><span class="pre">3c2f4d3</span></code></a>)</p></li>
+<li><p>using PurePosixPath for hdf5 path not being filesystem related (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/d9caa8701cc5cac2d86ceca092b34bf2a7839821"><code class="docutils literal notranslate"><span class="pre">d9caa87</span></code></a>)</p></li>
+<li><p>Merge branch ‘main’ of https://github.com/BAMresearch/DACHS (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/6ddeac75acb629316e8932a5be1d7ad849f914ed"><code class="docutils literal notranslate"><span class="pre">6ddeac7</span></code></a>)</p></li>
+<li><p>remove defaults for required fields (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/90487d5ef995a3ab489a1d975bbc7265caec0c8d"><code class="docutils literal notranslate"><span class="pre">90487d5</span></code></a>)</p></li>
+<li><p>hdf5 export in test_integral() using McSAS3 writer (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/4b627d8ba920c66c9864514f79571c8711d9eea6"><code class="docutils literal notranslate"><span class="pre">4b627d8</span></code></a>)</p></li>
+<li><p>fixed test_integral() (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/22257c72d93df9c0299e6959dd69a3e6efbd6972"><code class="docutils literal notranslate"><span class="pre">22257c7</span></code></a>)</p></li>
+<li><p>removed empty file (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/eb4ad069ed15cab926dc38bbbfd876baf612391c"><code class="docutils literal notranslate"><span class="pre">eb4ad06</span></code></a>)</p></li>
+<li><p>Adding derived parameters extractors, not yet work (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/90dcf7f451b42fdde17a47212f6cc02c1e626a1e"><code class="docutils literal notranslate"><span class="pre">90dcf7f</span></code></a>)</p></li>
+<li><p>Modified support for derived parameters (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/404a746801afebc270034ec73eaaa89f0d567dda"><code class="docutils literal notranslate"><span class="pre">404a746</span></code></a>)</p></li>
+<li><p>Added readers for message log and starting compoun (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b04479f972aa98c06b51116f118267cb951d7ff1"><code class="docutils literal notranslate"><span class="pre">b04479f</span></code></a>)</p></li>
+<li><p>Added RawLogMessage tests (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0343aeb0ef2581bc80be23db4293b9b970a83950"><code class="docutils literal notranslate"><span class="pre">0343aeb</span></code></a>)</p></li>
+<li><p>Created and moved pytests to tests directory (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/24541c25938e69a599c173d9df25ced7411a2158"><code class="docutils literal notranslate"><span class="pre">24541c2</span></code></a>)</p></li>
+<li><p>file name typo (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/e1c09cf74ba28109284e00c4d7d5832ba8c0d82f"><code class="docutils literal notranslate"><span class="pre">e1c09cf</span></code></a>)</p></li>
+<li><p>let git ignore macOS file meta data (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/cfc86423166f1745c347fd0e076e5105721574bd"><code class="docutils literal notranslate"><span class="pre">cfc8642</span></code></a>)</p></li>
+<li><p>Change datacass factory for optionals. test update (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/05ab72d2c54fcbb77211cf390d51e5b86af84c5c"><code class="docutils literal notranslate"><span class="pre">05ab72d</span></code></a>)</p></li>
+<li><p>small modifications to get the test working (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/70ba6d1ffb9fa497dcb010a4371267e0cb2b55b5"><code class="docutils literal notranslate"><span class="pre">70ba6d1</span></code></a>)</p></li>
+<li><p>packaging and versioneer. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/7acd4846d6520e14d5653a4d4b904e5dca356444"><code class="docutils literal notranslate"><span class="pre">7acd484</span></code></a>)</p></li>
+<li><p>support for concentration calculations in mixture (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/c4ff11b42859fd874ab886e9445daaaa5b66311e"><code class="docutils literal notranslate"><span class="pre">c4ff11b</span></code></a>)</p></li>
+<li><p>Updates. Can now do mixtures of reagents (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0ed07a6db4b43a10bb9fbaafd2a3dc3853d3a6e0"><code class="docutils literal notranslate"><span class="pre">0ed07a6</span></code></a>)</p></li>
+<li><p>probably better with raw strings. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/327ba00289dcc874105fb802a84cc72a08522200"><code class="docutils literal notranslate"><span class="pre">327ba00</span></code></a>)</p></li>
+<li><p>addition of a UID, for storing in HDF5 tree (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/8783109e3921e27d7f02b41fac820db5c75a3afc"><code class="docutils literal notranslate"><span class="pre">8783109</span></code></a>)</p></li>
+<li><p>unit and unit conversions added. (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/0557be33e817e7a183b1894b4de73c4d2969f19e"><code class="docutils literal notranslate"><span class="pre">0557be3</span></code></a>)</p></li>
+<li><p>Added units support, see MolarMass (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/16ee9371644f6ea4ab8e33aa323588ace87ee440"><code class="docutils literal notranslate"><span class="pre">16ee937</span></code></a>)</p></li>
+<li><p>reagent now has a convenient items() iterable (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/8c1914b65339a1793a99a06975dd97388ca11f6e"><code class="docutils literal notranslate"><span class="pre">8c1914b</span></code></a>)</p></li>
+<li><p>Reagent class, just as example (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/331be460b0305de7028af7b4fa1306a53303dcd1"><code class="docutils literal notranslate"><span class="pre">331be46</span></code></a>)</p></li>
+<li><p>Initial commit (<a class="reference external" href="https://github.com/BAMresearch/DACHS/commit/b0a911d43c697a2d9d6b9cdbde97ea0e76d57604"><code class="docutils literal notranslate"><span class="pre">b0a911d</span></code></a>)</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -426,7 +809,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on Jun 14, 2023 (git 87b5f67)</div>
+              Last updated on Jul 28, 2023 (git dca0e69)</div>
           </div>
           <div class="right-details">
             
@@ -447,44 +830,105 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#v0-4-2-2023-04-20">v0.4.2 (2023-04-20)</a><ul>
+<li><a class="reference internal" href="#">CHANGELOG</a><ul>
+<li><a class="reference internal" href="#v0-5-0-2023-07-28">v0.5.0 (2023-07-28)</a><ul>
+<li><a class="reference internal" href="#chore">Chore</a></li>
+<li><a class="reference internal" href="#feature">Feature</a></li>
 <li><a class="reference internal" href="#fix">Fix</a></li>
+<li><a class="reference internal" href="#refactor">Refactor</a></li>
+<li><a class="reference internal" href="#test">Test</a></li>
+<li><a class="reference internal" href="#unknown">Unknown</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-7-2023-06-14">v0.4.3-dev.7 (2023-06-14)</a><ul>
+<li><a class="reference internal" href="#id1">Chore</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-6-2023-06-09">v0.4.3-dev.6 (2023-06-09)</a><ul>
+<li><a class="reference internal" href="#id2">Chore</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-5-2023-06-09">v0.4.3-dev.5 (2023-06-09)</a><ul>
+<li><a class="reference internal" href="#id3">Chore</a></li>
+<li><a class="reference internal" href="#id4">Refactor</a></li>
+<li><a class="reference internal" href="#id5">Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-4-2023-06-02">v0.4.3-dev.4 (2023-06-02)</a><ul>
+<li><a class="reference internal" href="#id6">Chore</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-3-2023-06-02">v0.4.3-dev.3 (2023-06-02)</a><ul>
+<li><a class="reference internal" href="#id7">Test</a></li>
+<li><a class="reference internal" href="#id8">Unknown</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-2-2023-05-04">v0.4.3-dev.2 (2023-05-04)</a><ul>
+<li><a class="reference internal" href="#style">Style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-3-dev-1-2023-05-04">v0.4.3-dev.1 (2023-05-04)</a><ul>
+<li><a class="reference internal" href="#id9">Style</a></li>
+<li><a class="reference internal" href="#id10">Unknown</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4-2-2023-04-20">v0.4.2 (2023-04-20)</a><ul>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#id11">Fix</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-4-1-2023-04-18">v0.4.1 (2023-04-18)</a><ul>
-<li><a class="reference internal" href="#id1">Fix</a></li>
+<li><a class="reference internal" href="#id12">Fix</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-4-0-2023-04-17">v0.4.0 (2023-04-17)</a><ul>
-<li><a class="reference internal" href="#feature">Feature</a></li>
-<li><a class="reference internal" href="#id2">Fix</a></li>
-<li><a class="reference internal" href="#id3">Documentation</a></li>
+<li><a class="reference internal" href="#id13">Documentation</a></li>
+<li><a class="reference internal" href="#id14">Feature</a></li>
+<li><a class="reference internal" href="#id15">Fix</a></li>
+<li><a class="reference internal" href="#id16">Refactor</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-3-0-2023-04-05">v0.3.0 (2023-04-05)</a><ul>
-<li><a class="reference internal" href="#id4">Feature</a></li>
-<li><a class="reference internal" href="#id5">Fix</a></li>
-<li><a class="reference internal" href="#id6">Documentation</a></li>
+<li><a class="reference internal" href="#id17">Documentation</a></li>
+<li><a class="reference internal" href="#id18">Feature</a></li>
+<li><a class="reference internal" href="#id19">Fix</a></li>
+<li><a class="reference internal" href="#id20">Refactor</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-2-0-2023-04-04">v0.2.0 (2023-04-04)</a><ul>
-<li><a class="reference internal" href="#id7">Feature</a></li>
-<li><a class="reference internal" href="#id8">Documentation</a></li>
+<li><a class="reference internal" href="#id21">Documentation</a></li>
+<li><a class="reference internal" href="#id22">Feature</a></li>
+<li><a class="reference internal" href="#id23">Style</a></li>
+<li><a class="reference internal" href="#id24">Unknown</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-1-2-2023-04-03">v0.1.2 (2023-04-03)</a><ul>
-<li><a class="reference internal" href="#id9">Fix</a></li>
-<li><a class="reference internal" href="#id10">Documentation</a></li>
+<li><a class="reference internal" href="#id25">Fix</a></li>
+<li><a class="reference internal" href="#id26">Refactor</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-1-2-dev-3-2023-03-31">v0.1.2-dev.3 (2023-03-31)</a><ul>
+<li><a class="reference internal" href="#id27">Style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-1-2-dev-2-2023-03-31">v0.1.2-dev.2 (2023-03-31)</a><ul>
+<li><a class="reference internal" href="#id28">Documentation</a></li>
+<li><a class="reference internal" href="#id29">Style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-1-2-dev-1-2023-03-28">v0.1.2-dev.1 (2023-03-28)</a><ul>
+<li><a class="reference internal" href="#id30">Chore</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-1-1-2023-03-28">v0.1.1 (2023-03-28)</a><ul>
-<li><a class="reference internal" href="#id11">Fix</a></li>
-<li><a class="reference internal" href="#id12">Documentation</a></li>
+<li><a class="reference internal" href="#id31">Chore</a></li>
+<li><a class="reference internal" href="#id32">Documentation</a></li>
+<li><a class="reference internal" href="#id33">Fix</a></li>
+<li><a class="reference internal" href="#id34">Refactor</a></li>
+<li><a class="reference internal" href="#id35">Style</a></li>
+<li><a class="reference internal" href="#id36">Unknown</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#v0-1-0-2023-03-17">v0.1.0 (2023-03-17)</a></li>
 </ul>
 </li>
 </ul>
@@ -496,9 +940,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=3fadbb4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
