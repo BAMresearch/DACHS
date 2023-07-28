@@ -21,7 +21,7 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      {{ ci.setup_python() }}
+      {{ ci.setup_python(py=3.11) }}
 
       {{ ci.pip_install_req() }}
 
