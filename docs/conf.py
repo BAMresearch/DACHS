@@ -52,6 +52,7 @@ autodoc_mock_imports = [
     "pint",
     "chempy",
     "graphviz",
+    "mcsas3",
 ]
 
 pygments_style = "trac"
