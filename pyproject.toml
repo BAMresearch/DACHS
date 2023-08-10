@@ -68,12 +68,14 @@ version_patterns = [
 version_source = "tag"
 prerelease_tag = "dev"
 branch = "main"                             # branch to make releases of
-changelog_file = "CHANGELOG.md"             # changelog file
 build_command = "python3 -m build"          # build dists
 upload_to_release = false                   # auto-create GitHub release
 upload_to_pypi = false                      # don't auto-upload to PyPI
 remove_dist = false                         # don't remove dists
 #patch_without_tag = false                   # patch release by default
+[tool.semantic_release.changelog]
+template_dir = "ci/templates"
+
 
 [tool.black]
 line-length = 115
