@@ -3,14 +3,10 @@
 {# UNRELEASED #}
 ## *Unreleased*
 {%  for type_, commits in context.history.unreleased | dictsort %}
-### {{ type_ | capitalize }}
-{%    for commit in commits %}{%
-        if type_ != "unknown" %}
-* {{ commit.message.rstrip() }} ([`{{ commit.short_hash }}`]({{ commit.hexsha | commit_hash_url }}))
-{%      else %}
-* {{ commit.message.rstrip() }} ([`{{ commit.short_hash }}`]({{ commit.hexsha | commit_hash_url }}))
-{%      endif %}{%
-      endfor %}{%
+### {{ type_ | replace("unknown", "general") | capitalize }}
+{%    for commit in commits %}
+* {{ commit.message.splitlines()[0].rstrip() }} ([`{{ commit.short_hash }}`]({{ commit.hexsha | commit_hash_url }}))
+{%    endfor %}{%
     endfor %}{%
 endif %}
 {% for version, release in context.history.released.items() -%}
