@@ -75,7 +75,8 @@ remove_dist = false                         # don't remove dists
 #patch_without_tag = false                   # patch release by default
 [tool.semantic_release.changelog]
 template_dir = "ci/templates"
-
+[tool.semantic_release.changelog.environment]
+extensions = ["regexreplace.RegExReplace"]
 
 [tool.black]
 line-length = 115
