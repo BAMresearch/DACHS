@@ -1,0 +1,6 @@
+dachs.main.main
+===============
+
+.. currentmodule:: dachs.main
+
+.. autofunction:: main

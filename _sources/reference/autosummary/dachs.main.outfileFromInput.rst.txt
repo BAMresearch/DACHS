@@ -1,0 +1,6 @@
+dachs.main.outfileFromInput
+===========================
+
+.. currentmodule:: dachs.main
+
+.. autofunction:: outfileFromInput

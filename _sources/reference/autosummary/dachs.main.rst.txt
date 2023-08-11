@@ -1,0 +1,32 @@
+dachs.main
+==========
+
+.. automodule:: dachs.main
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      configureParser
+      main
+      outfileFromInput
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

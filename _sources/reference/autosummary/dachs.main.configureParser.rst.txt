@@ -1,0 +1,6 @@
+dachs.main.configureParser
+==========================
+
+.. currentmodule:: dachs.main
+
+.. autofunction:: configureParser

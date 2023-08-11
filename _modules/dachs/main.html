@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
-        <title>dachs.additemstoattrs - DACHS 0.5.0+f5cf062 documentation</title>
+        <title>dachs.main - DACHS 0.5.0+f5cf062 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -269,84 +269,120 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for dachs.additemstoattrs</h1><div class="highlight"><pre>
+          <h1>Source code for dachs.main</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># coding: utf-8</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">An add=on that will add an items() method to an attrs-created dataclass.</span>
-<span class="sd">Useful for iterating over keys, for example for storing in an HDF5 file.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Brian R. Pauw&quot;</span>
-<span class="n">__contact__</span> <span class="o">=</span> <span class="s2">&quot;brian@stack.nl&quot;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;GPLv3+&quot;</span>
-<span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2022/11/07&quot;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s2">&quot;beta&quot;</span>
+<span class="kn">from</span> <span class="nn">mcsas3</span> <span class="kn">import</span> <span class="n">McHDF</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">NoReturn</span>
-
-<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">fields</span>
-
-<span class="c1"># Mixin class for making a dict-like object out of an attrs class</span>
-<span class="c1"># from: https://github.com/python-attrs/attrs/issues/879</span>
+<span class="kn">import</span> <span class="nn">dachs.serialization</span>
+<span class="kn">import</span> <span class="nn">dachs.structure</span>
 
 
-<div class="viewcode-block" id="addItemsToAttrs"><a class="viewcode-back" href="../../reference/autosummary/dachs.additemstoattrs.addItemsToAttrs.html#dachs.additemstoattrs.addItemsToAttrs">[docs]</a><span class="k">class</span> <span class="nc">addItemsToAttrs</span><span class="p">:</span>  <span class="c1"># used to be MutableMappingMixin(MutableMapping)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin class to make attrs classes quack like a dictionary (well,</span>
-<span class="sd">    technically a mutable mapping). ONLY use this with attrs classes.</span>
+<div class="viewcode-block" id="outfileFromInput"><a class="viewcode-back" href="../../reference/autosummary/dachs.main.outfileFromInput.html#dachs.main.outfileFromInput">[docs]</a><span class="k">def</span> <span class="nf">outfileFromInput</span><span class="p">(</span><span class="n">infn</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;h5&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">infn</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<span class="sd">    Provides keys(), values(), and items() methods in order to be</span>
-<span class="sd">    dict-like in addition to MutableMapping-like. Also provides pop(),</span>
-<span class="sd">    but it just raises a TypeError :)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># May as well save on memory?</span>
-    <span class="n">_storeKeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">_loadKeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="c1"># perhaps, use environment vars for defaults later:</span>
+<span class="c1"># https://stackoverflow.com/a/63828227</span>
+<div class="viewcode-block" id="configureParser"><a class="viewcode-back" href="../../reference/autosummary/dachs.main.configureParser.html#dachs.main.configureParser">[docs]</a><span class="k">def</span> <span class="nf">configureParser</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">validate_file</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">return</span> <span class="n">filepath</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">ifield</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">ifield</span><span class="o">.</span><span class="n">name</span>
+    <span class="c1"># process input arguments</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">prog</span><span class="o">=</span><span class="n">__package__</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            Creates an archival HDF5 structure containing synthesis details from a RoWaN AutoMOF synthesis.</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+<span class="s2">            Released under a GPLv3+ license.</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># TODO: add info about output files to be created ...</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-l&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--logbook&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">validate_file</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DACHS_LOGBOOK&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Path to the filename containing the main AutoMOF logbook, &quot;</span>
+            <span class="s2">&quot;read from environment variable DACHS_LOGBOOK if not specified on command line.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>  <span class="c1"># could perhaps be done with a multi-file input for multiple solutions...</span>
+        <span class="s2">&quot;-s0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--s0file&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">validate_file</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DACHS_SOL0&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;File containing the synthesis log of Solution 0, &quot;</span>
+            <span class="s2">&quot;read from environment variable DACHS_SOL0 if not specified on command line.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-s1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--s1file&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">validate_file</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DACHS_SOL1&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;File containing the synthesis log of Solution 1, &quot;</span>
+            <span class="s2">&quot;read from environment variable DACHS_SOL1 if not specified on command line.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--synlog&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">validate_file</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DACHS_SYNLOG&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;File containing the synthesis log of the MOF itself, &quot;</span>
+            <span class="s2">&quot;read from environment variable DACHS_SYNLOG if not specified on command line.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--outfile&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Output file containing structured HDF5 data. &quot;</span>
+            <span class="s2">&quot;If omitted, it is written to the same directory &quot;</span>
+            <span class="s2">&quot;and with the same basename as *synlog* above, but with .h5 suffix.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-a&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--amset&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DACHS_AMSET&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Equipment set AMSET identifier, &quot;</span>
+            <span class="s2">&quot;read from environment variable DACHS_AMSET if not specified on command line.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adapted from:</span>
-<span class="sd">        https://github.com/python-attrs/attrs/issues/487#issuecomment-660727537</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span> <span class="kn">from</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot delete fields for attrs classes.&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../reference/autosummary/dachs.main.main.html#dachs.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;:param args: replaces sys.argv with a custom argument list.&quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">configureParser</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="n">outfileFromInput</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">synlog</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot pop fields from attrs classes.&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># auto-generate the store and load key lists:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_storeKeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excludeKeys</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">))]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loadKeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excludeKeys</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">))]</span></div>
+    <span class="n">exp</span> <span class="o">=</span> <span class="n">dachs</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">logbook</span><span class="p">,</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">s0file</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">s1file</span><span class="p">),</span> <span class="n">args</span><span class="o">.</span><span class="n">synlog</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">amset</span><span class="p">)</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">dachs</span><span class="o">.</span><span class="n">serialization</span><span class="o">.</span><span class="n">dumpKV</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">dbg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing structure to &#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+    <span class="c1"># from pprint import pprint</span>
+    <span class="c1"># pprint(paths)</span>
+    <span class="n">McHDF</span><span class="o">.</span><span class="n">storeKVPairs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">paths</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="n">dachs</span><span class="o">.</span><span class="n">serialization</span><span class="o">.</span><span class="n">graphKV</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span></div>
 </pre></div>
         </article>
       </div>

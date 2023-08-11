@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.readers.ReadStartingCompounds" href="dachs.readers.ReadStartingCompounds.html" /><link rel="prev" title="dachs.metaclasses.ExperimentalSetupClass" href="dachs.metaclasses.ExperimentalSetupClass.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="dachs.main.configureParser" href="dachs.main.configureParser.html" /><link rel="prev" title="dachs.helpers.whitespaceCleanup" href="dachs.helpers.whitespaceCleanup.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
-        <title>dachs.readers - DACHS 0.5.0+f5cf062 documentation</title>
+        <title>dachs.main - DACHS 0.5.0+f5cf062 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -182,7 +182,7 @@
 <li class="toctree-l4"><a class="reference internal" href="dachs.helpers.whitespaceCleanup.html">dachs.helpers.whitespaceCleanup</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.main.html">dachs.main</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of dachs.main</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 current has-children current-page"><a class="current reference internal" href="#">dachs.main</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of dachs.main</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.main.configureParser.html">dachs.main.configureParser</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.main.main.html">dachs.main.main</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.main.outfileFromInput.html">dachs.main.outfileFromInput</a></li>
@@ -195,7 +195,7 @@
 <li class="toctree-l4"><a class="reference internal" href="dachs.metaclasses.ExperimentalSetupClass.html">dachs.metaclasses.ExperimentalSetupClass</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current has-children current-page"><a class="current reference internal" href="#">dachs.readers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of dachs.readers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dachs.readers.html">dachs.readers</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of dachs.readers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.ReadStartingCompounds.html">dachs.readers.ReadStartingCompounds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.assert_unit.html">dachs.readers.assert_unit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dachs.readers.find_in_log.html">dachs.readers.find_in_log</a></li>
@@ -271,32 +271,24 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-dachs.readers">
-<span id="dachs-readers"></span><h1>dachs.readers<a class="headerlink" href="#module-dachs.readers" title="Permalink to this heading">#</a></h1>
-<p>Contains readers for loading and interpreting the excel files of Glen and the log files of RoWaN</p>
+          <section id="module-dachs.main">
+<span id="dachs-main"></span><h1>dachs.main<a class="headerlink" href="#module-dachs.main" title="Permalink to this heading">#</a></h1>
 <p class="rubric">Functions</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="dachs.readers.ReadStartingCompounds.html#dachs.readers.ReadStartingCompounds" title="dachs.readers.ReadStartingCompounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReadStartingCompounds</span></code></a>(filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="dachs.main.configureParser.html#dachs.main.configureParser" title="dachs.main.configureParser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configureParser</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="dachs.readers.assert_unit.html#dachs.readers.assert_unit" title="dachs.readers.assert_unit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_unit</span></code></a>(value, default_unit)</p></td>
-<td><p>adds a default unit string for interpretation by pint if the value is not in string format yet (and therefore does not yet have a unit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="dachs.main.main.html#dachs.main.main" title="dachs.main.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>([args])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param args<span class="colon">:</span></dt>
+<dd class="field-odd"><p>replaces sys.argv with a custom argument list.</p>
+</dd>
+</dl>
+</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="dachs.readers.find_in_log.html#dachs.readers.find_in_log" title="dachs.readers.find_in_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_in_log</span></code></a>(log, searchString[, ...])</p></td>
-<td><p>Returns (the first match of) a given Reagent if its ID is found in an input string, otherwise returns None</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="dachs.readers.find_reagent_in_rawmessage.html#dachs.readers.find_reagent_in_rawmessage" title="dachs.readers.find_reagent_in_rawmessage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_reagent_in_rawmessage</span></code></a>(searchString, ...)</p></td>
-<td><p>Returns (the first match of) a given Reagent if its ID is found in an input string, otherwise returns None</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="dachs.readers.find_trigger_in_log.html#dachs.readers.find_trigger_in_log" title="dachs.readers.find_trigger_in_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_trigger_in_log</span></code></a>(logEntry[, triggerList])</p></td>
-<td><p>Interprets a synthesis step.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="dachs.readers.readExperimentalSetup.html#dachs.readers.readExperimentalSetup" title="dachs.readers.readExperimentalSetup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readExperimentalSetup</span></code></a>(filename[, SetupName])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="dachs.readers.readRawMessageLog.html#dachs.readers.readRawMessageLog" title="dachs.readers.readRawMessageLog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readRawMessageLog</span></code></a>(filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="dachs.main.outfileFromInput.html#dachs.main.outfileFromInput" title="dachs.main.outfileFromInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outfileFromInput</span></code></a>(infn[, suffix])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -309,23 +301,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="dachs.readers.ReadStartingCompounds.html">
+          <a class="next-page" href="dachs.main.configureParser.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">dachs.readers.ReadStartingCompounds</div>
+                <div class="title">dachs.main.configureParser</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="dachs.metaclasses.ExperimentalSetupClass.html">
+          <a class="prev-page" href="dachs.helpers.whitespaceCleanup.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">dachs.metaclasses.ExperimentalSetupClass</div>
+                <div class="title">dachs.helpers.whitespaceCleanup</div>
                 
               </div>
             </a>
