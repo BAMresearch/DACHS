@@ -28,8 +28,11 @@ jobs:
       - name: Update files with new version number
         env:
           GH_TOKEN: {{'${{secrets.GITHUB_TOKEN}}'}}
+          PYTHONPATH: ci
         shell: sh
         run: |
+          # update files not covered by semantic-release
           python ci/fixver.py $(semantic-release version --print)
+          # run semantic-release in source tree only
           semantic-release version
           git status
