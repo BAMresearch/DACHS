@@ -42,11 +42,6 @@ jobs:
             ci/requirements.txt
             tests/requirements.txt
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --progress-bar=off -r ci/requirements.txt
-
       - name: Install required system packages
         shell: sh
         run: |
@@ -60,15 +55,24 @@ jobs:
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
 
+      - name: Install dependencies
+        run: |
+          [ -d "$CONDA" ] && $CONDA/condabin/activate
+          python -m pip install --upgrade pip
+          python -m pip install --progress-bar=off -r ci/requirements.txt
+
       - name: Show installed package details
         run: |
+          [ -d "$CONDA" ] && $CONDA/condabin/activate
           virtualenv --version
           pip --version
           tox --version
           pip list --format=freeze
 
       - name: Run tests
-        run: tox -e ${{ env.TOX_ENV }} -v
+        run: |
+          [ -d "$CONDA" ] && $CONDA/condabin/activate
+          tox -e ${{ env.TOX_ENV }} -v
 
       - name: Rename coverage data uniquely
         run: mv .coverage coverage.${{ env.TOX_ENV }}.${{ matrix.os }}

@@ -36,19 +36,22 @@ jobs:
       {{ ci.setup_python(arch='${{ matrix.python_arch }}', py='${{ env.PYTHON }}',
                          req=['ci/requirements.txt', 'tests/requirements.txt']) }}
 
-      {{ ci.pip_install_req() }}
-
       {{ ci.sys_install_req() }}
+
+      {{ ci.pip_install_req() }}
 
       - name: Show installed package details
         run: |
+          {{ ci.conda_activate() }}
           virtualenv --version
           pip --version
           tox --version
           pip list --format=freeze
 
       - name: Run tests
-        run: tox -e {{'${{ env.TOX_ENV }}'}} -v
+        run: |
+          {{ ci.conda_activate() }}
+          tox -e {{'${{ env.TOX_ENV }}'}} -v
 
       - name: Rename coverage data uniquely
         run: {{ 'mv .coverage coverage.${{ env.TOX_ENV }}.${{ matrix.os }}' }}

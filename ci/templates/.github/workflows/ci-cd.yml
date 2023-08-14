@@ -56,9 +56,14 @@ jobs:
           {%- endfor -%}
 {%- endmacro -%}
 
+{% macro conda_activate() -%}
+          [ -d "$CONDA" ] && $CONDA/condabin/activate
+{%- endmacro -%}
+
 {% macro pip_install_req() -%}
       - name: Install dependencies
         run: |
+          {{ conda_activate() }}
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 {%- endmacro -%}
