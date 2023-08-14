@@ -16,10 +16,9 @@ jobs:
 
       {{ ci.setup_python() }}
 
-      {{ ci.pip_install_req() }}
+      {{ ci.sys_install_req() }}
 
-      - name: Install additional system packages
-        run: sudo apt-get -y install graphviz
+      {{ ci.pip_install_req() }}
 
       - name: Get last and current version
         env:
@@ -49,9 +48,11 @@ jobs:
           semantic-release version --build-metadata $git_hash --no-commit --no-push --skip-build
 
       - name: Check
+        shell: sh
         run: tox -e check -v
 
       - name: Generate documentation
+        shell: sh
         run: tox -e docs -v
 
       - name: Upload docs for finalization later

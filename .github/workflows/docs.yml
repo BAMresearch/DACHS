@@ -24,14 +24,25 @@ jobs:
           cache-dependency-path: |
             ci/requirements.txt
 
+      - name: Install required system packages
+        shell: sh
+        run: |
+          PLATFORM="$(echo "$RUNNER_OS" | tr '[:upper:]' '[:lower:]')"
+          REQFN="ci/requirements_$PLATFORM.txt"
+          if [ "$PLATFORM" = "linux" ] && [ -f "$REQFN" ]; then
+            sudo apt-get -y install $(sed -e '/^\s*#/d' "$REQFN")
+          elif [ "$PLATFORM" = "windows" ] && [ -f "$REQFN" ]; then
+            /c/miniconda/condabin/conda.bat install -y $(sed -e '/^\s*#/d' "$REQFN")
+          else
+            echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
+          fi
+
       - name: Install dependencies
+        shell: sh
         run: |
           [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
-
-      - name: Install additional system packages
-        run: sudo apt-get -y install graphviz
 
       - name: Get last and current version
         env:
@@ -61,9 +72,11 @@ jobs:
           semantic-release version --build-metadata $git_hash --no-commit --no-push --skip-build
 
       - name: Check
+        shell: sh
         run: tox -e check -v
 
       - name: Generate documentation
+        shell: sh
         run: tox -e docs -v
 
       - name: Upload docs for finalization later

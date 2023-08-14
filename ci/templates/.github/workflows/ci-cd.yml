@@ -62,6 +62,7 @@ jobs:
 
 {% macro pip_install_req() -%}
       - name: Install dependencies
+        shell: sh
         run: |
           {{ conda_activate() }}
           python -m pip install --upgrade pip
