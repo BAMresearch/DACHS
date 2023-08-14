@@ -54,6 +54,8 @@ jobs:
           REQFN="ci/requirements_$PLATFORM.txt"
           if [ "$PLATFORM" = "linux" ] && [ -f "$REQFN" ]; then
             sudo apt-get -y install $(sed -e '/^\s*#/d' "$REQFN")
+          if [ "$PLATFORM" = "windows" ] && [ -f "$REQFN" ]; then
+            conda -y install $(sed -e '/^\s*#/d' "$REQFN")
           else
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
