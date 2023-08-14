@@ -50,20 +50,20 @@ jobs:
           if [ "$PLATFORM" = "linux" ] && [ -f "$REQFN" ]; then
             sudo apt-get -y install $(sed -e '/^\s*#/d' "$REQFN")
           elif [ "$PLATFORM" = "windows" ] && [ -f "$REQFN" ]; then
-            /C/Miniconda/condabin/conda install -y $(sed -e '/^\s*#/d' "$REQFN")
+            /c/miniconda/condabin/conda.bat install -y $(sed -e '/^\s*#/d' "$REQFN")
           else
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
 
       - name: Install dependencies
         run: |
-          [ -d "$CONDA" ] && $CONDA\\condabin\\activate
+          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
       - name: Show installed package details
         run: |
-          [ -d "$CONDA" ] && $CONDA\\condabin\\activate
+          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
           virtualenv --version
           pip --version
           tox --version
@@ -71,7 +71,7 @@ jobs:
 
       - name: Run tests
         run: |
-          [ -d "$CONDA" ] && $CONDA\\condabin\\activate
+          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
           tox -e ${{ env.TOX_ENV }} -v
 
       - name: Rename coverage data uniquely

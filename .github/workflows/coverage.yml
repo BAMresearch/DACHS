@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          [ -d "$CONDA" ] && $CONDA\\condabin\\activate
+          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
