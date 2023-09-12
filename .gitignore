@@ -36,6 +36,9 @@ nosetests.xml
 coverage.xml
 htmlcov
 
+# optional test data
+log_AutoMOFs_*
+
 # test output
 *.h5
 
