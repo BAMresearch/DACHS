@@ -189,7 +189,7 @@ def assert_unit(value, default_unit: str) -> str:
         return value
 
 
-def find_trigger_in_log(logEntry: synthesisStep, triggerList=["Weight"]) -> bool:
+def find_trigger_in_log(logEntry: synthesisStep, triggerList=["Mass"]) -> bool:
     """
     Interprets a synthesis step. If a word in the triggerList is found,
     it returns True, otherwise False

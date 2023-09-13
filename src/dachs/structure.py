@@ -235,7 +235,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.Name.lower()][-1],
     )
     # to this we need to find the volume and density of which solution for the injections
-    allVolumes = find_in_log(exp.Synthesis.RawLog, "Solution volume set", Highlander=False)
+    allVolumes = find_in_log(exp.Synthesis.RawLog, ["Solution", "volume set"], Highlander=False)
     assert len(allVolumes) != 0, "No injection volume specified in log"
     # assert (
     #     len(allVolumes) == 1
@@ -289,14 +289,14 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     )
 
     # calculate the weight of Product:
-    InitialWeight = find_in_log(
+    InitialMass = find_in_log(
         exp.Synthesis.RawLog,
         ["empty Falcon tube"],
         excludeString=["+ dry sample", " lid"],
         Highlander=True,
         Which="last",
     )
-    FinalWeight = find_in_log(
+    FinalMass = find_in_log(
         exp.Synthesis.RawLog, ["of Falcon tube + dry sample"], excludeString=["lid"], Highlander=True, Which="last"
     )
 
@@ -307,10 +307,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     #     lambda sentence: all(word in sentence for word in targets)
     # )
     # mLocs = np.where(dfMask)[0]
-    logging.debug(f" {InitialWeight=}, \n {FinalWeight=}")
+    logging.debug(f" {InitialMass=}, \n {FinalMass=}")
     # assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
     # exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
-    exp.Chemicals.final_product.Mass = FinalWeight.Quantity - InitialWeight.Quantity
+    exp.Chemicals.final_product.Mass = FinalMass.Quantity - InitialMass.Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
     logging.debug(f"{len(mix.ComponentList)=}")
@@ -358,7 +358,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
-        "Solution rate set",
+        ["Solution", "rate set"],
         Highlander=True,
         Which="last",
         # return_indices=True,
