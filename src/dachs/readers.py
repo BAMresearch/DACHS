@@ -130,6 +130,7 @@ def readRawMessageLog(filename: Path) -> List:
                 Unit=U,
                 Value=Val,
                 Quantity=Q,
+                Using=row["Using"],
             )
         ]
     return msgList

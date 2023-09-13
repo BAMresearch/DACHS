@@ -42,6 +42,7 @@ class RawLogMessage(addItemsToAttrs):
         validator=validators.optional(validators.instance_of((int, float, str))),
     )
     Unit: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
+    Using: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
