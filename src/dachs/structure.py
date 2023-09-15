@@ -51,7 +51,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         ChemicalFormula="ZnC8H12N4",
         Substance=z8,
         MolarMass=ureg.Quantity(str(z8.molar_mass())),
-        Density=ureg.Quantity("0.3 g/cc"),
+        Density=ureg.Quantity("0.94 g/cc"),
         SourceDOI="something",
     )
 
