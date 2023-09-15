@@ -22,7 +22,7 @@ def configureParser() -> argparse.ArgumentParser:
             Converts the raw RoWaN logs to split files, one file per sample. 
             """,
     )
-    defaultPath = Path(__file__).resolve().parent.parent.parent / "tests" / "testData"
+    # defaultPath = Path(__file__).resolve().parent.parent.parent / "tests" / "testData"
     # TODO: add info about output files to be created ...
     parser.add_argument(
         "-f",
@@ -36,16 +36,17 @@ def configureParser() -> argparse.ArgumentParser:
     return parser
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     args = configureParser().parse_args()
     df_automofs = pd.read_csv(
         args.filename, 
-        skipinitialspace=True, 
+        skipinitialspace=True,
+        skip_blank_lines=True,
         engine='python', 
         sep=';',
         header=None,
         names=['Time', 'Info', 'ExperimentID', 'SampleNumber', 'Readout', 'Value', 'Unit', 'Using']
-        ) # 'AutoMOFs06_07_combi_20230224.log', 
+        )
     # for every AutoMOF experiment
     for expID in df_automofs['ExperimentID'].unique(): 
         # only need this to get unique samples:
@@ -53,16 +54,15 @@ if __name__=='__main__':
         uniqueSamples = dsub["SampleNumber"].unique()
         # some output to show we're doing something
         print(f'working on {expID=}, number of sampleNumbers: {len(uniqueSamples)}')
-        for sampleID in uniqueSamples: # for every unique sample
+        for sampleID in uniqueSamples:  # for every unique sample
             # get a subset for only this automofs and samplenumbers
             df1 = df_automofs.loc[
                 (df_automofs['SampleNumber'] == sampleID) &
                 (df_automofs['ExperimentID'] == expID)
             ]
             # define an output filename and make it into a Path so we can do some checks and operations
-            output_file_name = Path(f"log_{str(expID)}_{str(sampleID)}.xlsx")
+            output_file_name = Path(args.filename.parent, f"log_{str(expID)}_{str(sampleID)}.xlsx")
             # get rid of the file if it already exists:
             if output_file_name.is_file(): output_file_name.unlink()
             # output information to file:
             df1.to_excel(output_file_name, index=False)
-
