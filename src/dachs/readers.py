@@ -219,7 +219,7 @@ def find_in_log(
     excludeString: Union[str, list] = "Dummy exclude string which will not be found",
     Highlander: bool = True,  # there can be only one if Highlander is True
     Which: str = "first",  # if highlander, specify if first or last
-) -> Optional[Union[RawLogMessage, list[RawLogMessage]]]:
+) -> Union[RawLogMessage, list[RawLogMessage]]:  # Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
     Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
