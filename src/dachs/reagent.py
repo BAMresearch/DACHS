@@ -274,6 +274,11 @@ class Mixture(addItemsToAttrs):
     #     validator=validators.instance_of(str),
     #     converter=str,
     # )
+    Density: Optional[ureg.Quantity] = field(  # can be (re)defined for each mixture. cannot be calculated.
+        default=None,
+        validator=validators.optional(validators.instance_of(ureg.Quantity)),
+        # converter=ureg,
+    )
     StorageConditions: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
