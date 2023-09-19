@@ -87,12 +87,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             header=0,
             parse_dates=["Time"],
         )
-        stepId = 1
         assert len(df.SampleNumber.unique()) == 1, logging.error(
             "no unique mixture ID (sampleNumber) identified in the solution log"
         )
         solutionId = df.SampleNumber.unique()[0]
-        synth = []
+        rawLog = readRawMessageLog(filename)
         mix = Mixture(
             ID=solutionId,
             Name="Mixture",
@@ -102,44 +101,25 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             # ComponentList=reagList,
             # Synthesis=None # will be filled in later
         )
-        # now we find the Reagents that went into the mixture:
-        for idx, row in df.iterrows():
-            sstep = synthesisStep(
-                ID=str(stepId),
-                RawMessage=row["Readout"],
-                RawMessageLevel=row["Info"],
-                TimeStamp=pd.to_datetime(row["Time"]),
-                stepDescription="Generating stock solutions",
-                stepType="mixing",
-                ExperimentId=row["ExperimentID"],
-            )
-            if find_trigger_in_log(sstep, triggerList=["mass of"]):  # triggerList=["Weight"]) or
-                # we found a component to add to the mixture
-                reag = find_reagent_in_rawmessage(sstep.RawMessage, exp.Chemicals.starting_compounds)
-                if reag is not None:  # logging.warning(f"Reagent not found in {sstep.RawMessage=}")
-                    # print(f'{str(row["Value"]) + " " + str(row["Unit"])}, {reag.ID=}')
-                    mix.AddReagent(
-                        reag=reag, ReagentMass=ureg.Quantity(str(row["Value"]) + " " + str(row["Unit"]))
-                    )
-            # in the one log, it's "Solutions mixed together",
-            # in the other "Solution components mixed together"
-            if find_trigger_in_log(sstep, triggerList=["mixed together"]):
-                mix.PreparationDate = sstep.TimeStamp
-            synth += [sstep]
-            stepId += 1
+
+        # new style 20230919, attempting to get rid of synthesisStep
+        for reagent in exp.Chemicals.starting_compounds:
+            RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
+            if len(RLMList) != 0:  # if the list is not empty:
+                for RLM in RLMList:  # add each to the mix
+                    mix.AddReagent(reag=reagent, ReagentMass=RLM.Quantity)
+
+        RLM = find_in_log(rawLog, "mixed together", Highlander=True, Which="first")
+        if len(RLM) != 0:  # if this is not empty
+            mix.PreparationDate = RLM.TimeStamp
+
         # now we can define the mixture
-        # mix.PreparationDate = find_in_log(
-        #     synth,
-        #     "Solutions mixed together",
-        #     Highlander=True,
-        #     Which="last"
-        #     # return_indices=True,
-        #     ).TimeStamp  # last index found should be the date
         mix.Synthesis = SynthesisClass(
-            ID=solutionId,
+            ID=f"{solutionId}_Synthesis",
             Name=f"Preparation of {solutionId}",
             Description=" ",
-            SynthesisLog=synth,
+            # SynthesisLog=synth,
+            RawLog=rawLog,
         )
         exp.Chemicals.mixtures += [mix]
         # and we can add the synthesis used to make this mixture:
@@ -186,7 +166,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         exp.Synthesis.RawLog,
         "Start injection of solution",
         Highlander=True,
-        Which="last"
+        Which="last",
         # return_indices=True,
     ).TimeStamp  # .astimezone('UTC'))#, does this need str-ing?
 
@@ -194,7 +174,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         exp.Synthesis.RawLog,
         "Sample placed in centrifuge",
         Highlander=True,
-        Which="last"
+        Which="last",
         # return_indices=True,
     ).TimeStamp  # .astimezone('UTC'))#, does this need str-ing?
 
@@ -364,15 +344,20 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     exp.Synthesis.ExtraInformation.update({"InjectionSpeed": LogEntry.Quantity})
+    exp.Synthesis.ExtraInformation.update({"ProductYield": exp.Chemicals.ChemicalYield})
 
-    # exp.Synthesis.DerivedParameters += [
-    #     DerivedParameter(
-    #         Name="RoomTemperature",
-    #         Description="Actual room temperature at synthesis time",
-    #         RawMessages=[LogEntry.Index],
-    #         Quantity=LogEntry.Quantity,
-    #     )
-    # ]
+    # add notes to the ExtraInformation:
+    noteCounter = 0
+    noteList = find_in_log(
+        exp.Synthesis.RawLog,
+        "Note",
+        Highlander=False,
+        # Which="last",
+        # return_indices=True,
+    )
+    for note in noteList:
+        exp.Synthesis.ExtraInformation.update({f"Note{noteCounter}": note.Value})
+    # print([i.Value for i in noteList])
 
     # lastly, we can remove all the unused reagents from starting_compounds:
     exp.Chemicals.starting_compounds = [item for item in exp.Chemicals.starting_compounds if item.Used]
