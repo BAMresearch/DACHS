@@ -36,7 +36,7 @@ class PV(addItemsToAttrs):
         validator=[validators.instance_of(str), validators.min_len(1)],
         converter=str,
     )
-    Name: str = field(
+    PVName: str = field(
         default=None,
         validator=[validators.instance_of(str), validators.min_len(1)],
         converter=str,
@@ -86,7 +86,7 @@ class Equipment(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Name: str = field(
+    EquipmentName: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,

@@ -46,7 +46,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
         try:
             eqItem = Equipment(
                 ID=str(equip["Equipment ID"]),
-                Name=str(equip["Equipment Name"]),
+                EquipmentName=str(equip["Equipment Name"]),
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
                 ModelNumber=str(equip["Model Number"]),
@@ -61,7 +61,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 pvRec = eq.iloc[rowi + pvi]
                 pv = PV(
                     ID=pvRec["PV ID"],
-                    Name=pvRec["PV Name"],
+                    PVName=pvRec["PV Name"],
                     Description=pvRec["PV Description"],
                     CalibrationFactor=pvRec.get("Calibration Factor"),
                     CalibrationOffset=pvRec["Calibration Offset"],
@@ -86,7 +86,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
         ID=dfRow.SetupID.item(),
-        Name=dfRow.Name.item(),
+        SetupName=dfRow.Name.item(),
         Description=whitespaceCleanup(dfRow.Description.item()),
         EquipmentList=eqList,
     )
@@ -103,10 +103,10 @@ def readRawMessageLog(filename: Path) -> List:
     for idx, row in df.iterrows():
         condition = 0
         Val, U, Q = None, None, None
-        if row["Value"].strip() != "-":
+        if str(row["Value"]).strip() != "-":
             Val = yaml.safe_load(row["Value"]) if isinstance(row["Value"], str) else row["Value"]
             condition += 1
-        if row["Unit"].strip() != "-":
+        if str(row["Unit"]).strip() != "-":
             U = row["Unit"].strip()
             U = "percent" if U == "%" else U
             U = "degC" if U == "C" else U
@@ -115,7 +115,7 @@ def readRawMessageLog(filename: Path) -> List:
             condition += 1
         if condition == 2:  # both value and unit are present
             try:
-                Q = ureg.Quantity(Val, str(U))
+                Q = ureg.Quantity(float(Val), str(U))
             except pint.PintError:  # conversion fail
                 Q = None
 
@@ -144,6 +144,7 @@ def ReadStartingCompounds(filename) -> List:
         index_col=None,
         header=0,
         parse_dates=["Open Date"],
+        # infer_datetime_format=True,
     )
     df = df.dropna(how="all")
     # Turn the specified chemicals into a list of starting compounds
@@ -156,7 +157,7 @@ def ReadStartingCompounds(filename) -> List:
                 ID=str(row["Reagent ID"]),
                 Chemical=Chemical(
                     ID=row["Reagent ID"],
-                    Name=row["Name"],
+                    ChemicalName=row["Name"],
                     ChemicalFormula=row["Formula"],
                     Substance=s,
                     MolarMass=ureg.Quantity(str(s.molar_mass())).to(

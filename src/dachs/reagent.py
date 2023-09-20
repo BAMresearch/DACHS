@@ -41,7 +41,7 @@ class Chemical(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Name: str = field(
+    ChemicalName: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -67,6 +67,10 @@ class Chemical(addItemsToAttrs):
         # converter=chempy.Substance.from_formula,
     )
     SourceDOI: Optional[str] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+    )
+    SpaceGroup: Optional[str] = field(
         default=None,
         validator=validators.optional(validators.instance_of(str)),
     )
@@ -103,15 +107,20 @@ class Product(addItemsToAttrs):
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
         converter=ureg,
     )
+    Evidence: Optional[str] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+        converter=str,
+    )
     _excludeKeys: list = [
         "_excludeKeys",
         "_storeKeys",
-        "ChemicalYield",
+        "SynthesisYield",
     ]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
 
-    # def ChemicalYield(self):
+    # def SynthesisYield(self):
     #     assert (self.ActualMass is not None) and (
     #         self.TargetMass is not None
     #     ), logging.warning(
@@ -248,7 +257,7 @@ class Mixture(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Name: str = field(
+    MixtureName: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,

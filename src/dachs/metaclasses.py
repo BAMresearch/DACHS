@@ -34,7 +34,7 @@ class ExperimentalSetupClass(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Name: str = field(
+    SetupName: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -104,13 +104,17 @@ class ChemicalsClass(addItemsToAttrs):
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    final_product: Optional[Product] = field(  # probably could use an "evidence" too.
-        default=None,
-        validator=validators.optional(validators.instance_of(Product)),
+    potential_products: List[Product] = field(
+        default=Factory(list),
+        validator=validators.instance_of(list),
     )
     target_product: Product = field(
         default=Factory(Product),
         validator=validators.instance_of(Product),
+    )
+    final_product: Optional[Product] = field(  # probably could use an "evidence" too.
+        default=None,
+        validator=validators.optional(validators.instance_of(Product)),
     )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
@@ -118,7 +122,7 @@ class ChemicalsClass(addItemsToAttrs):
     _loadKeys: list = []  # load these keys from file if reconstructing
 
     @property
-    def ChemicalYield(self):
+    def SynthesisYield(self):
         assert (self.target_product.Mass is not None) and (self.final_product.Mass is not None), logging.warning(
             "Yield can only be calculated when both target mass and actual mass are set"
         )

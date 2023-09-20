@@ -162,14 +162,14 @@ class SynthesisClass(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(str)),
     )
-    ExtraInformation: Optional[dict] = field(
+    KeyParameters: Optional[dict] = field(
         default=Factory(dict),
         validator=validators.optional(validators.instance_of(dict)),
     )
     DerivedParameters: Optional[List[DerivedParameter]] = field(
         default=None,
         validator=validators.optional(validators.instance_of(list)),
-    )
+    ) # future upgrade to KeyParameters
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing

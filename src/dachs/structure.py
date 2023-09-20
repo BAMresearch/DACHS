@@ -44,15 +44,29 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     logging.info(f"Working in '{os.getcwd()}'.")
 
     # define a zif Chemical:
-    z8 = chempy.Substance.from_formula("ZnC8H12N4")
+    z8 = chempy.Substance.from_formula("C8H10N4Zn")
     zifChemical = Chemical(
-        ID="Zif-8",
-        Name="Zeolite Imidazole Framework type 8",
-        ChemicalFormula="ZnC8H12N4",
+        ID="ZIF-8",
+        ChemicalName="Zeolitic Imidazolate Framework 8",
+        ChemicalFormula="C8H10N4Zn",
         Substance=z8,
         MolarMass=ureg.Quantity(str(z8.molar_mass())),
-        Density=ureg.Quantity("0.94 g/cc"),
-        SourceDOI="something",
+        Density=ureg.Quantity("0.9426 g/cc"),
+        SourceDOI="10.1038/s42004-021-00613-z",
+        SpaceGroup="I-43m",
+    )
+
+    # define a zif Chemical:
+    zl = chempy.Substance.from_formula("C24H38N12O3Zn2")
+    zifLChemical = Chemical(
+        ID="ZIF-L",
+        ChemicalName="Zeolitic Imidazolate Framework L",
+        ChemicalFormula="C24H38N12O3Zn2",
+        Substance=zl,
+        MolarMass=ureg.Quantity(str(zl.molar_mass())),
+        Density=ureg.Quantity("1.4042 g/cc"),
+        SourceDOI="10.1038/s42004-021-00613-z",
+        SpaceGroup="Cmca",
     )
 
     # Start with a Experiment
@@ -68,9 +82,14 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Chemicals=ChemicalsClass(
             starting_compounds=ReadStartingCompounds(logFile),
             mixtures=[],
-            target_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),
-            final_product=Product(ID="ZIF-8", Chemical=zifChemical, Purity="99 percent"),  # mass is set later.
+            potential_products=[
+                Product(ID="ZIF-8", Chemical=zifChemical),
+                Product(ID="ZIF-L", Chemical=zifLChemical)
+            ],
+            target_product=Product(ID="target_product", Chemical=zifChemical),
+            final_product=Product(ID="final_product", Chemical=zifChemical, Evidence='Assumed for now ¯\_(ツ)_/¯'),  # mass is set later.
         ),
+        # TODO: put ZIF-L in there too as a possible target/candidate
         ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
     )
 
@@ -94,7 +113,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         rawLog = readRawMessageLog(filename)
         mix = Mixture(
             ID=solutionId,
-            Name="Mixture",
+            MixtureName="Mixture",
             Description="",
             PreparationDate=pd.to_datetime("1980-12-31"),  # idx,  # will be replaced with last timestamp read
             StorageConditions="RT",
@@ -121,6 +140,16 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             # SynthesisLog=synth,
             RawLog=rawLog,
         )
+
+        # update density if calculated or measured is present:
+        RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first")
+        if len(RLM) != 0:  # if this is not empty
+            mix.Density = RLM.Quantity
+        # override with measured density if available
+        RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first")
+        if len(RLM) != 0:  # if this is not empty
+            mix.Density = RLM.Quantity
+
         exp.Chemicals.mixtures += [mix]
         # and we can add the synthesis used to make this mixture:
         print(f"{solutionId=}")
@@ -178,7 +207,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     ).TimeStamp  # .astimezone('UTC'))#, does this need str-ing?
 
-    exp.Synthesis.ExtraInformation.update(
+    exp.Synthesis.KeyParameters.update(
         {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
     )
 
@@ -208,11 +237,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix_0",
-        Name="Reaction Mixture 0",
+        MixtureName="Reaction Mixture 0",
         Description="The MOF synthesis reaction mixture",
         PreparationDate=ReactionStart,  # idx,  # last timestamp read
         StorageConditions="RT",
-        Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.Name.lower()][-1],
+        Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.EquipmentName.lower()][-1],
     )
     # to this we need to find the volume and density of which solution for the injections
     allVolumes = find_in_log(exp.Synthesis.RawLog, ["Solution", "volume set"], Highlander=False)
@@ -222,7 +251,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
 
     # find calibration factor and offset:
-    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.Name.lower() == "syringe"][-1]
+    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.EquipmentName.lower() == "syringe"][-1]
     CalibrationFactor = Syringe.PVs["volume"].CalibrationFactor
     CalibrationOffset = Syringe.PVs["volume"].CalibrationOffset
     allSolutions = find_in_log(exp.Synthesis.RawLog, ["Stop", "injection of solution"], Highlander=False)
@@ -236,18 +265,25 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 VolumeRLM = volRLM
 
         # VolumeRLM = allVolumes[0]
+
+        DensityOfAdd = getattr(
+            exp.Chemicals.mixtures[solutionId], "Density"
+        )  # default does not seem to work, still returns None.
+        if DensityOfAdd is None:
+            DensityOfAdd = ureg.Quantity("0.792 g/cc")
+        print(f"{DensityOfAdd}")
         mix.AddMixture(
             exp.Chemicals.mixtures[solutionId],
             AddMixtureVolume=(
                 VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset
             ),  # TODO: correction factor should be added in
-            MixtureDensity=ureg.Quantity("0.792 g/cc"),  # TODO: methanol density for now
+            MixtureDensity=DensityOfAdd,
         )
     # Add to the structure.
     exp.Chemicals.mixtures += [mix]
 
     # calculate the age of solution0 and solution1 into the mix:
-    exp.Synthesis.ExtraInformation.update(
+    exp.Synthesis.KeyParameters.update(
         {
             "MetalSolutionAge": ureg.Quantity(
                 (
@@ -257,7 +293,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             )
         }
     )
-    exp.Synthesis.ExtraInformation.update(
+    exp.Synthesis.KeyParameters.update(
         {
             "LinkerSolutionAge": ureg.Quantity(
                 (
@@ -294,6 +330,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
     logging.debug(f"{len(mix.ComponentList)=}")
+    methMoles = 0
     for component in mix.ComponentList:
         aNumber = chempy.util.periodic.atomic_number("Zn")
         logging.debug(f"{component.Chemical.Substance.composition.keys()=}")
@@ -304,17 +341,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if "C4H6N2" in component.Chemical.Substance.name:
             TotalLinkerMoles = mix.ComponentMoles(MatchComponent=component)
         if "CH3OH" in component.Chemical.Substance.name:
-            TotalMethanolMoles = mix.ComponentMoles(MatchComponent=component)
+            methMoles += mix.ComponentMoles(MatchComponent=component)
+    TotalMethanolMoles = methMoles
 
-    exp.Synthesis.ExtraInformation.update({"MetalToLinkerRatio": TotalMetalMoles / TotalLinkerMoles})
-    exp.Synthesis.ExtraInformation.update({"MetalToMethanolRatio": TotalMetalMoles / TotalMethanolMoles})
+    exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio":  TotalLinkerMoles / TotalMetalMoles})
+    exp.Synthesis.KeyParameters.update({"MetalToMethanolRatio":  TotalMethanolMoles / TotalMetalMoles})
 
     exp.Chemicals.target_product.Mass = TotalMetalMoles * exp.Chemicals.target_product.Chemical.MolarMass
-    logging.debug(f"{exp.Chemicals.ChemicalYield=}")
-    exp.Chemicals._storeKeys += ["ChemicalYield"]
+    logging.debug(f"{exp.Chemicals.SynthesisYield=}")
+    exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
     # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
-    exp.Synthesis.SourceDOI = "10.1039/D1RA02856A"
+    exp.Synthesis.SourceDOI = "TBD" # TODO: add a default synthesis to Zenodo
 
     # exp.Chemicals.target_product.Mass =
 
@@ -334,7 +372,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    exp.Synthesis.ExtraInformation.update({"LabTemperature": LogEntry.Quantity})
+    exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
@@ -343,10 +381,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    exp.Synthesis.ExtraInformation.update({"InjectionSpeed": LogEntry.Quantity})
-    exp.Synthesis.ExtraInformation.update({"ProductYield": exp.Chemicals.ChemicalYield})
+    exp.Synthesis.KeyParameters.update({"InjectionSpeed": LogEntry.Quantity})
+    exp.Synthesis.KeyParameters.update({"SynthesisYield": exp.Chemicals.SynthesisYield})
 
-    # add notes to the ExtraInformation:
+    # add notes to the KeyParameters:
     noteCounter = 0
     noteList = find_in_log(
         exp.Synthesis.RawLog,
@@ -356,7 +394,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     for note in noteList:
-        exp.Synthesis.ExtraInformation.update({f"Note{noteCounter}": note.Value})
+        exp.Synthesis.KeyParameters.update({f"Note{noteCounter}": note.Value})
     # print([i.Value for i in noteList])
 
     # lastly, we can remove all the unused reagents from starting_compounds:
