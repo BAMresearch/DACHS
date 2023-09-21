@@ -227,7 +227,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )  # .astimezone('UTC'))#, does this need str-ing?
-    ReactionStop = StopRLM.TimeStamp
+    ReactionStop = StopRLM.TimeStamp if StopRLM != [] else 0
 
     # exp.Synthesis.KeyParameters.update(
     #     {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
