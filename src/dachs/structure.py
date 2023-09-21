@@ -233,20 +233,36 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     #     {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
     # )
     # more detailed logging style also indicating sources and descriptions
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="ReactionTime",
-            ParameterName="Reaction time",
-            Description=(
-                "The time between the start of the second injection into the reaction mixture and the start of the"
-                " centrifugation"
-            ),
-            RawMessages=[StartRLM.Index, StopRLM.Index],
-            Quantity=ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s"),
-            Value=(ReactionStop - ReactionStart).total_seconds(),
-            Unit="s",
-        )
-    ]
+    if StartRLM != [] and StopRLM != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="ReactionTime",
+                ParameterName="Reaction time",
+                Description=(
+                    "The time between the start of the second injection into the reaction mixture and the start of"
+                    " the centrifugation"
+                ),
+                RawMessages=[StartRLM.Index, StopRLM.Index],
+                Quantity=ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s"),
+                Value=(ReactionStop - ReactionStart).total_seconds(),
+                Unit="s",
+            )
+        ]
+    else:  # one of the timings is missing, so we cannot calculate this value. We still need to provide it though:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="ReactionTime",
+                ParameterName="Reaction time",
+                Description=(
+                    "The time between the start of the second injection into the reaction mixture and the start of"
+                    " the centrifugation. In this case, it could not be determined because of missing information"
+                ),
+                RawMessages=[StartRLM.Index if StartRLM != [] else None, StopRLM.Index if StopRLM != [] else None],
+                Quantity=ureg.Quantity(0.0, "s"),
+                Value=0.0,
+                Unit="s",
+            )
+        ]
 
     if amset is not None:
         sun = amset
