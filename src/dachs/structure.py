@@ -19,7 +19,7 @@ from dachs.readers import (
 )
 from dachs.reagent import Mixture  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
 from dachs.reagent import Chemical, Product
-from dachs.synthesis import SynthesisClass, synthesisStep
+from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
 
 
 def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None) -> Experiment:
@@ -43,7 +43,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     logging.info(f"Working in '{os.getcwd()}'.")
 
-    # define a zif Chemical:
+    # define a ZIF 8 Chemical, we'll need this later:
     z8 = chempy.Substance.from_formula("C8H10N4Zn")
     zifChemical = Chemical(
         ID="ZIF-8",
@@ -56,7 +56,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         SpaceGroup="I-43m",
     )
 
-    # define a zif Chemical:
+    # define a ZIF L Chemical, we'll need these later too:
     zl = chempy.Substance.from_formula("C24H38N12O3Zn2")
     zifLChemical = Chemical(
         ID="ZIF-L",
@@ -79,17 +79,25 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             The injection rate and injection order are varied. Centrifugation and drying
             is performed manually. Residence times are ca. 20 minutes after start of second injection.
         """,
+        # in this experiment, we are going to use some chemicals. These are defined by the chemicals class.
         Chemicals=ChemicalsClass(
+            # There is a list of starting compounds in the log file
             starting_compounds=ReadStartingCompounds(logFile),
-            mixtures=[],
+            mixtures=[],  # mixtures get filled in later
+            # Then we have the potential products from the synthesis. Be as thorough as you like here, it will help you later on
             potential_products=[
                 Product(ID="ZIF-8", Chemical=zifChemical),
-                Product(ID="ZIF-L", Chemical=zifLChemical)
+                Product(ID="ZIF-L", Chemical=zifLChemical),
             ],
+            # the target product is what you are aiming to get:
             target_product=Product(ID="target_product", Chemical=zifChemical),
-            final_product=Product(ID="final_product", Chemical=zifChemical, Evidence='Assumed for now ¯\_(ツ)_/¯'),  # mass is set later.
+            # the final product is what you actually got in the end, as evidenced by the evidence.
+            final_product=Product(
+                ID="final_product", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
+            ),  # mass is set later.
         ),
-        # TODO: put ZIF-L in there too as a possible target/candidate
+        # We're usin this experimental set-up for this experiment.
+        # TODO: read the setupname from the AMSET note in the logs. The experimental setup can be defined later, so we'll probably shift this down to after we determined it.
         ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
     )
 
@@ -122,11 +130,23 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         )
 
         # new style 20230919, attempting to get rid of synthesisStep
+        aNumber = chempy.util.periodic.atomic_number("Zn")
+        mixIsMetal = False
+        mixIsLinker = False
         for reagent in exp.Chemicals.starting_compounds:
             RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
             if len(RLMList) != 0:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
                     mix.AddReagent(reag=reagent, ReagentMass=RLM.Quantity)
+                    if aNumber in reagent.Chemical.Substance.composition.keys():
+                        mixIsMetal = True
+                    if "C4H6N2" in reagent.Chemical.Substance.name:
+                        mixIsLinker = True
+
+        if mixIsMetal:
+            mix.Description = "Metal salt dispersion"
+        if mixIsLinker:
+            mix.Description = "Organic linker dispersion"
 
         RLM = find_in_log(rawLog, "mixed together", Highlander=True, Which="first")
         if len(RLM) != 0:  # if this is not empty
@@ -141,12 +161,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             RawLog=rawLog,
         )
 
-        # update density if calculated or measured is present:
-        RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first")
+        # enter measured density if available
+        RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first")
         if len(RLM) != 0:  # if this is not empty
             mix.Density = RLM.Quantity
-        # override with measured density if available
-        RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first")
+        # override density if calculated is present, as measured was done at 20 degrees, and calculated is at lab temp:
+        RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first")
         if len(RLM) != 0:  # if this is not empty
             mix.Density = RLM.Quantity
 
@@ -191,25 +211,42 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # minimal derived information:
     # add the reaction mixtures to Chemicals.mixtures
     # for the start time we need the last "start injection of solution" timestamp
-    ReactionStart = find_in_log(
+    StartRLM = find_in_log(
         exp.Synthesis.RawLog,
         "Start injection of solution",
         Highlander=True,
         Which="last",
         # return_indices=True,
-    ).TimeStamp  # .astimezone('UTC'))#, does this need str-ing?
+    )  # .astimezone('UTC'))#, does this need str-ing?
+    ReactionStart = StartRLM.TimeStamp if StartRLM != [] else 0
 
-    ReactionStop = find_in_log(
+    StopRLM = find_in_log(
         exp.Synthesis.RawLog,
         "Sample placed in centrifuge",
         Highlander=True,
         Which="last",
         # return_indices=True,
-    ).TimeStamp  # .astimezone('UTC'))#, does this need str-ing?
+    )  # .astimezone('UTC'))#, does this need str-ing?
+    ReactionStop = StopRLM.TimeStamp
 
-    exp.Synthesis.KeyParameters.update(
-        {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
-    )
+    # exp.Synthesis.KeyParameters.update(
+    #     {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
+    # )
+    # more detailed logging style also indicating sources and descriptions
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="ReactionTime",
+            ParameterName="Reaction time",
+            Description=(
+                "The time between the start of the second injection into the reaction mixture and the start of the"
+                " centrifugation"
+            ),
+            RawMessages=[StartRLM.Index, StopRLM.Index],
+            Quantity=ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s"),
+            Value=(ReactionStop - ReactionStart).total_seconds(),
+            Unit="s",
+        )
+    ]
 
     if amset is not None:
         sun = amset
@@ -283,27 +320,68 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     exp.Chemicals.mixtures += [mix]
 
     # calculate the age of solution0 and solution1 into the mix:
-    exp.Synthesis.KeyParameters.update(
-        {
-            "MetalSolutionAge": ureg.Quantity(
+    # exp.Synthesis.KeyParameters.update(
+    #     {
+    #         "MetalSolutionAge": ureg.Quantity(
+    #             (
+    #                 exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
+    #             ).total_seconds(),
+    #             "s",
+    #         )
+    #     }
+    # )
+    # more detailed logging style also indicating sources and descriptions
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="MetalSolutionAge",
+            ParameterName="Metal Solution Age",
+            Description=(
+                "The time between the preparation of the metal solution and the mixing of the reaction mixture"
+            ),
+            RawMessages=[],
+            Quantity=ureg.Quantity(
                 (
                     exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
                 ).total_seconds(),
                 "s",
-            )
-        }
-    )
-    exp.Synthesis.KeyParameters.update(
-        {
-            "LinkerSolutionAge": ureg.Quantity(
+            ),
+            Value=(
+                exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
+            ).total_seconds(),
+            Unit="s",
+        )
+    ]
+    # exp.Synthesis.KeyParameters.update(
+    #     {
+    #         "LinkerSolutionAge": ureg.Quantity(
+    #             (
+    #                 exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
+    #             ).total_seconds(),
+    #             "s",
+    #         )
+    #     }
+    # )
+    # more detailed logging style also indicating sources and descriptions
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="LinkerSolutionAge",
+            ParameterName="Metal Solution Age",
+            Description=(
+                "The time between the preparation of the linker solution and the mixing of the reaction mixture"
+            ),
+            RawMessages=[],
+            Quantity=ureg.Quantity(
                 (
                     exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
                 ).total_seconds(),
                 "s",
-            )
-        }
-    )
-
+            ),
+            Value=(
+                exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
+            ).total_seconds(),
+            Unit="s",
+        )
+    ]
     # calculate the weight of Product:
     InitialMass = find_in_log(
         exp.Synthesis.RawLog,
@@ -344,15 +422,45 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             methMoles += mix.ComponentMoles(MatchComponent=component)
     TotalMethanolMoles = methMoles
 
-    exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio":  TotalLinkerMoles / TotalMetalMoles})
-    exp.Synthesis.KeyParameters.update({"MetalToMethanolRatio":  TotalMethanolMoles / TotalMetalMoles})
+    # exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio": TotalLinkerMoles / TotalMetalMoles})
+    # more detailed logging style also indicating sources and descriptions
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="MetalToLinkerRatio",
+            ParameterName="Metal To Linker Ratio",
+            Description=(
+                "The molar ratio between metal ions and linker molecules, as calculated from the solution"
+                " compositions."
+            ),
+            RawMessages=[],
+            Quantity=TotalLinkerMoles / TotalMetalMoles,
+            Value=(TotalLinkerMoles / TotalMetalMoles).magnitude,
+            Unit=(TotalLinkerMoles / TotalMetalMoles).units,
+        )
+    ]
+    # exp.Synthesis.KeyParameters.update({"MetalToMethanolRatio": TotalMethanolMoles / TotalMetalMoles})
+    # more detailed logging style also indicating sources and descriptions
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="MetalToMethanolRatio",
+            ParameterName="Metal To Methanol Ratio",
+            Description=(
+                "The molar ratio between metal ions and solvent (methanol) molecules, as calculated from the"
+                " solution compositions."
+            ),
+            RawMessages=[],
+            Quantity=TotalMethanolMoles / TotalMetalMoles,
+            Value=(TotalMethanolMoles / TotalMetalMoles).magnitude,
+            Unit=(TotalMethanolMoles / TotalMetalMoles).units,
+        )
+    ]
 
     exp.Chemicals.target_product.Mass = TotalMetalMoles * exp.Chemicals.target_product.Chemical.MolarMass
     logging.debug(f"{exp.Chemicals.SynthesisYield=}")
     exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
     # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
-    exp.Synthesis.SourceDOI = "TBD" # TODO: add a default synthesis to Zenodo
+    exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
 
     # exp.Chemicals.target_product.Mass =
 
@@ -372,7 +480,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="LabTemperature",
+            ParameterName="Laboratory temperature",
+            Description="The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes",
+            RawMessages=[LogEntry.Index],
+            Quantity=LogEntry.Quantity,
+            Value=LogEntry.Value,
+            Unit=LogEntry.Unit,
+        )
+    ]
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
@@ -381,9 +500,30 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    exp.Synthesis.KeyParameters.update({"InjectionSpeed": LogEntry.Quantity})
-    exp.Synthesis.KeyParameters.update({"SynthesisYield": exp.Chemicals.SynthesisYield})
-
+    # exp.Synthesis.KeyParameters.update({"InjectionSpeed": LogEntry.Quantity})
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="InjectionSpeed",
+            ParameterName="Injection Speed",
+            Description="The speed at which the second reactant was added to the reaction mixture",
+            RawMessages=[LogEntry.Index],
+            Quantity=LogEntry.Quantity,
+            Value=LogEntry.Value,
+            Unit=LogEntry.Unit,
+        )
+    ]
+    # exp.Synthesis.KeyParameters.update({"SynthesisYield": exp.Chemicals.SynthesisYield})
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="SynthesisYield",
+            ParameterName="Synthesis Yield",
+            Description="The yield of the synthesis as calculated from the final product mass",
+            RawMessages=[InitialMass.Index, FinalMass.Index],
+            Quantity=exp.Chemicals.SynthesisYield,
+            Value=exp.Chemicals.SynthesisYield.magnitude,
+            Unit=exp.Chemicals.SynthesisYield.units,
+        )
+    ]
     # add notes to the KeyParameters:
     noteCounter = 0
     noteList = find_in_log(
@@ -394,7 +534,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     for note in noteList:
-        exp.Synthesis.KeyParameters.update({f"Note{noteCounter}": note.Value})
+        # exp.Synthesis.KeyParameters.update({f"Note{noteCounter}": note.Value})
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="Note{noteCounter}",
+                ParameterName="Note {noteCounter}",
+                Description="An operator note or flag as pertaining to the synthesis",
+                RawMessages=[note.Index],
+                Quantity=note.Quantity,
+                Value=note.Value,
+                Unit=note.Unit,
+            )
+        ]
     # print([i.Value for i in noteList])
 
     # lastly, we can remove all the unused reagents from starting_compounds:

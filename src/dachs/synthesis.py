@@ -57,7 +57,12 @@ class DerivedParameter(addItemsToAttrs):
     Value (float or int) with optional Unit (str)
     """
 
-    Name: str = field(default="", validator=validators.instance_of(str), converter=str)
+    ID: str = field(  # step number
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    ParameterName: str = field(default="", validator=validators.instance_of(str), converter=str)
     Description: str = field(default="", validator=validators.instance_of(str), converter=whitespaceCleanup)
     RawMessages: List[int] = field(
         default=Factory(list),
@@ -147,6 +152,10 @@ class SynthesisClass(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=whitespaceCleanup,
     )
+    DerivedParameters: List[DerivedParameter] = field(
+        default=Factory(list),
+        validator=validators.instance_of(list),
+    )  # future upgrade to KeyParameters
     ChemicalReaction: Optional[chempy.Reaction] = field(
         default=None, validator=validators.optional(validators.instance_of(chempy.Reaction))
     )
@@ -166,10 +175,10 @@ class SynthesisClass(addItemsToAttrs):
         default=Factory(dict),
         validator=validators.optional(validators.instance_of(dict)),
     )
-    DerivedParameters: Optional[List[DerivedParameter]] = field(
-        default=None,
-        validator=validators.optional(validators.instance_of(list)),
-    ) # future upgrade to KeyParameters
+    # DerivedParameters: Optional[List[DerivedParameter]] = field(
+    #     default=Factory(list),
+    #     validator=validators.optional(validators.instance_of(list)),
+    # ) # future upgrade to KeyParameters
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
