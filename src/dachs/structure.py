@@ -40,7 +40,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     :param solFiles: One or more Excel files describing the base solutions which were mixed by the robot
     :param synFile: The synthesis robot log file.
     """
-    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+    logging.basicConfig(level=logging.WARNING, stream=sys.stdout)
     logging.info(f"Working in '{os.getcwd()}'.")
 
     # define a ZIF 8 Chemical, we'll need this later:
@@ -123,7 +123,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID=solutionId,
             MixtureName="Mixture",
             Description="",
-            PreparationDate=pd.to_datetime("1980-12-31"),  # idx,  # will be replaced with last timestamp read
+            PreparationDate=pd.to_datetime(
+                "1980-12-31", utc=True
+            ),  # idx,  # will be replaced with last timestamp read
             StorageConditions="RT",
             # ComponentList=reagList,
             # Synthesis=None # will be filled in later
@@ -133,15 +135,26 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         aNumber = chempy.util.periodic.atomic_number("Zn")
         mixIsMetal = False
         mixIsLinker = False
+        # see known issue on the BAMResearch DACHS Git.. this is to avoid false matches when using overlapping names:
+        ReagentIDsUsedInSynthesis = [i.Value for i in find_in_log(rawLog, "ReagentID", Highlander=False)]
+        print(f"{ReagentIDsUsedInSynthesis=}")
         for reagent in exp.Chemicals.starting_compounds:
             RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
             if len(RLMList) != 0:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
-                    mix.AddReagent(reag=reagent, ReagentMass=RLM.Quantity)
-                    if aNumber in reagent.Chemical.Substance.composition.keys():
-                        mixIsMetal = True
-                    if "C4H6N2" in reagent.Chemical.Substance.name:
-                        mixIsLinker = True
+                    # find the preceding message to ensure the reagentID is correct:
+                    previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)][-1]
+                    print(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
+                    # if (reagent.ID in ReagentIDsUsedInSynthesis) & ( # as above, a kludge to avoid overlapping names
+                    #     reagent.ID == previousRLM.Value  # this one might actually fix it tho.
+                    # ):
+                    if reagent.ID in ReagentIDsUsedInSynthesis:
+                        # no idea why I can't also check for this match: reagent.ID==previousRLM.Value, I get a problem later on
+                        mix.add_reagent_to_mix(reag=reagent, ReagentMass=RLM.Quantity)
+                        if aNumber in reagent.Chemical.Substance.composition.keys():
+                            mixIsMetal = True
+                        if "C4H6N2" in reagent.Chemical.Substance.name:
+                            mixIsLinker = True
 
         if mixIsMetal:
             mix.Description = "Metal salt dispersion"
@@ -266,23 +279,20 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     if amset is not None:
         sun = amset
-    else:
-        LogEntry = find_in_log(
-            exp.Synthesis.RawLog,
-            "SetupID",
-            Highlander=True,
-            Which="last",
-            # return_indices=True,
-        )
-        if LogEntry == []:
-            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
-            raise SyntaxError
 
-        if "AMSET" in LogEntry.Value:
-            sun = LogEntry.Value
-        else:
-            logging.error("No AMSET configuration found in log, but also not specified as input argument.")
-            raise SyntaxError
+    # override with info in log if present:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "SetupID",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    if "AMSET" in LogEntry.Value:
+        sun = LogEntry.Value  # override if in the log
+    if (LogEntry == []) & (amset is None):
+        logging.error("No AMSET configuration found in log, but also not specified as input argument.")
+        raise SyntaxError
 
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
@@ -297,6 +307,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.EquipmentName.lower()][-1],
     )
     # to this we need to find the volume and density of which solution for the injections
+    # TODO: do something better to separate solution numbers and their respective volumes.
     allVolumes = find_in_log(exp.Synthesis.RawLog, ["Solution", "volume set"], Highlander=False)
     assert len(allVolumes) != 0, "No injection volume specified in log"
     # assert (
@@ -325,7 +336,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if DensityOfAdd is None:
             DensityOfAdd = ureg.Quantity("0.792 g/cc")
         print(f"{DensityOfAdd}")
-        mix.AddMixture(
+        mix.add_mixture_to_mix(
             exp.Chemicals.mixtures[solutionId],
             AddMixtureVolume=(
                 VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset
@@ -336,17 +347,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     exp.Chemicals.mixtures += [mix]
 
     # calculate the age of solution0 and solution1 into the mix:
-    # exp.Synthesis.KeyParameters.update(
-    #     {
-    #         "MetalSolutionAge": ureg.Quantity(
-    #             (
-    #                 exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
-    #             ).total_seconds(),
-    #             "s",
-    #         )
-    #     }
-    # )
-    # more detailed logging style also indicating sources and descriptions
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(
             ID="MetalSolutionAge",
@@ -367,17 +367,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             Unit="s",
         )
     ]
-    # exp.Synthesis.KeyParameters.update(
-    #     {
-    #         "LinkerSolutionAge": ureg.Quantity(
-    #             (
-    #                 exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
-    #             ).total_seconds(),
-    #             "s",
-    #         )
-    #     }
-    # )
-    # more detailed logging style also indicating sources and descriptions
+
+    # age of the linker solution
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(
             ID="LinkerSolutionAge",
@@ -424,18 +415,24 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
     logging.debug(f"{len(mix.ComponentList)=}")
+    metMoles = 0
     methMoles = 0
+    linkMoles = 0
+    aNumber = chempy.util.periodic.atomic_number("Zn")
     for component in mix.ComponentList:
-        aNumber = chempy.util.periodic.atomic_number("Zn")
         logging.debug(f"{component.Chemical.Substance.composition.keys()=}")
         if aNumber in component.Chemical.Substance.composition.keys():
             # this is the component we're looking for. How many moles of atoms per moles of substance?
-            metalMoles = component.Chemical.Substance.composition[aNumber]
-            TotalMetalMoles = mix.ComponentMoles(MatchComponent=component) * metalMoles
+            metalMoles = component.Chemical.Substance.composition[
+                aNumber
+            ]  # just in case we have more metal ions per mole of chem.
+            metMoles += mix.component_moles(MatchComponent=component) * metalMoles
         if "C4H6N2" in component.Chemical.Substance.name:
-            TotalLinkerMoles = mix.ComponentMoles(MatchComponent=component)
+            linkMoles += mix.component_moles(MatchComponent=component)
         if "CH3OH" in component.Chemical.Substance.name:
-            methMoles += mix.ComponentMoles(MatchComponent=component)
+            methMoles += mix.component_moles(MatchComponent=component)
+    TotalMetalMoles = metMoles
+    TotalLinkerMoles = linkMoles
     TotalMethanolMoles = methMoles
 
     # exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio": TotalLinkerMoles / TotalMetalMoles})
@@ -471,22 +468,13 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         )
     ]
 
+    # The yield is calculated from the target mass versus the actual product mass.
     exp.Chemicals.target_product.Mass = TotalMetalMoles * exp.Chemicals.target_product.Chemical.MolarMass
     logging.debug(f"{exp.Chemicals.SynthesisYield=}")
     exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
     # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
     exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
-
-    # exp.Chemicals.target_product.Mass =
-
-    # DerivedParameter(
-    #     Name="Yield",
-    #     Description="Actual yield of the Product",
-    #     RawMessages=list(mLocs),
-    #     Quantity=exp.Synthesis.RawLog[mLocs[-1]].Quantity
-    #     - exp.Synthesis.RawLog[mLocs[0]].Quantity,
-    # )
 
     # store the room temperature:
     LogEntry = find_in_log(
@@ -551,17 +539,17 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     )
     for note in noteList:
         # exp.Synthesis.KeyParameters.update({f"Note{noteCounter}": note.Value})
-        exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="Note{noteCounter}",
-                ParameterName="Note {noteCounter}",
-                Description="An operator note or flag as pertaining to the synthesis",
-                RawMessages=[note.Index],
-                Quantity=note.Quantity,
-                Value=note.Value,
-                Unit=note.Unit,
-            )
-        ]
+        DP = DerivedParameter(
+            ID=f"Note{noteCounter}",
+            ParameterName=f"Note {noteCounter}",
+            Description="An operator note or flag as pertaining to the synthesis",
+            RawMessages=[note.Index],
+            Value=note.Value,
+            Unit=note.Unit,
+        )
+        if note.Quantity is not None:
+            DP.Quantity = note.Quantity
+        exp.Synthesis.DerivedParameters += [DP]
     # print([i.Value for i in noteList])
 
     # lastly, we can remove all the unused reagents from starting_compounds:

@@ -233,9 +233,11 @@ def test_reagent() -> None:
         [
             f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.Name} in"
             f" {mixture.Name} at mole concentration"
-            f" {mixture.ComponentConcentration(MatchComponent=c):0.03e}"
+            f" {mixture.component_concentration(MatchComponent=c):0.03e}"
             for ci, c in enumerate(mixture.ComponentList)
         ]
     )
-    logging.info([f"{c.PricePerMass():.3f} of {c.Chemical.Name} in {mixture.Name}" for c in mixture.ComponentList])
-    logging.info(f"\n {mixture.ComponentConcentrations()=}, {mixture.TotalMass=}, {mixture.TotalPrice=}")
+    logging.info(
+        [f"{c.price_per_mass():.3f} of {c.Chemical.Name} in {mixture.Name}" for c in mixture.ComponentList]
+    )
+    logging.info(f"\n {mixture.component_concentrations()=}, {mixture.total_mass=}, {mixture.total_price=}")

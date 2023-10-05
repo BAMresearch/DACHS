@@ -68,9 +68,9 @@ class DerivedParameter(addItemsToAttrs):
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    Quantity: Optional[ureg.Quantity] = field(default=None, validator=validators.instance_of(ureg.Quantity))
-    Value: Optional[Union[int, float]] = field(
-        default=None, validator=validators.instance_of((int, float, NoneType))
+    Quantity: Optional[ureg.Quantity] = field(default=None, validator=validators.instance_of((ureg.Quantity, NoneType)))
+    Value: Optional[Union[int, float, str]] = field(
+        default=None, validator=validators.instance_of((int, float, str, NoneType))
     )
     Unit: str = field(default="", validator=validators.instance_of(str), converter=str)
 

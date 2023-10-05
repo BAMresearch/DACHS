@@ -122,7 +122,7 @@ def readRawMessageLog(filename: Path) -> List:
         msgList += [
             RawLogMessage(
                 Index=idx,
-                TimeStamp=row["Time"],
+                TimeStamp=pd.to_datetime(row["Time"], utc=True), #.map(lambda x: x.tz_convert('Asia/Kolkata')), # unit='s',
                 MessageLevel=row["Info"],
                 ExperimentID=row["ExperimentID"],
                 SampleID=row["SampleNumber"],

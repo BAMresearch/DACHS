@@ -123,10 +123,10 @@ class Equipment(addItemsToAttrs):
         default=Factory(dict),
         validator=validators.instance_of(dict),
     )
-    AlternativeIDs: List[str] = field(
-        default=Factory(list),
-        validator=validators.instance_of(list),
-    )
+    # AlternativeIDs: List[str] = field(
+    #     default=Factory(list),
+    #     validator=validators.instance_of(list),
+    # )
     # internals, don't need a lot of validation:
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)

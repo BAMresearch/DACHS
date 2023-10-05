@@ -129,10 +129,6 @@ class ChemicalsClass(addItemsToAttrs):
         assert self.target_product.Chemical == self.final_product.Chemical, logging.warning(
             "Yield can only be calculated when target and final Chemicals are the same "
         )
-        # maybe not a required assertion:
-        # assert self.target_product.Mass > self.final_product.Mass, logging.warning(
-        #     "target (ideal) mass has to be bigger than final product mass"
-        # )
         return self.final_product.Mass / self.target_product.Mass
 
 
