@@ -29,7 +29,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     It now defines:
         - base Chemicals and
-        - mixtures
+        - Mixtures
 
     **TODO**:
         - write synthesis log
@@ -46,7 +46,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # define a ZIF 8 Chemical, we'll need this later:
     z8 = chempy.Substance.from_formula("C8H10N4Zn")
     zifChemical = Chemical(
-        ID="ZIF-8",
+        ChemicalID="ZIF-8",
         ChemicalName="Zeolitic Imidazolate Framework 8",
         ChemicalFormula="C8H10N4Zn",
         Substance=z8,
@@ -59,7 +59,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # define a ZIF L Chemical, we'll need these later too:
     zl = chempy.Substance.from_formula("C24H38N12O3Zn2")
     zifLChemical = Chemical(
-        ID="ZIF-L",
+        ChemicalID="ZIF-L",
         ChemicalName="Zeolitic Imidazolate Framework L",
         ChemicalFormula="C24H38N12O3Zn2",
         Substance=zl,
@@ -82,26 +82,26 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # in this experiment, we are going to use some chemicals. These are defined by the chemicals class.
         Chemicals=ChemicalsClass(
             # There is a list of starting compounds in the log file
-            starting_compounds=ReadStartingCompounds(logFile),
-            mixtures=[],  # mixtures get filled in later
+            StartingCompounds=ReadStartingCompounds(logFile),
+            Mixtures=[],  # Mixtures get filled in later
             # Then we have the potential products from the synthesis. Be as thorough as you like here, it will help you later on
-            potential_products=[
+            PotentialProducts=[
                 Product(ID="ZIF-8", Chemical=zifChemical),
                 Product(ID="ZIF-L", Chemical=zifLChemical),
             ],
             # the target product is what you are aiming to get:
-            target_product=Product(ID="target_product", Chemical=zifChemical),
+            TargetProduct=Product(ID="TargetProduct", Chemical=zifChemical),
             # the final product is what you actually got in the end, as evidenced by the evidence.
-            final_product=Product(
-                ID="final_product", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
+            FinalProduct=Product(
+                ID="FinalProduct", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
             ),  # mass is set later.
         ),
         # We're usin this experimental set-up for this experiment.
         # TODO: read the setupname from the AMSET note in the logs. The experimental setup can be defined later, so we'll probably shift this down to after we determined it.
-        ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
+        # ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
     )
 
-    logging.info("defining the mixtures based on mixtures of starting compounds")
+    logging.info("defining the Mixtures based on Mixtures of starting compounds")
 
     # make a mixture as defined in each of the excel sheets:
     for filename in solFiles:
@@ -138,7 +138,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # see known issue on the BAMResearch DACHS Git.. this is to avoid false matches when using overlapping names:
         ReagentIDsUsedInSynthesis = [i.Value for i in find_in_log(rawLog, "ReagentID", Highlander=False)]
         print(f"{ReagentIDsUsedInSynthesis=}")
-        for reagent in exp.Chemicals.starting_compounds:
+        for reagent in exp.Chemicals.StartingCompounds:
             RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
             if len(RLMList) != 0:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
@@ -183,33 +183,32 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if len(RLM) != 0:  # if this is not empty
             mix.Density = RLM.Quantity
 
-        exp.Chemicals.mixtures += [mix]
+        exp.Chemicals.Mixtures += [mix]
         # and we can add the synthesis used to make this mixture:
         print(f"{solutionId=}")
 
-    # logging.info(exp.Chemicals.mixtures)
+    # logging.info(exp.Chemicals.Mixtures)
 
     logging.info("defining the synthesis log")
 
     exp.Synthesis = SynthesisClass(
-        ID="MOF_synthesis_1",
+        ID="Synthesis",
         Name="MOF standard synthesis in MeOH, room temperature, nominally 20 minute residence time",
-        Description=r"""
-            note: these are nominal conditions for the series, but variations in injection quantities, speeds,
-            reaction times, temperatures and post-processing have been applied. For exact conditions for this
-            particular synthesis, please consult the log and metadata.
-
-            ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,
-            the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting
-            of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon
-            tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient
-            laboratory temperature of around 25$^{\circ}$C.
-            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis
-            concentration list.
-            After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,
-            and subsequently dried at 60$^{\circ}$C for 22 hours.
-
-        """,
+        # description gets added at the end with actual values...
+        # Description=r"""
+        #     note: these are nominal conditions for the series, but variations in injection quantities, speeds,
+        #     reaction times, temperatures and post-processing have been applied. For exact conditions for this
+        #     particular synthesis, please consult the log and metadata.
+        #     ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,
+        #     the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting
+        #     of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon
+        #     tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient
+        #     laboratory temperature of around 25$^{\circ}$C.
+        #     This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis
+        #     concentration list.
+        #     After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,
+        #     and subsequently dried at 60$^{\circ}$C for 22 hours.
+        # """,
         RawLog=readRawMessageLog(synFile),
     )
 
@@ -222,7 +221,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # df = df.dropna(how="all")
 
     # minimal derived information:
-    # add the reaction mixtures to Chemicals.mixtures
+    # add the reaction Mixtures to Chemicals.Mixtures
     # for the start time we need the last "start injection of solution" timestamp
     StartRLM = find_in_log(
         exp.Synthesis.RawLog,
@@ -288,18 +287,19 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    if "AMSET" in LogEntry.Value:
-        sun = LogEntry.Value  # override if in the log
+    if LogEntry != []:
+        if "AMSET" in LogEntry.Value:
+            sun = LogEntry.Value  # override if in the log
     if (LogEntry == []) & (amset is None):
         logging.error("No AMSET configuration found in log, but also not specified as input argument.")
         raise SyntaxError
-
+    print(f"SetupName: {sun}")
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
-
+    print(exp.ExperimentalSetup)
     # now we can create a new mixture
     mix = Mixture(
-        ID="ReactionMix_0",
+        ID="ReactionMix0",
         MixtureName="Reaction Mixture 0",
         Description="The MOF synthesis reaction mixture",
         PreparationDate=ReactionStart,  # idx,  # last timestamp read
@@ -325,26 +325,26 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # figure out which volume was used for this by looking at the index:
         for volRLM in allVolumes:
             if volRLM.Index < solutionRLM.Index:
-                # the last time we set the volume before injection is the volume used.
+                # the last time we set the volume before injection is the volume used. WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG! see, A4_T006 TODO: fix
                 VolumeRLM = volRLM
 
         # VolumeRLM = allVolumes[0]
 
         DensityOfAdd = getattr(
-            exp.Chemicals.mixtures[solutionId], "Density"
+            exp.Chemicals.Mixtures[solutionId], "Density"
         )  # default does not seem to work, still returns None.
         if DensityOfAdd is None:
             DensityOfAdd = ureg.Quantity("0.792 g/cc")
         print(f"{DensityOfAdd}")
         mix.add_mixture_to_mix(
-            exp.Chemicals.mixtures[solutionId],
+            exp.Chemicals.Mixtures[solutionId],
             AddMixtureVolume=(
                 VolumeRLM.Quantity * CalibrationFactor + CalibrationOffset
             ),  # TODO: correction factor should be added in
             MixtureDensity=DensityOfAdd,
         )
     # Add to the structure.
-    exp.Chemicals.mixtures += [mix]
+    exp.Chemicals.Mixtures += [mix]
 
     # calculate the age of solution0 and solution1 into the mix:
     exp.Synthesis.DerivedParameters += [
@@ -357,12 +357,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             RawMessages=[],
             Quantity=ureg.Quantity(
                 (
-                    exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
+                    exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[0].PreparationDate
                 ).total_seconds(),
                 "s",
             ),
             Value=(
-                exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[0].PreparationDate
+                exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[0].PreparationDate
             ).total_seconds(),
             Unit="s",
         )
@@ -379,12 +379,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             RawMessages=[],
             Quantity=ureg.Quantity(
                 (
-                    exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
+                    exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[1].PreparationDate
                 ).total_seconds(),
                 "s",
             ),
             Value=(
-                exp.Chemicals.mixtures[2].PreparationDate - exp.Chemicals.mixtures[1].PreparationDate
+                exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[1].PreparationDate
             ).total_seconds(),
             Unit="s",
         )
@@ -410,8 +410,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # mLocs = np.where(dfMask)[0]
     logging.debug(f" {InitialMass=}, \n {FinalMass=}")
     # assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
-    # exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
-    exp.Chemicals.final_product.Mass = FinalMass.Quantity - InitialMass.Quantity
+    # exp.Chemicals.FinalProduct.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
+    exp.Chemicals.FinalProduct.Mass = FinalMass.Quantity - InitialMass.Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
     logging.debug(f"{len(mix.ComponentList)=}")
@@ -434,6 +434,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     TotalMetalMoles = metMoles
     TotalLinkerMoles = linkMoles
     TotalMethanolMoles = methMoles
+
+    print(f"{TotalMetalMoles=}, {TotalLinkerMoles=}, {TotalMethanolMoles=}")
 
     # exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio": TotalLinkerMoles / TotalMetalMoles})
     # more detailed logging style also indicating sources and descriptions
@@ -469,7 +471,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     ]
 
     # The yield is calculated from the target mass versus the actual product mass.
-    exp.Chemicals.target_product.Mass = TotalMetalMoles * exp.Chemicals.target_product.Chemical.MolarMass
+    exp.Chemicals.TargetProduct.Mass = TotalMetalMoles * exp.Chemicals.TargetProduct.Chemical.MolarMass
     logging.debug(f"{exp.Chemicals.SynthesisYield=}")
     exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
@@ -552,7 +554,127 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         exp.Synthesis.DerivedParameters += [DP]
     # print([i.Value for i in noteList])
 
-    # lastly, we can remove all the unused reagents from starting_compounds:
-    exp.Chemicals.starting_compounds = [item for item in exp.Chemicals.starting_compounds if item.Used]
+    # lastly, we can prune all the unused reagents from StartingCompounds:
+    exp.Chemicals.StartingCompounds = [item for item in exp.Chemicals.StartingCompounds if item.Used]
+
+    # Finally, we add the text description:
+    # TODO: specify the order and delay between the solution injections
+    # TODO: specify stirring speed
+    # TODO: centrifugation speed
+    # TODO: centrifugation time
+    # TODO: drying temperature.
+
+    Mixes = [i for i in exp.Chemicals.Mixtures if isinstance(i, Mixture)]
+    ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
+    S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
+    S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
+    CentrifugeSpeed = find_in_log(
+        exp.Synthesis.RawLog,
+        ["Sample", "placed in centrifuge"],
+        Highlander=True,
+        Which="last",
+    )
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="CentrifugeSpeed",
+            ParameterName="Centrifuge Speed",
+            Description="The speed of centrifugation",
+            RawMessages=[CentrifugeSpeed.Index],
+            Quantity=CentrifugeSpeed.Quantity,
+            Value=CentrifugeSpeed.Value,
+            Unit=CentrifugeSpeed.Unit,
+        )
+    ]
+    CentrifugeTime = find_in_log(
+        exp.Synthesis.RawLog,
+        ["Centrifuge", "set time"],
+        Highlander=True,
+        Which="last",
+    )
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="CentrifugeDuration",
+            ParameterName="Centrifuge Duration",
+            Description="The time of centrifugation",
+            RawMessages=[CentrifugeTime.Index],
+            Quantity=CentrifugeTime.Quantity,
+            Value=CentrifugeTime.Value,
+            Unit=CentrifugeTime.Unit,
+        )
+    ]
+    OvenStop = find_in_log(
+        exp.Synthesis.RawLog,
+        ["Sample", "removed from oven"],
+        Highlander=True,
+        Which="last",
+    )
+    OvenStart = find_in_log(
+        exp.Synthesis.RawLog,
+        ["Sample", "oven"],
+        Highlander=True,
+        Which="first",
+    )
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="OvenTemperature",
+            ParameterName="Oven Temperature",
+            Description="The setpoint temperature of the drying oven",
+            RawMessages=[OvenStop.Index],
+            Quantity=OvenStop.Quantity,
+            Value=OvenStop.Value,
+            Unit=OvenStop.Unit,
+        )
+    ]
+    if OvenStart != [] and OvenStop != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="ForcedDryingDuration",
+                ParameterName="Forced Drying Duration",
+                Description=(
+                    "The duration of the oven drying, i.e. between placing the sample in the oven and taking it"
+                    " out again"
+                ),
+                RawMessages=[OvenStart.Index, OvenStop.Index],
+                Quantity=ureg.Quantity((OvenStop.TimeStamp - OvenStart.TimeStamp).total_seconds(), "s"),
+                Value=(OvenStop.TimeStamp - OvenStart.TimeStamp).total_seconds(),
+                Unit="s",
+            )
+        ]
+    else:  # one of the timings is missing, so we cannot calculate this value. We still need to provide it though:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="ForcedDryingDuration",
+                ParameterName="Forced Drying Time",
+                Description=(
+                    "The time between placing the sample in the oven and taking it out again"
+                    "In this case, it could not be determined because of missing information"
+                ),
+                RawMessages=[StartRLM.Index if StartRLM != [] else None, StopRLM.Index if StopRLM != [] else None],
+                Quantity=ureg.Quantity(0.0, "s"),
+                Value=0.0,
+                Unit="s",
+            )
+        ]
+
+    DPars = {}
+    [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
+
+    descText = f"""
+            ZIF-8 (Zinc Imidazolate Framework-8) was synthesised from two stock solutions: a {S0Mix.Description} and a {S1Mix.Description}.\n
+            The {S0Mix.Description} consists of {S0Mix.DetailedDescription[:-6]}. 
+            The {S1Mix.Description} consists of {S1Mix.DetailedDescription[:-6]}. \n
+            
+            For the reaction mixture, {ReactionMix.DetailedDescription[:-6]} was injected into a Falcon
+            tube. The solutions were injected at a rate of {DPars['InjectionSpeed'].Quantity:.2f~P}, and stirred at 200 rpm for {DPars['ReactionTime'].Quantity:.2f~P} at an ambient
+            laboratory temperature of {DPars['LabTemperature'].Quantity:.2f~P}. 
+            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio of 1:{DPars['MetalToLinkerRatio'].Value:.2f}:{DPars['MetalToMethanolRatio'].Value:.2f}.
+            After the synthesis time, the reaction mixture was centrifuged at {DPars['CentrifugeSpeed'].Quantity:.2f~P} for {DPars['CentrifugeDuration'].Quantity:.2f~P}, \n
+            and subsequently dried at {OvenStop.Quantity:.2f~P} for {DPars['ForcedDryingDuration'].Quantity:.2f~P}. 
+            The dried samples were extracted from the Falcon tube by brief vortexing with a small steel sphere, and transferred to a smaller container. \n
+        """
+    if len(noteList) > 0:
+        for Notei, Note in enumerate(noteList):
+            descText += f"Note {Notei}: {Note.Value}"
+    exp.Synthesis.Description = descText
 
     return exp

@@ -46,6 +46,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
         try:
             eqItem = Equipment(
                 ID=str(equip["Equipment ID"]),
+                EquipmentID=str(equip["Equipment ID"]),
                 EquipmentName=str(equip["Equipment Name"]),
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
@@ -85,7 +86,8 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
-        ID=dfRow.SetupID.item(),
+        ID="ExperimentalSetup",  # this gets used to name the thing in the HDF5 structure, but I want the original name dfRow.SetupID.item(),
+        ExperimentalSetupID=dfRow.SetupID.item(),
         SetupName=dfRow.Name.item(),
         Description=whitespaceCleanup(dfRow.Description.item()),
         EquipmentList=eqList,
@@ -122,7 +124,9 @@ def readRawMessageLog(filename: Path) -> List:
         msgList += [
             RawLogMessage(
                 Index=idx,
-                TimeStamp=pd.to_datetime(row["Time"], utc=True), #.map(lambda x: x.tz_convert('Asia/Kolkata')), # unit='s',
+                TimeStamp=pd.to_datetime(
+                    row["Time"], utc=True
+                ),  # .map(lambda x: x.tz_convert('Asia/Kolkata')), # unit='s',
                 MessageLevel=row["Info"],
                 ExperimentID=row["ExperimentID"],
                 SampleID=row["SampleNumber"],
@@ -156,7 +160,7 @@ def ReadStartingCompounds(filename) -> List:
             Reagent(
                 ID=str(row["Reagent ID"]),
                 Chemical=Chemical(
-                    ID=row["Reagent ID"],
+                    ChemicalID=row["Reagent ID"],
                     ChemicalName=row["Name"],
                     ChemicalFormula=row["Formula"],
                     Substance=s,

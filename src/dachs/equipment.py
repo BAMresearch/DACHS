@@ -86,6 +86,11 @@ class Equipment(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
+    EquipmentID: str = field(
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
     EquipmentName: str = field(
         default=None,
         validator=validators.instance_of(str),

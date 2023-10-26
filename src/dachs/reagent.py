@@ -38,6 +38,7 @@ class Chemical(addItemsToAttrs):
     """Base chemistry which underpins both Reagents and Products"""
 
     ID: str = field(
+        default="Chemical",
         validator=validators.instance_of(str),
         converter=str,
     )
@@ -47,6 +48,11 @@ class Chemical(addItemsToAttrs):
         converter=str,
     )
     ChemicalFormula: str = field(
+        default=None,
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    ChemicalID: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,
@@ -249,8 +255,8 @@ class Reagent(addItemsToAttrs):
 
 @define
 class Mixture(addItemsToAttrs):
-    """This class supersedes the ReagentMixture class, and allows mixtures of Reagents as well as mixtures of
-    mixtures."""
+    """This class supersedes the ReagentMixture class, and allows Mixtures of Reagents as well as Mixtures of
+    Mixtures."""
 
     ID: str = field(
         default=None,
@@ -267,8 +273,13 @@ class Mixture(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=whitespaceCleanup,
     )
+    DetailedDescription: str = field(
+        default="",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
     ComponentList: List[Union[Reagent, None]] = (
-        field(  # list of Reagents, there is a method to add mixtures (as individual reagents)
+        field(  # list of Reagents, there is a method to add Mixtures (as individual reagents)
             default=Factory(list),
             validator=validators.instance_of(list),
         )
@@ -318,6 +329,7 @@ class Mixture(addItemsToAttrs):
         """Adds a reagent to the mixture"""
         self.ComponentList += [reag]
         self.ComponentMasses[reag.ID] = ReagentMass
+        self.DetailedDescription += f"{ReagentMass:.2f~P} of {reag.Chemical.ChemicalName}, and "
         # mark the reagent as actually in use:
         reag.Used = True
         return
@@ -347,6 +359,15 @@ class Mixture(addItemsToAttrs):
         for ci, component in enumerate(mix.ComponentList):
             self.ComponentList += [component]
             self.ComponentMasses[component.ID] = mix.ComponentMasses[component.ID] * MassFractionOfTotal
+
+        if AddMixtureVolume is not None:
+            self.DetailedDescription += (
+                f"{AddMixtureVolume:.2f~P} ({AddMixtureMass:.2f~P} when assuming a density of"
+                f" {MixtureDensity:.2f~P}) of {mix.Description}, and "
+            )
+        else:
+            self.DetailedDescription += f"{AddMixtureMass} of {mix.Description}, and "
+
         return
 
     def component_moles(self, MatchComponent: Reagent) -> ureg.Quantity:

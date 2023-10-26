@@ -30,7 +30,12 @@ from dachs.synthesis import SynthesisClass
 @define
 class ExperimentalSetupClass(addItemsToAttrs):
     ID: str = field(
-        default=None,
+        default="ExperimentalSetup",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    ExperimentalSetupID: str = field(
+        default="AMSET_",
         validator=validators.instance_of(str),
         converter=str,
     )
@@ -59,60 +64,60 @@ class ExperimentalSetupClass(addItemsToAttrs):
     #     super().__attrs_post_init__()
 
 
-@define
-class EnvironmentClass(addItemsToAttrs):
-    """Calss for storing environmental parameters including stirring speed"""
+# @define
+# class EnvironmentClass(addItemsToAttrs):
+#     """Calss for storing environmental parameters including stirring speed"""
 
-    ID: str = field(
-        default=None,
-        validator=validators.instance_of(str),
-        converter=str,
-    )
-    Name: str = field(
-        default=None,
-        validator=validators.instance_of(str),
-        converter=str,
-    )
-    Temperature: Optional[ureg.Quantity] = field(
-        default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg.Quantity,
-    )
-    Humidity: Optional[ureg.Quantity] = field(
-        default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg.Quantity,
-    )
-    Pressure: Optional[ureg.Quantity] = field(
-        default=None,
-        validator=validators.instance_of(ureg.Quantity),
-        converter=ureg.Quantity,
-    )
-    # internals, don't need a lot of validation:
-    _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
-    _storeKeys: list = []  # store these keys (will be filled in later)
-    _loadKeys: list = []  # load these keys from file if reconstructing
+#     ID: str = field(
+#         default=None,
+#         validator=validators.instance_of(str),
+#         converter=str,
+#     )
+#     Name: str = field(
+#         default=None,
+#         validator=validators.instance_of(str),
+#         converter=str,
+#     )
+#     Temperature: Optional[ureg.Quantity] = field(
+#         default=None,
+#         validator=validators.instance_of(ureg.Quantity),
+#         converter=ureg.Quantity,
+#     )
+#     Humidity: Optional[ureg.Quantity] = field(
+#         default=None,
+#         validator=validators.instance_of(ureg.Quantity),
+#         converter=ureg.Quantity,
+#     )
+#     Pressure: Optional[ureg.Quantity] = field(
+#         default=None,
+#         validator=validators.instance_of(ureg.Quantity),
+#         converter=ureg.Quantity,
+#     )
+#     # internals, don't need a lot of validation:
+#     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
+#     _storeKeys: list = []  # store these keys (will be filled in later)
+#     _loadKeys: list = []  # load these keys from file if reconstructing
 
 
 @define
 class ChemicalsClass(addItemsToAttrs):
-    starting_compounds: List[Reagent] = field(
+    StartingCompounds: List[Reagent] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    mixtures: List[Mixture] = field(
+    Mixtures: List[Mixture] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    potential_products: List[Product] = field(
+    PotentialProducts: List[Product] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    target_product: Product = field(
+    TargetProduct: Product = field(
         default=Factory(Product),
         validator=validators.instance_of(Product),
     )
-    final_product: Optional[Product] = field(  # probably could use an "evidence" too.
+    FinalProduct: Optional[Product] = field(  # probably could use an "evidence" too.
         default=None,
         validator=validators.optional(validators.instance_of(Product)),
     )
@@ -123,13 +128,13 @@ class ChemicalsClass(addItemsToAttrs):
 
     @property
     def SynthesisYield(self):
-        assert (self.target_product.Mass is not None) and (self.final_product.Mass is not None), logging.warning(
+        assert (self.TargetProduct.Mass is not None) and (self.FinalProduct.Mass is not None), logging.warning(
             "Yield can only be calculated when both target mass and actual mass are set"
         )
-        assert self.target_product.Chemical == self.final_product.Chemical, logging.warning(
+        assert self.TargetProduct.Chemical == self.FinalProduct.Chemical, logging.warning(
             "Yield can only be calculated when target and final Chemicals are the same "
         )
-        return self.final_product.Mass / self.target_product.Mass
+        return self.FinalProduct.Mass / self.TargetProduct.Mass
 
 
 # @define
@@ -167,10 +172,10 @@ class Experiment(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(SynthesisClass)),
     )
-    Characterizations: Optional[List] = field(
-        default=None,
-        validator=validators.optional(validators.instance_of(list)),
-    )
+    # Characterizations: Optional[List] = field(
+    #     default=None,
+    #     validator=validators.optional(validators.instance_of(list)),
+    # )
     ExperimentalSetup: Optional[ExperimentalSetupClass] = field(
         default=None,
         validator=validators.optional(validators.instance_of(ExperimentalSetupClass)),

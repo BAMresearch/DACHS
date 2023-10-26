@@ -68,7 +68,9 @@ class DerivedParameter(addItemsToAttrs):
         default=Factory(list),
         validator=validators.instance_of(list),
     )
-    Quantity: Optional[ureg.Quantity] = field(default=None, validator=validators.instance_of((ureg.Quantity, NoneType)))
+    Quantity: Optional[ureg.Quantity] = field(
+        default=None, validator=validators.instance_of((ureg.Quantity, NoneType))
+    )
     Value: Optional[Union[int, float, str]] = field(
         default=None, validator=validators.instance_of((int, float, str, NoneType))
     )
@@ -148,14 +150,15 @@ class SynthesisClass(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Description: str = field(
-        validator=validators.instance_of(str),
-        converter=whitespaceCleanup,
-    )
     DerivedParameters: List[DerivedParameter] = field(
         default=Factory(list),
         validator=validators.instance_of(list),
     )  # future upgrade to KeyParameters
+    Description: Optional[str] = field(  # made optional so it can be added at a later stage...
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+        converter=whitespaceCleanup,
+    )
     ChemicalReaction: Optional[chempy.Reaction] = field(
         default=None, validator=validators.optional(validators.instance_of(chempy.Reaction))
     )
