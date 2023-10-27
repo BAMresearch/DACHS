@@ -137,7 +137,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         mixIsLinker = False
         # see known issue on the BAMResearch DACHS Git.. this is to avoid false matches when using overlapping names:
         ReagentIDsUsedInSynthesis = [i.Value for i in find_in_log(rawLog, "ReagentID", Highlander=False)]
-        print(f"{ReagentIDsUsedInSynthesis=}")
+        # print(f"{ReagentIDsUsedInSynthesis=}")
         for reagent in exp.Chemicals.StartingCompounds:
             RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
             if len(RLMList) != 0:  # if the list is not empty:
@@ -296,7 +296,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     print(f"SetupName: {sun}")
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
-    print(exp.ExperimentalSetup)
+    # print(exp.ExperimentalSetup)
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix0",
@@ -335,7 +335,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         )  # default does not seem to work, still returns None.
         if DensityOfAdd is None:
             DensityOfAdd = ureg.Quantity("0.792 g/cc")
-        print(f"{DensityOfAdd}")
+        # print(f"{DensityOfAdd=}")
         mix.add_mixture_to_mix(
             exp.Chemicals.Mixtures[solutionId],
             AddMixtureVolume=(
@@ -476,7 +476,21 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
     # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
-    exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
+    # exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
+
+    # We calculate an extra theoretical yield based on the moles of linker:
+    LinkerBasedProductMass = TotalLinkerMoles / 2 * exp.Chemicals.TargetProduct.Chemical.MolarMass
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="SynthesisYieldLinker",
+            ParameterName="Linker-based synthesis yield",
+            Description="The synthesis yield as calculated based on full conversion of the available linker.",
+            RawMessages=[],
+            Quantity=exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass,
+            Value=(exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass).magnitude,
+            Unit=(exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass).units,
+        )
+    ]
 
     # store the room temperature:
     LogEntry = find_in_log(
@@ -559,10 +573,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # Finally, we add the text description:
     # TODO: specify the order and delay between the solution injections
-    # TODO: specify stirring speed
-    # TODO: centrifugation speed
-    # TODO: centrifugation time
-    # TODO: drying temperature.
+    # TODO: stirring speed RPM
 
     Mixes = [i for i in exp.Chemicals.Mixtures if isinstance(i, Mixture)]
     ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
@@ -655,9 +666,60 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 Unit="s",
             )
         ]
+    StirrerBar = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirrer Bar" in i.EquipmentName)][0]
+    if StirrerBar is not None:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="StirrerBarModel",
+                ParameterName="Stirrer Bar Model",
+                Description=(
+                    f"The stirrer bar is from {StirrerBar.Manufacturer}, model: {StirrerBar.ModelName}, model"
+                    f" number {StirrerBar.ModelNumber}."
+                ),
+                RawMessages=[StirrerBar.ID],
+                Value=StirrerBar.ModelName,
+            )
+        ]
+    else:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="StirrerBarModel",
+                ParameterName="Stirrer Bar Model",
+                Description="The model of the stirrer bar could not be determined",
+                Value="Unspecified",
+            )
+        ]
 
     DPars = {}
     [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
+
+    # Injection orders, we'll just read this from the SampleID letter...
+    SIDLetter = exp.Synthesis.RawLog[0].SampleID[0]
+    assert SIDLetter in ["T", "L", "M", "H", "P"]
+    if SIDLetter == "T":
+        OrderDescription = "The two solutions were added simultaneously."
+    elif SIDLetter == "L":
+        OrderDescription = (
+            "The linker solution was added in a pre-injection step, after which the metal solution was added at"
+            " the specified injection rate."
+        )
+    elif SIDLetter == "M":
+        OrderDescription = (
+            "The metal solution was added in a pre-injection step, after which the linker solution was added at"
+            " the specified injection rate."
+        )
+    elif SIDLetter == "H":
+        OrderDescription = (
+            "The metal solution was added in a pre-injection step, after which the linker solution was added"
+            " through a hand pour as fast as possible. Both solutions were prepared using the syringe injector."
+        )
+    elif SIDLetter == "P":
+        OrderDescription = (
+            "The metal solution was added in a pre-injection step, after which the linker solution was added"
+            " through a hand pour as fast as possible. Both solutions were prepared using a pipette."
+        )
+    else:
+        OrderDescription = ""
 
     descText = f"""
             ZIF-8 (Zinc Imidazolate Framework-8) was synthesised from two stock solutions: a {S0Mix.Description} and a {S1Mix.Description}.\n
@@ -666,7 +728,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             
             For the reaction mixture, {ReactionMix.DetailedDescription[:-6]} was injected into a Falcon
             tube. The solutions were injected at a rate of {DPars['InjectionSpeed'].Quantity:.2f~P}, and stirred at 200 rpm for {DPars['ReactionTime'].Quantity:.2f~P} at an ambient
-            laboratory temperature of {DPars['LabTemperature'].Quantity:.2f~P}. 
+            laboratory temperature of {DPars['LabTemperature'].Quantity:.2f~P}. {OrderDescription} 
+            {DPars['StirrerBarModel'].Description}
             This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio of 1:{DPars['MetalToLinkerRatio'].Value:.2f}:{DPars['MetalToMethanolRatio'].Value:.2f}.
             After the synthesis time, the reaction mixture was centrifuged at {DPars['CentrifugeSpeed'].Quantity:.2f~P} for {DPars['CentrifugeDuration'].Quantity:.2f~P}, \n
             and subsequently dried at {OvenStop.Quantity:.2f~P} for {DPars['ForcedDryingDuration'].Quantity:.2f~P}. 
