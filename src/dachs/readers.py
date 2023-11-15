@@ -29,6 +29,8 @@ from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 
+# from pandas import Timestamp
+
 
 def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> ExperimentalSetupClass:
     #     filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
@@ -51,6 +53,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
                 ModelNumber=str(equip["Model Number"]),
+                PriceDate=str(equip["PriceDate"]),
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=equip["Description"],
@@ -147,10 +150,16 @@ def ReadStartingCompounds(filename) -> List:
         sheet_name="Chemicals",
         index_col=None,
         header=0,
-        parse_dates=["Open Date"],
+        # parse_dates=["Open Date"],
+        # dayfirst=True,
+        # date_format="mixed",
         # infer_datetime_format=True,
     )
     df = df.dropna(how="all")
+    # do dates:
+    df.loc[:, "Open Date"] = df.loc[:, "Open Date"].apply(
+        lambda x: pd.to_datetime(x, dayfirst=True, format="mixed", utc=True, errors="coerce")
+    )
     # Turn the specified chemicals into a list of starting compounds
     cList = []
     for idx, row in df.iterrows():

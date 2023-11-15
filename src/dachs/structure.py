@@ -41,6 +41,14 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     :param synFile: The synthesis robot log file.
     """
     logging.basicConfig(level=logging.WARNING, stream=sys.stdout)
+    # logging to files not working yet. Do I have to 'emit' and close?
+    # logger = logging.getLogger()
+    # fh = logging.FileHandler(Path(synFile.parent, synFile.stem + "DachsifyWarnings.log"), mode="w")
+    # fh.setLevel(logging.WARNING)
+    # fh2 = logging.FileHandler(Path(synFile.parent, synFile.stem + "DachsifyInfo.log"), mode="w")
+    # fh2.setLevel(logging.INFO)
+    # logger.addHandler(fh)
+    # logger.addHandler(fh2)
     logging.info(f"Working in '{os.getcwd()}'.")
 
     # define a ZIF 8 Chemical, we'll need this later:
@@ -123,9 +131,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID=solutionId,
             MixtureName="Mixture",
             Description="",
-            PreparationDate=pd.to_datetime(
-                "1980-12-31", utc=True
-            ),  # idx,  # will be replaced with last timestamp read
+            PreparationDate=pd.to_datetime(0, utc=True),  # idx,  # will be replaced with last timestamp read
             StorageConditions="RT",
             # ComponentList=reagList,
             # Synthesis=None # will be filled in later
@@ -144,7 +150,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 for RLM in RLMList:  # add each to the mix
                     # find the preceding message to ensure the reagentID is correct:
                     previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)][-1]
-                    print(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
+                    logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
                     # if (reagent.ID in ReagentIDsUsedInSynthesis) & ( # as above, a kludge to avoid overlapping names
                     #     reagent.ID == previousRLM.Value  # this one might actually fix it tho.
                     # ):
@@ -182,10 +188,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first")
         if len(RLM) != 0:  # if this is not empty
             mix.Density = RLM.Quantity
-
+        # fix the detailed description, clipping off the last ', and ':
+        mix.DetailedDescription = mix.DetailedDescription[:-6]
         exp.Chemicals.Mixtures += [mix]
-        # and we can add the synthesis used to make this mixture:
-        print(f"{solutionId=}")
 
     # logging.info(exp.Chemicals.Mixtures)
 
@@ -230,16 +235,16 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )  # .astimezone('UTC'))#, does this need str-ing?
-    ReactionStart = StartRLM.TimeStamp if StartRLM != [] else 0
+    ReactionStart = StartRLM.TimeStamp if StartRLM != [] else pd.to_datetime(0, utc=True)
 
     StopRLM = find_in_log(
         exp.Synthesis.RawLog,
         "Sample placed in centrifuge",
         Highlander=True,
-        Which="last",
+        Which="first",
         # return_indices=True,
     )  # .astimezone('UTC'))#, does this need str-ing?
-    ReactionStop = StopRLM.TimeStamp if StopRLM != [] else 0
+    ReactionStop = StopRLM.TimeStamp if StopRLM != [] else pd.to_datetime(0, utc=True)
 
     # exp.Synthesis.KeyParameters.update(
     #     {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
@@ -293,7 +298,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     if (LogEntry == []) & (amset is None):
         logging.error("No AMSET configuration found in log, but also not specified as input argument.")
         raise SyntaxError
-    print(f"SetupName: {sun}")
+    logging.info(f"SetupName: {sun}")
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
     # print(exp.ExperimentalSetup)
@@ -309,10 +314,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # to this we need to find the volume and density of which solution for the injections
     # TODO: do something better to separate solution numbers and their respective volumes.
     allVolumes = find_in_log(exp.Synthesis.RawLog, ["Solution", "volume set"], Highlander=False)
-    assert len(allVolumes) != 0, "No injection volume specified in log"
-    # assert (
-    #     len(allVolumes) == 1
-    # ), "More than one injection volumes specified in log, dissimilar solution volumes not yet implemented"
+    if allVolumes == []:
+        logging.error(f"No injection volume specified in {synFile.stem}")
 
     # find calibration factor and offset:
     Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.EquipmentName.lower() == "syringe"][-1]
@@ -343,6 +346,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ),  # TODO: correction factor should be added in
             MixtureDensity=DensityOfAdd,
         )
+    # clip off the last auto-generated ', and ' from the detailed description
+    mix.DetailedDescription = mix.DetailedDescription[:-6]
     # Add to the structure.
     exp.Chemicals.Mixtures += [mix]
 
@@ -435,7 +440,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     TotalLinkerMoles = linkMoles
     TotalMethanolMoles = methMoles
 
-    print(f"{TotalMetalMoles=}, {TotalLinkerMoles=}, {TotalMethanolMoles=}")
+    logging.info(f"{TotalMetalMoles=}, {TotalLinkerMoles=}, {TotalMethanolMoles=}")
 
     # exp.Synthesis.KeyParameters.update({"MetalToLinkerRatio": TotalLinkerMoles / TotalMetalMoles})
     # more detailed logging style also indicating sources and descriptions
@@ -495,23 +500,27 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # store the room temperature:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
-        "arduino:environment:temperature",
+        "Environmental temperature",
         Highlander=True,
         Which="last",
         # return_indices=True,
     )
     # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="LabTemperature",
-            ParameterName="Laboratory temperature",
-            Description="The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes",
-            RawMessages=[LogEntry.Index],
-            Quantity=LogEntry.Quantity,
-            Value=LogEntry.Value,
-            Unit=LogEntry.Unit,
-        )
-    ]
+    if LogEntry != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="LabTemperature",
+                ParameterName="Laboratory temperature",
+                Description=(
+                    "The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes"
+                ),
+                RawMessages=[LogEntry.Index],
+                Quantity=LogEntry.Quantity,
+                Value=LogEntry.Value,
+                Unit=LogEntry.Unit,
+            )
+        ]
+
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
@@ -521,17 +530,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     # exp.Synthesis.KeyParameters.update({"InjectionSpeed": LogEntry.Quantity})
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="InjectionSpeed",
-            ParameterName="Injection Speed",
-            Description="The speed at which the second reactant was added to the reaction mixture",
-            RawMessages=[LogEntry.Index],
-            Quantity=LogEntry.Quantity,
-            Value=LogEntry.Value,
-            Unit=LogEntry.Unit,
-        )
-    ]
+    if LogEntry != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="InjectionSpeed",
+                ParameterName="Injection Speed",
+                Description="The speed at which the second reactant was added to the reaction mixture",
+                RawMessages=[LogEntry.Index],
+                Quantity=LogEntry.Quantity,
+                Value=LogEntry.Value,
+                Unit=LogEntry.Unit,
+            )
+        ]
     # exp.Synthesis.KeyParameters.update({"SynthesisYield": exp.Chemicals.SynthesisYield})
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(
@@ -585,34 +595,36 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Highlander=True,
         Which="last",
     )
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="CentrifugeSpeed",
-            ParameterName="Centrifuge Speed",
-            Description="The speed of centrifugation",
-            RawMessages=[CentrifugeSpeed.Index],
-            Quantity=CentrifugeSpeed.Quantity,
-            Value=CentrifugeSpeed.Value,
-            Unit=CentrifugeSpeed.Unit,
-        )
-    ]
+    if LogEntry != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="CentrifugeSpeed",
+                ParameterName="Centrifuge Speed",
+                Description="The speed of centrifugation",
+                RawMessages=[CentrifugeSpeed.Index],
+                Quantity=CentrifugeSpeed.Quantity,
+                Value=CentrifugeSpeed.Value,
+                Unit=CentrifugeSpeed.Unit,
+            )
+        ]
     CentrifugeTime = find_in_log(
         exp.Synthesis.RawLog,
         ["Centrifuge", "set time"],
         Highlander=True,
         Which="last",
     )
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="CentrifugeDuration",
-            ParameterName="Centrifuge Duration",
-            Description="The time of centrifugation",
-            RawMessages=[CentrifugeTime.Index],
-            Quantity=CentrifugeTime.Quantity,
-            Value=CentrifugeTime.Value,
-            Unit=CentrifugeTime.Unit,
-        )
-    ]
+    if LogEntry != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="CentrifugeDuration",
+                ParameterName="Centrifuge Duration",
+                Description="The time of centrifugation",
+                RawMessages=[CentrifugeTime.Index],
+                Quantity=CentrifugeTime.Quantity,
+                Value=CentrifugeTime.Value,
+                Unit=CentrifugeTime.Unit,
+            )
+        ]
     OvenStop = find_in_log(
         exp.Synthesis.RawLog,
         ["Sample", "removed from oven"],
@@ -625,17 +637,18 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Highlander=True,
         Which="first",
     )
-    exp.Synthesis.DerivedParameters += [
-        DerivedParameter(
-            ID="OvenTemperature",
-            ParameterName="Oven Temperature",
-            Description="The setpoint temperature of the drying oven",
-            RawMessages=[OvenStop.Index],
-            Quantity=OvenStop.Quantity,
-            Value=OvenStop.Value,
-            Unit=OvenStop.Unit,
-        )
-    ]
+    if LogEntry != []:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="OvenTemperature",
+                ParameterName="Oven Temperature",
+                Description="The setpoint temperature of the drying oven",
+                RawMessages=[OvenStart.Index],
+                Quantity=OvenStart.Quantity,
+                Value=OvenStart.Value,
+                Unit=OvenStart.Unit,
+            )
+        ]
     if OvenStart != [] and OvenStop != []:
         exp.Synthesis.DerivedParameters += [
             DerivedParameter(
@@ -690,9 +703,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             )
         ]
 
-    DPars = {}
-    [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
-
     # Injection orders, we'll just read this from the SampleID letter...
     SIDLetter = exp.Synthesis.RawLog[0].SampleID[0]
     assert SIDLetter in ["T", "L", "M", "H", "P"]
@@ -721,23 +731,31 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     else:
         OrderDescription = ""
 
-    descText = f"""
-            ZIF-8 (Zinc Imidazolate Framework-8) was synthesised from two stock solutions: a {S0Mix.Description} and a {S1Mix.Description}.\n
-            The {S0Mix.Description} consists of {S0Mix.DetailedDescription[:-6]}. 
-            The {S1Mix.Description} consists of {S1Mix.DetailedDescription[:-6]}. \n
-            
-            For the reaction mixture, {ReactionMix.DetailedDescription[:-6]} was injected into a Falcon
-            tube. The solutions were injected at a rate of {DPars['InjectionSpeed'].Quantity:.2f~P}, and stirred at 200 rpm for {DPars['ReactionTime'].Quantity:.2f~P} at an ambient
-            laboratory temperature of {DPars['LabTemperature'].Quantity:.2f~P}. {OrderDescription} 
-            {DPars['StirrerBarModel'].Description}
-            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio of 1:{DPars['MetalToLinkerRatio'].Value:.2f}:{DPars['MetalToMethanolRatio'].Value:.2f}.
-            After the synthesis time, the reaction mixture was centrifuged at {DPars['CentrifugeSpeed'].Quantity:.2f~P} for {DPars['CentrifugeDuration'].Quantity:.2f~P}, \n
-            and subsequently dried at {OvenStop.Quantity:.2f~P} for {DPars['ForcedDryingDuration'].Quantity:.2f~P}. 
-            The dried samples were extracted from the Falcon tube by brief vortexing with a small steel sphere, and transferred to a smaller container. \n
-        """
+    DPars = {}
+    [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
+    addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop"]
+    for key in addKeys:
+        if key in locals():
+            DPars[key] = locals()[key]
+        else:
+            logging.warning(f"{key=} not found in locals, cannot be added to DPars.")
+    for key in DPars:
+        if DPars[key] == []:  # empty list issue
+            logging.warning(f"{key=} in DPars is an empty list, probably missing from {synFile.stem}")
+
+    # we read the template text per automof, and then format it using the information in DPars.
+    descText = ""
+    try:
+        descText = (Path(synFile.parent) / "SynthesisTemplate.txt").read_text().format(**DPars)
+    except Exception as e:
+        logging.warning("Issue encountered when rendering text from template:")
+        logging.exception(e)
+
+    # add notes if they exist to the end of the synthesis text.
     if len(noteList) > 0:
         for Notei, Note in enumerate(noteList):
             descText += f"Note {Notei}: {Note.Value}"
+
     exp.Synthesis.Description = descText
 
     return exp

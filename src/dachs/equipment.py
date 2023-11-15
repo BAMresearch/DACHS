@@ -16,6 +16,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 from attrs import Factory, define, field, validators
+from pandas import Timestamp
 
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
@@ -115,6 +116,10 @@ class Equipment(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(str)),
         converter=whitespaceCleanup,
+    )
+    PriceDate: Optional[str] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
     )
     UnitPrice: Optional[ureg.Quantity] = field(
         default=None,
