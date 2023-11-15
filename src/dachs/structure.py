@@ -19,7 +19,19 @@ from dachs.readers import (
 )
 from dachs.reagent import Mixture  # ReagentByMass,; ReagentByVolume,; ReagentMixture,
 from dachs.reagent import Chemical, Product
-from dachs.synthesis import DerivedParameter, SynthesisClass, synthesisStep
+from dachs.synthesis import DerivedParameter, RawLogMessage, SynthesisClass, synthesisStep
+
+
+def DParFromLogEntry(ID: str, ParameterName: str, Description: str, LogEntry: RawLogMessage):
+    return DerivedParameter(
+        ID=ID,
+        ParameterName=ParameterName,
+        Description=Description,
+        RawMessages=[LogEntry.Index],
+        Quantity=LogEntry.Quantity,
+        Value=LogEntry.Value,
+        Unit=LogEntry.Unit,
+    )
 
 
 def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None) -> Experiment:
@@ -104,9 +116,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 ID="FinalProduct", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
             ),  # mass is set later.
         ),
-        # We're usin this experimental set-up for this experiment.
-        # TODO: read the setupname from the AMSET note in the logs. The experimental setup can be defined later, so we'll probably shift this down to after we determined it.
-        # ExperimentalSetup=readExperimentalSetup(filename=logFile, SetupName=amset),
     )
 
     logging.info("defining the Mixtures based on Mixtures of starting compounds")
@@ -133,8 +142,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             Description="",
             PreparationDate=pd.to_datetime(0, utc=True),  # idx,  # will be replaced with last timestamp read
             StorageConditions="RT",
-            # ComponentList=reagList,
-            # Synthesis=None # will be filled in later
         )
 
         # new style 20230919, attempting to get rid of synthesisStep
@@ -145,15 +152,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         ReagentIDsUsedInSynthesis = [i.Value for i in find_in_log(rawLog, "ReagentID", Highlander=False)]
         # print(f"{ReagentIDsUsedInSynthesis=}")
         for reagent in exp.Chemicals.StartingCompounds:
-            RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False)
-            if len(RLMList) != 0:  # if the list is not empty:
+            RLMList = find_in_log(rawLog, [reagent.ID, "mass of"], Highlander=False, raiseWarning=False)
+            if RLMList is not None:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
                     # find the preceding message to ensure the reagentID is correct:
                     previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)][-1]
                     logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
-                    # if (reagent.ID in ReagentIDsUsedInSynthesis) & ( # as above, a kludge to avoid overlapping names
-                    #     reagent.ID == previousRLM.Value  # this one might actually fix it tho.
-                    # ):
                     if reagent.ID in ReagentIDsUsedInSynthesis:
                         # no idea why I can't also check for this match: reagent.ID==previousRLM.Value, I get a problem later on
                         mix.add_reagent_to_mix(reag=reagent, ReagentMass=RLM.Quantity)
@@ -168,7 +172,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             mix.Description = "Organic linker dispersion"
 
         RLM = find_in_log(rawLog, "mixed together", Highlander=True, Which="first")
-        if len(RLM) != 0:  # if this is not empty
+        if RLM is not None:  # if this is not empty
             mix.PreparationDate = RLM.TimeStamp
 
         # now we can define the mixture
@@ -181,18 +185,16 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         )
 
         # enter measured density if available
-        RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first")
-        if len(RLM) != 0:  # if this is not empty
+        RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first", raiseWarning=False)
+        if RLM is not None:  # if this is not empty
             mix.Density = RLM.Quantity
         # override density if calculated is present, as measured was done at 20 degrees, and calculated is at lab temp:
-        RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first")
-        if len(RLM) != 0:  # if this is not empty
+        RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first", raiseWarning=False)
+        if RLM is not None:  # if this is not empty
             mix.Density = RLM.Quantity
         # fix the detailed description, clipping off the last ', and ':
         mix.DetailedDescription = mix.DetailedDescription[:-6]
         exp.Chemicals.Mixtures += [mix]
-
-    # logging.info(exp.Chemicals.Mixtures)
 
     logging.info("defining the synthesis log")
 
@@ -200,31 +202,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         ID="Synthesis",
         Name="MOF standard synthesis in MeOH, room temperature, nominally 20 minute residence time",
         # description gets added at the end with actual values...
-        # Description=r"""
-        #     note: these are nominal conditions for the series, but variations in injection quantities, speeds,
-        #     reaction times, temperatures and post-processing have been applied. For exact conditions for this
-        #     particular synthesis, please consult the log and metadata.
-        #     ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,
-        #     the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting
-        #     of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon
-        #     tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient
-        #     laboratory temperature of around 25$^{\circ}$C.
-        #     This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis
-        #     concentration list.
-        #     After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,
-        #     and subsequently dried at 60$^{\circ}$C for 22 hours.
-        # """,
         RawLog=readRawMessageLog(synFile),
     )
 
     # After our discussion, we've decided not to focus on including derived parameters just yet.
     # We still need a few things though.
     logging.info("Extracting the derived parameters")
-    # df = pd.read_excel(
-    #     filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"]
-    # )
-    # df = df.dropna(how="all")
-
     # minimal derived information:
     # add the reaction Mixtures to Chemicals.Mixtures
     # for the start time we need the last "start injection of solution" timestamp
@@ -235,7 +218,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )  # .astimezone('UTC'))#, does this need str-ing?
-    ReactionStart = StartRLM.TimeStamp if StartRLM != [] else pd.to_datetime(0, utc=True)
+    ReactionStart = StartRLM.TimeStamp if StartRLM is not None else pd.to_datetime(0, utc=True)
 
     StopRLM = find_in_log(
         exp.Synthesis.RawLog,
@@ -244,13 +227,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="first",
         # return_indices=True,
     )  # .astimezone('UTC'))#, does this need str-ing?
-    ReactionStop = StopRLM.TimeStamp if StopRLM != [] else pd.to_datetime(0, utc=True)
+    ReactionStop = StopRLM.TimeStamp if StopRLM is not None else pd.to_datetime(0, utc=True)
 
-    # exp.Synthesis.KeyParameters.update(
-    #     {"ReactionTime": ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s")}
-    # )
     # more detailed logging style also indicating sources and descriptions
-    if StartRLM != [] and StopRLM != []:
+    if StartRLM is not None and StopRLM is not None:
         exp.Synthesis.DerivedParameters += [
             DerivedParameter(
                 ID="ReactionTime",
@@ -260,26 +240,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                     " the centrifugation"
                 ),
                 RawMessages=[StartRLM.Index, StopRLM.Index],
-                Quantity=ureg.Quantity((ReactionStop - ReactionStart).total_seconds(), "s"),
                 Value=(ReactionStop - ReactionStart).total_seconds(),
                 Unit="s",
             )
         ]
-    else:  # one of the timings is missing, so we cannot calculate this value. We still need to provide it though:
-        exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="ReactionTime",
-                ParameterName="Reaction time",
-                Description=(
-                    "The time between the start of the second injection into the reaction mixture and the start of"
-                    " the centrifugation. In this case, it could not be determined because of missing information"
-                ),
-                RawMessages=[StartRLM.Index if StartRLM != [] else None, StopRLM.Index if StopRLM != [] else None],
-                Quantity=ureg.Quantity(0.0, "s"),
-                Value=0.0,
-                Unit="s",
-            )
-        ]
+    # if values are not there, I'm no longer making dummy entries as per Ingo's suggestion. keeps the code clean.
 
     if amset is not None:
         sun = amset
@@ -292,10 +257,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Which="last",
         # return_indices=True,
     )
-    if LogEntry != []:
+    if LogEntry is not None:
         if "AMSET" in LogEntry.Value:
             sun = LogEntry.Value  # override if in the log
-    if (LogEntry == []) & (amset is None):
+    if (LogEntry is None) & (amset is None):
         logging.error("No AMSET configuration found in log, but also not specified as input argument.")
         raise SyntaxError
     logging.info(f"SetupName: {sun}")
@@ -314,7 +279,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # to this we need to find the volume and density of which solution for the injections
     # TODO: do something better to separate solution numbers and their respective volumes.
     allVolumes = find_in_log(exp.Synthesis.RawLog, ["Solution", "volume set"], Highlander=False)
-    if allVolumes == []:
+    if allVolumes is None:
         logging.error(f"No injection volume specified in {synFile.stem}")
 
     # find calibration factor and offset:
@@ -360,12 +325,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 "The time between the preparation of the metal solution and the mixing of the reaction mixture"
             ),
             RawMessages=[],
-            Quantity=ureg.Quantity(
-                (
-                    exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[0].PreparationDate
-                ).total_seconds(),
-                "s",
-            ),
             Value=(
                 exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[0].PreparationDate
             ).total_seconds(),
@@ -382,12 +341,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 "The time between the preparation of the linker solution and the mixing of the reaction mixture"
             ),
             RawMessages=[],
-            Quantity=ureg.Quantity(
-                (
-                    exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[1].PreparationDate
-                ).total_seconds(),
-                "s",
-            ),
             Value=(
                 exp.Chemicals.Mixtures[2].PreparationDate - exp.Chemicals.Mixtures[1].PreparationDate
             ).total_seconds(),
@@ -406,16 +359,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         exp.Synthesis.RawLog, ["of Falcon tube + dry sample"], excludeString=["lid"], Highlander=True, Which="last"
     )
 
-    # WeightRLMs = find_in_log(exp.Synthesis.RawLog, ["Weight", "Falcon"], Highlander=False)
-    # targets = ["Weight", "Falcon"]
-    # # find me the messages containing both those words:
-    # dfMask = df["Readout"].apply(
-    #     lambda sentence: all(word in sentence for word in targets)
-    # )
     # mLocs = np.where(dfMask)[0]
     logging.debug(f" {InitialMass=}, \n {FinalMass=}")
-    # assert len(WeightRLMs) == 2, "more than two weight indications (empty, empty+dry product) were found"
-    # exp.Chemicals.FinalProduct.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity
     exp.Chemicals.FinalProduct.Mass = FinalMass.Quantity - InitialMass.Quantity
     # compute theoretical yield:
     # we need to find out how many moles of metal we have in the previously established reaction mixture
@@ -453,7 +398,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 " compositions."
             ),
             RawMessages=[],
-            Quantity=TotalLinkerMoles / TotalMetalMoles,
             Value=(TotalLinkerMoles / TotalMetalMoles).magnitude,
             Unit=(TotalLinkerMoles / TotalMetalMoles).units,
         )
@@ -469,7 +413,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 " solution compositions."
             ),
             RawMessages=[],
-            Quantity=TotalMethanolMoles / TotalMetalMoles,
             Value=(TotalMethanolMoles / TotalMetalMoles).magnitude,
             Unit=(TotalMethanolMoles / TotalMetalMoles).units,
         )
@@ -480,7 +423,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     logging.debug(f"{exp.Chemicals.SynthesisYield=}")
     exp.Chemicals._storeKeys += ["SynthesisYield"]
     # maybe later
-    # exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string("")
     # exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
 
     # We calculate an extra theoretical yield based on the moles of linker:
@@ -491,7 +433,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ParameterName="Linker-based synthesis yield",
             Description="The synthesis yield as calculated based on full conversion of the available linker.",
             RawMessages=[],
-            Quantity=exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass,
             Value=(exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass).magnitude,
             Unit=(exp.Chemicals.FinalProduct.Mass / LinkerBasedProductMass).units,
         )
@@ -506,18 +447,13 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
-    if LogEntry != []:
+    if LogEntry is not None:
         exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="LabTemperature",
-                ParameterName="Laboratory temperature",
-                Description=(
-                    "The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes"
-                ),
-                RawMessages=[LogEntry.Index],
-                Quantity=LogEntry.Quantity,
-                Value=LogEntry.Value,
-                Unit=LogEntry.Unit,
+            DParFromLogEntry(
+                "LabTemperature",
+                "Laboratory temperature",
+                "The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes",
+                LogEntry,
             )
         ]
 
@@ -530,16 +466,13 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # return_indices=True,
     )
     # exp.Synthesis.KeyParameters.update({"InjectionSpeed": LogEntry.Quantity})
-    if LogEntry != []:
+    if LogEntry is not None:
         exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="InjectionSpeed",
-                ParameterName="Injection Speed",
-                Description="The speed at which the second reactant was added to the reaction mixture",
-                RawMessages=[LogEntry.Index],
-                Quantity=LogEntry.Quantity,
-                Value=LogEntry.Value,
-                Unit=LogEntry.Unit,
+            DParFromLogEntry(
+                "InjectionSpeed",
+                "Injection Speed",
+                "The speed at which the second reactant was added to the reaction mixture",
+                LogEntry,
             )
         ]
     # exp.Synthesis.KeyParameters.update({"SynthesisYield": exp.Chemicals.SynthesisYield})
@@ -563,20 +496,16 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # Which="last",
         # return_indices=True,
     )
-    for note in noteList:
-        # exp.Synthesis.KeyParameters.update({f"Note{noteCounter}": note.Value})
-        DP = DerivedParameter(
-            ID=f"Note{noteCounter}",
-            ParameterName=f"Note {noteCounter}",
-            Description="An operator note or flag as pertaining to the synthesis",
-            RawMessages=[note.Index],
-            Value=note.Value,
-            Unit=note.Unit,
-        )
-        if note.Quantity is not None:
-            DP.Quantity = note.Quantity
-        exp.Synthesis.DerivedParameters += [DP]
-    # print([i.Value for i in noteList])
+    if noteList is not None:
+        for note in noteList:
+            exp.Synthesis.DerivedParameters += [
+                DParFromLogEntry(
+                    f"Note{noteCounter}",
+                    f"Note {noteCounter}",
+                    "An operator note or flag as pertaining to the synthesis",
+                    note,
+                )
+            ]
 
     # lastly, we can prune all the unused reagents from StartingCompounds:
     exp.Chemicals.StartingCompounds = [item for item in exp.Chemicals.StartingCompounds if item.Used]
@@ -585,44 +514,26 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # TODO: specify the order and delay between the solution injections
     # TODO: stirring speed RPM
 
-    Mixes = [i for i in exp.Chemicals.Mixtures if isinstance(i, Mixture)]
-    ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
-    S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
-    S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
     CentrifugeSpeed = find_in_log(
         exp.Synthesis.RawLog,
         ["Sample", "placed in centrifuge"],
         Highlander=True,
         Which="last",
     )
-    if LogEntry != []:
+    if LogEntry is not None:
         exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="CentrifugeSpeed",
-                ParameterName="Centrifuge Speed",
-                Description="The speed of centrifugation",
-                RawMessages=[CentrifugeSpeed.Index],
-                Quantity=CentrifugeSpeed.Quantity,
-                Value=CentrifugeSpeed.Value,
-                Unit=CentrifugeSpeed.Unit,
-            )
+            DParFromLogEntry("CentrifugeSpeed", "Centrifuge Speed", "The speed of centrifugation", CentrifugeSpeed)
         ]
-    CentrifugeTime = find_in_log(
+    CentrifugeDuration = find_in_log(
         exp.Synthesis.RawLog,
         ["Centrifuge", "set time"],
         Highlander=True,
         Which="last",
     )
-    if LogEntry != []:
+    if LogEntry is not None:
         exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="CentrifugeDuration",
-                ParameterName="Centrifuge Duration",
-                Description="The time of centrifugation",
-                RawMessages=[CentrifugeTime.Index],
-                Quantity=CentrifugeTime.Quantity,
-                Value=CentrifugeTime.Value,
-                Unit=CentrifugeTime.Unit,
+            DParFromLogEntry(
+                "CentrifugeDuration", "Centrifuge Duration", "The duration of centrifugation", CentrifugeDuration
             )
         ]
     OvenStop = find_in_log(
@@ -637,19 +548,13 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Highlander=True,
         Which="first",
     )
-    if LogEntry != []:
+    if LogEntry is not None:
         exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="OvenTemperature",
-                ParameterName="Oven Temperature",
-                Description="The setpoint temperature of the drying oven",
-                RawMessages=[OvenStart.Index],
-                Quantity=OvenStart.Quantity,
-                Value=OvenStart.Value,
-                Unit=OvenStart.Unit,
+            DParFromLogEntry(
+                "OvenTemperature", "Oven Temperature", "The setpoint temperature of the drying oven", OvenStart
             )
         ]
-    if OvenStart != [] and OvenStop != []:
+    if OvenStart is not None and OvenStop is not None:
         exp.Synthesis.DerivedParameters += [
             DerivedParameter(
                 ID="ForcedDryingDuration",
@@ -659,23 +564,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                     " out again"
                 ),
                 RawMessages=[OvenStart.Index, OvenStop.Index],
-                Quantity=ureg.Quantity((OvenStop.TimeStamp - OvenStart.TimeStamp).total_seconds(), "s"),
                 Value=(OvenStop.TimeStamp - OvenStart.TimeStamp).total_seconds(),
-                Unit="s",
-            )
-        ]
-    else:  # one of the timings is missing, so we cannot calculate this value. We still need to provide it though:
-        exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="ForcedDryingDuration",
-                ParameterName="Forced Drying Time",
-                Description=(
-                    "The time between placing the sample in the oven and taking it out again"
-                    "In this case, it could not be determined because of missing information"
-                ),
-                RawMessages=[StartRLM.Index if StartRLM != [] else None, StopRLM.Index if StopRLM != [] else None],
-                Quantity=ureg.Quantity(0.0, "s"),
-                Value=0.0,
                 Unit="s",
             )
         ]
@@ -691,15 +580,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 ),
                 RawMessages=[StirrerBar.ID],
                 Value=StirrerBar.ModelName,
-            )
-        ]
-    else:
-        exp.Synthesis.DerivedParameters += [
-            DerivedParameter(
-                ID="StirrerBarModel",
-                ParameterName="Stirrer Bar Model",
-                Description="The model of the stirrer bar could not be determined",
-                Value="Unspecified",
             )
         ]
 
@@ -731,9 +611,31 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     else:
         OrderDescription = ""
 
-    DPars = {}
+    # defaults for text generation:
+    DPars = {
+        "ReactionTime": ureg.Quantity(-1.0, "s"),
+        "MetalSolutionAge": ureg.Quantity(-1.0, "s"),
+        "LinkerSolutionAge": ureg.Quantity(-1.0, "s"),
+        "MetalToLinkerRatio": ureg.Quantity(-1.0, "dimensionless"),
+        "MetalToMethanolRatio": ureg.Quantity(-1.0, "dimensionless"),
+        "SynthesisYieldLinker": ureg.Quantity(-1.0, "dimensionless"),
+        "LabTemperature": ureg.Quantity(-1.0, "degC"),
+        "InjectionSpeed": ureg.Quantity(-1.0, "ml/min"),
+        "SynthesisYield": ureg.Quantity(-1.0, "dimensionless"),
+        "CentrifugeSpeed": ureg.Quantity(-1.0, "rpm"),
+        "CentrifugeTime": ureg.Quantity(-1.0, "s"),
+        "OvenTemperature": ureg.Quantity(-1.0, "degC"),
+        "ForcedDryingDuration": ureg.Quantity(-1.0, "s"),
+        "StirrerBarModel": "Unknown",
+        "OrderDescription": "Unknown injection order",
+    }
     [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
+    Mixes = [i for i in exp.Chemicals.Mixtures if isinstance(i, Mixture)]
+    ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
+    S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
+    S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
     addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop"]
+
     for key in addKeys:
         if key in locals():
             DPars[key] = locals()[key]
@@ -742,7 +644,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     for key in DPars:
         if DPars[key] == []:  # empty list issue
             logging.warning(f"{key=} in DPars is an empty list, probably missing from {synFile.stem}")
-
+    # print(DPars.keys())
     # we read the template text per automof, and then format it using the information in DPars.
     descText = ""
     try:

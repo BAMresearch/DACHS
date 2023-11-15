@@ -12,9 +12,12 @@ __date__ = "2022/11/07"
 __status__ = "beta"
 
 from typing import List, Optional, Union
+import pint
+
+import yaml
 
 import chempy
-from attrs import Factory, define, field, validators
+from attrs import Factory, define, field, validators, converters
 from pandas import Timestamp
 
 from dachs import ureg  # get importError when using: "from . import ureg"
@@ -23,6 +26,45 @@ from dachs.equipment import PV
 from dachs.helpers import whitespaceCleanup
 
 NoneType = type(None)
+
+
+def ValConverter(Val):
+    if str(Val).strip() != "-":
+        return yaml.safe_load(Val) if isinstance(Val, str) else Val
+    else:
+        return None
+
+
+def UnitConverter(UnitStr: Union[str, None]) -> Union[str, None]:
+    if UnitStr is None:
+        return None
+    if str(UnitStr).strip() != "-":
+        UnitStr = str(UnitStr)
+        U = UnitStr.strip()
+        U = "percent" if U == "%" else U
+        U = "degC" if U == "C" else U
+        U = "minute" if U == "mins" else U
+        return U
+    else:
+        return None
+
+
+def ConvertToQuantity(Val, Unit):
+    condition = 0
+    Quantity = None
+    # Val, U, Q = None, None, None
+    if Val is not None:
+        if isinstance(Val, (int, float)):
+            condition += 1
+    if Unit is not None:
+        if (Unit != "-") and (Unit != ""):
+            condition += 1
+    if condition == 2:  # both value and unit are present
+        try:
+            Quantity = ureg.Quantity(float(Val), str(Unit))
+        except pint.PintError:  # conversion fail
+            Quantity = None
+    return Quantity
 
 
 @define
@@ -37,15 +79,24 @@ class RawLogMessage(addItemsToAttrs):
         default=None,
         validator=validators.optional(validators.instance_of(ureg.Quantity)),
     )
-    Value: Optional[Union[float, int, str]] = field(
+    Value: Optional[Union[float, int, str, None]] = field(
         default=None,
         validator=validators.optional(validators.instance_of((int, float, str))),
+        converter=converters.optional(ValConverter),
     )
-    Unit: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
+    Unit: Optional[Union[str, None]] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+        converter=converters.optional(UnitConverter),
+    )
     Using: Optional[str] = field(default=None, validator=validators.optional(validators.instance_of(str)))
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
+
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+        self.Quantity = ConvertToQuantity(self.Value, self.Unit)
 
 
 @define
@@ -79,6 +130,10 @@ class DerivedParameter(addItemsToAttrs):
     _excludeKeys: list = ["_excludeKeys", "_storeKeys"]  # exclude from HDF storage
     _storeKeys: list = []  # store these keys (will be filled in later)
     _loadKeys: list = []  # load these keys from file if reconstructing
+
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+        self.Quantity = ConvertToQuantity(self.Value, self.Unit)
 
 
 @define

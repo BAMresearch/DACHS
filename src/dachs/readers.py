@@ -14,6 +14,7 @@ __status__ = "beta"
 # import numpy as np
 
 
+import logging
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -106,24 +107,6 @@ def readRawMessageLog(filename: Path) -> List:
     df.sort_values(by="Time", ignore_index=True, inplace=True)
     msgList = []
     for idx, row in df.iterrows():
-        condition = 0
-        Val, U, Q = None, None, None
-        if str(row["Value"]).strip() != "-":
-            Val = yaml.safe_load(row["Value"]) if isinstance(row["Value"], str) else row["Value"]
-            condition += 1
-        if str(row["Unit"]).strip() != "-":
-            U = row["Unit"].strip()
-            U = "percent" if U == "%" else U
-            U = "degC" if U == "C" else U
-            U = "minute" if U == "mins" else U
-            # U=ureg.parse_units(U)
-            condition += 1
-        if condition == 2:  # both value and unit are present
-            try:
-                Q = ureg.Quantity(float(Val), str(U))
-            except pint.PintError:  # conversion fail
-                Q = None
-
         msgList += [
             RawLogMessage(
                 Index=idx,
@@ -134,9 +117,9 @@ def readRawMessageLog(filename: Path) -> List:
                 ExperimentID=row["ExperimentID"],
                 SampleID=row["SampleNumber"],
                 Message=row["Readout"],
-                Unit=U,
-                Value=Val,
-                Quantity=Q,
+                Unit=row["Unit"],
+                Value=row["Value"],
+                # Quantity=Q,
                 Using=row["Using"],
             )
         ]
@@ -233,7 +216,8 @@ def find_in_log(
     excludeString: Union[str, list] = "Dummy exclude string which will not be found",
     Highlander: bool = True,  # there can be only one if Highlander is True
     Which: str = "first",  # if highlander, specify if first or last
-) -> Union[RawLogMessage, list[RawLogMessage]]:  # Optional[Union[RawLogMessage, list[RawLogMessage]]]:
+    raiseWarning: bool = True,  # raises a logging.warning if it cannot be found
+) -> Union[RawLogMessage, list[RawLogMessage], None]:  # Optional[Union[RawLogMessage, list[RawLogMessage]]]:
     """
     Returns (the first match of) a given Reagent if its ID is found in an input string,
     otherwise returns None
@@ -253,4 +237,8 @@ def find_in_log(
                     return RLM
             else:
                 answers += [RLM]
+    if answers == []:
+        if raiseWarning:
+            logging.warning(f"A message with {searchString=} and {excludeString=} was not found in the raw log.")
+        return None
     return answers
