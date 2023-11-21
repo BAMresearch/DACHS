@@ -255,6 +255,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         "SetupID",
         Highlander=True,
         Which="last",
+        raiseWarning=False,
         # return_indices=True,
     )
     if LogEntry is not None:

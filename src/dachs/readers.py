@@ -215,7 +215,7 @@ def find_reagent_in_rawmessage(searchString: str, ReagentList: List[Reagent]) ->
 def find_in_log(
     log: List[RawLogMessage],
     searchString: Union[str, list],
-    excludeString: Union[str, list] = "Dummy exclude string which will not be found",
+    excludeString: Union[str, list] = None,
     Highlander: bool = True,  # there can be only one if Highlander is True
     Which: str = "first",  # if highlander, specify if first or last
     raiseWarning: bool = True,  # raises a logging.warning if it cannot be found
@@ -227,6 +227,8 @@ def find_in_log(
     answers = []
     if isinstance(searchString, str):
         searchString = [searchString]
+    if excludeString is None:
+        excludeString = []
     if isinstance(excludeString, str):
         excludeString = [excludeString]
     for RLM in log:
