@@ -54,7 +54,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
                 ModelNumber=str(equip["Model Number"]),
-                PriceDate=str(equip["PriceDate"]),
+                PriceDate=str(equip["PriceDate"]) if equip.get("PriceDate") else None,  # might not exist, optional
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=equip["Description"],
@@ -120,7 +120,7 @@ def readRawMessageLog(filename: Path) -> List:
                 Unit=row["Unit"],
                 Value=row["Value"],
                 # Quantity=Q,
-                Using=row["Using"],
+                Using=row.get("Using"),  # might not exist
             )
         ]
     return msgList
