@@ -156,8 +156,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             if RLMList is not None:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
                     # find the preceding message to ensure the reagentID is correct:
-                    previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)][-1]
-                    logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
+                    previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)]
+                    if not len(previousRLM):
+                        break  # previousRLM might be empty
+                    previousRLM = previousRLM[-1]
+                    logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID == previousRLM.Value}")
                     if reagent.ID in ReagentIDsUsedInSynthesis:
                         # no idea why I can't also check for this match: reagent.ID==previousRLM.Value, I get a problem later on
                         mix.add_reagent_to_mix(reag=reagent, ReagentMass=RLM.Quantity)
