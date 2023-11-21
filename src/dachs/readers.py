@@ -30,6 +30,7 @@ from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 
+
 # from pandas import Timestamp
 
 
@@ -90,7 +91,8 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
-        ID="ExperimentalSetup",  # this gets used to name the thing in the HDF5 structure, but I want the original name dfRow.SetupID.item(),
+        ID="ExperimentalSetup",  # this gets used to name the thing in the HDF5 structure,
+                                 # but I want the original name dfRow.SetupID.item()
         ExperimentalSetupID=dfRow.SetupID.item(),
         SetupName=dfRow.Name.item(),
         Description=whitespaceCleanup(dfRow.Description.item()),
