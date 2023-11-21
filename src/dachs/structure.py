@@ -389,7 +389,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if "CH3OH" in component.Chemical.Substance.name:
             methMoles += mix.component_moles(MatchComponent=component)
     TotalMetalMoles = metMoles
-    TotalLinkerMoles = linkMoles
+    TotalLinkerMoles = linkMoles  # what if =0? -> divBy0 on l444 below
     TotalMethanolMoles = methMoles
 
     logging.info(f"{TotalMetalMoles=}, {TotalLinkerMoles=}, {TotalMethanolMoles=}")
@@ -433,6 +433,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
 
     # We calculate an extra theoretical yield based on the moles of linker:
+    #print(f"{TotalLinkerMoles=}, {exp.Chemicals.TargetProduct.Chemical.MolarMass=}")
     LinkerBasedProductMass = TotalLinkerMoles / 2 * exp.Chemicals.TargetProduct.Chemical.MolarMass
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(
