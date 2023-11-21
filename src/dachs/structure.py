@@ -113,7 +113,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             TargetProduct=Product(ID="TargetProduct", Chemical=zifChemical),
             # the final product is what you actually got in the end, as evidenced by the evidence.
             FinalProduct=Product(
-                ID="FinalProduct", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
+                ID="FinalProduct", Chemical=zifChemical, Evidence=r"Assumed for now ¯\_(ツ)_/¯"
             ),  # mass is set later.
         ),
     )
