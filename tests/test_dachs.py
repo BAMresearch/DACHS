@@ -18,7 +18,7 @@ def test_equipment() -> None:
     """Just a basic test of the class"""
     solvent = Equipment(
         ID="BATH_1",
-        Name="Lauda Bath",
+        EquipmentName="Lauda Bath",
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
         ModelNumber="L001603",
@@ -28,7 +28,7 @@ def test_equipment() -> None:
         PVs={
             "temp": PV(
                 ID="temp",
-                Name="temperature",
+                PVName="temperature",
                 Description="Setpoint temperature of the bath",
                 CalibrationFactor=1.0,
                 CalibrationOffset="0 kelvin",
@@ -38,7 +38,7 @@ def test_equipment() -> None:
     )
     e2 = Equipment(
         ID="VESS_1",
-        Name="Falcon tube",
+        EquipmentName="Falcon tube",
         Manufacturer="Labsolute",
         ModelName="Centrifuge Tube 50 ml, PP",
         ModelNumber="7696884",
@@ -65,7 +65,7 @@ def test_readEquipment() -> None:
         try:
             eqItem = Equipment(
                 ID=str(equip["Equipment ID"]),
-                Name=str(equip["Equipment Name"]),
+                EquipmentName=str(equip["Equipment Name"]),
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
                 ModelNumber=str(equip["Model Number"]),
@@ -88,7 +88,7 @@ def test_readEquipment() -> None:
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     _ = ExperimentalSetupClass(
         ID=dfRow["SetupID"],
-        Name=dfRow["Name"],
+        SetupName=dfRow["Name"],
         Description=dfRow["Description"],
         EquipmentList=eqList,
     )
@@ -98,7 +98,7 @@ def test_readEquipment() -> None:
 def test_experiment() -> None:
     _ = Experiment(
         ID="AutoMOF5",
-        Name="Automatic MOF Exploration series 5",
+        ExperimentName="Automatic MOF Exploration series 5",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
@@ -113,7 +113,7 @@ def test_experimental_setup() -> None:
     """Just a basic test of the class"""
     eq1 = Equipment(
         ID="BATH_1",
-        Name="Lauda Bath",
+        EquipmentName="Lauda Bath",
         Manufacturer="Lauda",
         ModelName="Proline Edition X RP 855 C Cooling thermostat 230 V; 50 Hz",
         ModelNumber="L001603",
@@ -124,7 +124,7 @@ def test_experimental_setup() -> None:
 
     su1 = ExperimentalSetupClass(
         ID="AMSET_6",
-        Name="AutoMof Configuration 6",
+        SetupName="AutoMof Configuration 6",
         Description="Same as AMSET_4 but Rod shaped stirring bar",
         EquipmentList=[eq1],
     )
@@ -147,7 +147,7 @@ def test_product() -> None:
     # define a zif Chemical:
     zifChemical = Chemical(
         ID="Zif-8",
-        Name="Zif-8",
+        ChemicalName="Zif-8",
         ChemicalFormula="ZnSomething",
         MolarMass=ureg.Quantity("229 g/mol"),
         Density=ureg.Quantity("0.335 g/cc"),
@@ -166,7 +166,7 @@ def test_reagent() -> None:
         ID="Solvent_1",
         Chemical=Chemical(
             ID="MeOH",
-            Name="Methanol",
+            ChemicalName="Methanol",
             ChemicalFormula="CH3OH",
             MolarMass=ureg.Quantity("32.04 g/mol"),
             Density=ureg.Quantity("0.79 g/ml"),
@@ -184,7 +184,7 @@ def test_reagent() -> None:
         ID="linker_1",
         Chemical=Chemical(
             ID="2-MIM",
-            Name="2-methylimidazole",
+            ChemicalName="2-methylimidazole",
             ChemicalFormula="C4H6N2",
             MolarMass=ureg.Quantity("82.11 g/mol"),
             Density=ureg.Quantity("1.096 g/ml"),
@@ -217,7 +217,7 @@ def test_reagent() -> None:
     # make mixture:
     mixture = Mixture(
         ID="stock_1",
-        Name="linker stock solution",
+        MixtureName="linker stock solution",
         Description="Stock solution of linker at 78 g/mole",
         PreparationDate=pd.to_datetime("2022.07.27"),
         StorageConditions="air conditioned lab",
@@ -231,13 +231,14 @@ def test_reagent() -> None:
     # print(f'{r1.Reagent.MolarMass=}')
     logging.info(
         [
-            f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.Name} in"
-            f" {mixture.Name} at mole concentration"
+            f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.ChemicalName} in"
+            f" {mixture.MixtureName} at mole concentration"
             f" {mixture.component_concentration(MatchComponent=c):0.03e}"
             for ci, c in enumerate(mixture.ComponentList)
         ]
     )
     logging.info(
-        [f"{c.price_per_mass():.3f} of {c.Chemical.Name} in {mixture.Name}" for c in mixture.ComponentList]
+        [f"{c.price_per_mass():.3f} of {c.Chemical.ChemicalName} in {mixture.MixtureName}"
+            for c in mixture.ComponentList]
     )
     logging.info(f"\n {mixture.component_concentrations()=}, {mixture.total_mass=}, {mixture.total_price=}")

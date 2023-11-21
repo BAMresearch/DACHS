@@ -92,7 +92,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # Start with a Experiment
     exp = Experiment(
         ID="DACHS",  # this also defines the root at which the HDF5 tree starts
-        Name="Automatic MOF Exploration series",
+        ExperimentName="Automatic MOF Exploration series",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
