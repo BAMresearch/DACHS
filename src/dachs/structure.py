@@ -271,6 +271,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
     # print(exp.ExperimentalSetup)
+    container = [i for i in exp.ExperimentalSetup.EquipmentList
+                 if "falcon tube" in i.EquipmentName.lower()]  # might be empty
+    container = container[-1] if len(container) else None
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix0",
@@ -278,7 +281,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Description="The MOF synthesis reaction mixture",
         PreparationDate=ReactionStart,  # idx,  # last timestamp read
         StorageConditions="RT",
-        Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.EquipmentName.lower()][-1],
+        Container=container,
     )
     # to this we need to find the volume and density of which solution for the injections
     # TODO: do something better to separate solution numbers and their respective volumes.
