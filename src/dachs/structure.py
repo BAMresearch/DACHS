@@ -495,6 +495,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Highlander=False,
         # Which="last",
         # return_indices=True,
+        raiseWarning=False,
     )
     if noteList is not None:
         for note in noteList:
@@ -635,6 +636,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
     S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
     addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop"]
+    # print(f"Price of reaction mix: {ReactionMix.total_price:.2f~P}")
 
     for key in addKeys:
         if key in locals():
@@ -644,7 +646,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     for key in DPars:
         if DPars[key] == []:  # empty list issue
             logging.warning(f"{key=} in DPars is an empty list, probably missing from {synFile.stem}")
-    # print(DPars.keys())
+
+    print(DPars.keys())
     # we read the template text per automof, and then format it using the information in DPars.
     descText = ""
     try:
@@ -654,7 +657,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         logging.exception(e)
 
     # add notes if they exist to the end of the synthesis text.
-    if len(noteList) > 0:
+    if noteList is not None:
         for Notei, Note in enumerate(noteList):
             descText += f"Note {Notei}: {Note.Value}"
 

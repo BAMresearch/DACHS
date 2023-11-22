@@ -21,6 +21,7 @@ def outfileFromInput(infn, suffix="h5"):
 # https://stackoverflow.com/a/63828227
 def configureParser() -> argparse.ArgumentParser:
     def validate_file(arg):
+        if arg == '': return None # nothing specified. 
         filepath = Path(arg).absolute()
         if not filepath.is_file():
             raise ValueError
@@ -67,6 +68,16 @@ def configureParser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "-s2",
+        "--s2file",
+        type=validate_file,
+        default=environ.get("DACHS_SOL2", ""),
+        help=(
+            "File containing the synthesis log of Solution 2, "
+            "read from environment variable DACHS_SOL2 if not specified on command line."
+        ),
+    )
+    parser.add_argument(
         "-s",
         "--synlog",
         type=validate_file,
@@ -104,7 +115,11 @@ def main(args: List[str] = None):
     if not args.outfile:
         args.outfile = outfileFromInput(args.synlog)
 
-    exp = dachs.structure.create(args.logbook, (args.s0file, args.s1file), args.synlog, args.amset)
+    solFiles = [args.s0file, args.s1file]
+    if args.s2file is not None:
+        solFiles += [args.s2file]
+
+    exp = dachs.structure.create(args.logbook, solFiles, args.synlog, args.amset)
     paths = dachs.serialization.dumpKV(exp, dbg=False)
     logging.info(f"Writing structure to '{args.outfile}'.")
     # from pprint import pprint
