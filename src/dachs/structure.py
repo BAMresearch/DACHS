@@ -290,7 +290,10 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         logging.error(f"No injection volume specified in {synFile.stem}")
 
     # find calibration factor and offset:
-    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.EquipmentName.lower() == "syringe"][-1]
+    Syringe = [i for i in exp.ExperimentalSetup.EquipmentList if i.EquipmentName.lower() == "syringe"]
+    if not len(Syringe):
+        raise Warning("Can't setup Mixture: Syringe not found!")
+    Syringe = Syringe[-1]
     CalibrationFactor = Syringe.PVs["volume"].CalibrationFactor
     CalibrationOffset = Syringe.PVs["volume"].CalibrationOffset
     allSolutions = find_in_log(exp.Synthesis.RawLog, ["Stop", "injection of solution"], Highlander=False)

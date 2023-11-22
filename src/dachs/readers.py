@@ -102,7 +102,6 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
 
 
 def readRawMessageLog(filename: Path) -> List:
-    # filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
     assert filename.exists()
     df = pd.read_excel(filename, sheet_name="Sheet1", index_col=None, header=0, parse_dates=["Time"])
     df = df.dropna(how="all")
