@@ -80,3 +80,6 @@ docs/reference/autosummary
 
 # Mypy Cache
 .mypy_cache/
+
+# ignore generated files for now
+/DACHS.svg
