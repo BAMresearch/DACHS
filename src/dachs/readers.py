@@ -30,6 +30,7 @@ from dachs.metaclasses import ExperimentalSetupClass
 from dachs.reagent import Chemical, Reagent
 from dachs.synthesis import RawLogMessage, synthesisStep
 
+
 # from pandas import Timestamp
 
 
@@ -54,7 +55,7 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
                 Manufacturer=str(equip["Manufacturer"]),
                 ModelName=str(equip["Model Name"]),
                 ModelNumber=str(equip["Model Number"]),
-                PriceDate=str(equip["PriceDate"]),
+                PriceDate=str(equip["PriceDate"]) if equip.get("PriceDate") else None,  # might not exist, optional
                 UnitPrice=ureg.Quantity(str(equip["Unit Price"]) + " " + str(equip["Price Unit"])),
                 UnitSize=ureg.Quantity(str(equip["Unit Size"]) + " " + str(equip["Unit"])),
                 Description=equip["Description"],
@@ -90,7 +91,8 @@ def readExperimentalSetup(filename: Path, SetupName: str = "AMSET_6") -> Experim
     itemList = [dfRow[i].item() for i in dfRow.keys() if "ID_" in i]
     eqList = [eqDict[item] for item in itemList if item in eqDict.keys()]
     expSetup = ExperimentalSetupClass(
-        ID="ExperimentalSetup",  # this gets used to name the thing in the HDF5 structure, but I want the original name dfRow.SetupID.item(),
+        ID="ExperimentalSetup",  # this gets used to name the thing in the HDF5 structure,
+                                 # but I want the original name dfRow.SetupID.item()
         ExperimentalSetupID=dfRow.SetupID.item(),
         SetupName=dfRow.Name.item(),
         Description=whitespaceCleanup(dfRow.Description.item()),
@@ -120,7 +122,7 @@ def readRawMessageLog(filename: Path) -> List:
                 Unit=row["Unit"],
                 Value=row["Value"],
                 # Quantity=Q,
-                Using=row["Using"],
+                Using=row.get("Using"),  # might not exist
             )
         ]
     return msgList
@@ -213,7 +215,7 @@ def find_reagent_in_rawmessage(searchString: str, ReagentList: List[Reagent]) ->
 def find_in_log(
     log: List[RawLogMessage],
     searchString: Union[str, list],
-    excludeString: Union[str, list] = "Dummy exclude string which will not be found",
+    excludeString: Union[str, list] = None,
     Highlander: bool = True,  # there can be only one if Highlander is True
     Which: str = "first",  # if highlander, specify if first or last
     raiseWarning: bool = True,  # raises a logging.warning if it cannot be found
@@ -225,6 +227,8 @@ def find_in_log(
     answers = []
     if isinstance(searchString, str):
         searchString = [searchString]
+    if excludeString is None:
+        excludeString = []
     if isinstance(excludeString, str):
         excludeString = [excludeString]
     for RLM in log:

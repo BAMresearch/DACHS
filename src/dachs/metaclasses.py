@@ -154,7 +154,7 @@ class Experiment(addItemsToAttrs):
         validator=validators.instance_of(str),
         converter=str,
     )
-    Name: str = field(
+    ExperimentName: str = field(
         default=None,
         validator=validators.instance_of(str),
         converter=str,

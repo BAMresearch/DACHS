@@ -92,7 +92,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # Start with a Experiment
     exp = Experiment(
         ID="DACHS",  # this also defines the root at which the HDF5 tree starts
-        Name="Automatic MOF Exploration series",
+        ExperimentName="Automatic MOF Exploration series",
         Description="""
             In this series, MOFs are synthesised in methanol from two stock solutions,
             all performed at room temperature (see environmental details in log).
@@ -113,7 +113,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             TargetProduct=Product(ID="TargetProduct", Chemical=zifChemical),
             # the final product is what you actually got in the end, as evidenced by the evidence.
             FinalProduct=Product(
-                ID="FinalProduct", Chemical=zifChemical, Evidence="Assumed for now ¯\_(ツ)_/¯"
+                ID="FinalProduct", Chemical=zifChemical, Evidence=r"Assumed for now ¯\_(ツ)_/¯"
             ),  # mass is set later.
         ),
     )
@@ -156,8 +156,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             if RLMList is not None:  # if the list is not empty:
                 for RLM in RLMList:  # add each to the mix
                     # find the preceding message to ensure the reagentID is correct:
-                    previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)][-1]
-                    logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID==previousRLM.Value}")
+                    previousRLM = [i for i in rawLog if i.Index == (RLM.Index - 1)]
+                    if not len(previousRLM):
+                        break  # previousRLM might be empty
+                    previousRLM = previousRLM[-1]
+                    logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID == previousRLM.Value}")
                     if reagent.ID in ReagentIDsUsedInSynthesis:
                         # no idea why I can't also check for this match: reagent.ID==previousRLM.Value, I get a problem later on
                         mix.add_reagent_to_mix(reag=reagent, ReagentMass=RLM.Quantity)
@@ -255,6 +258,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         "SetupID",
         Highlander=True,
         Which="last",
+        raiseWarning=False,
         # return_indices=True,
     )
     if LogEntry is not None:
@@ -267,6 +271,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
     # print(exp.ExperimentalSetup)
+    container = [i for i in exp.ExperimentalSetup.EquipmentList
+                 if "falcon tube" in i.EquipmentName.lower()]  # might be empty
+    container = container[-1] if len(container) else None
     # now we can create a new mixture
     mix = Mixture(
         ID="ReactionMix0",
@@ -274,7 +281,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Description="The MOF synthesis reaction mixture",
         PreparationDate=ReactionStart,  # idx,  # last timestamp read
         StorageConditions="RT",
-        Container=[i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.EquipmentName.lower()][-1],
+        Container=container,
     )
     # to this we need to find the volume and density of which solution for the injections
     # TODO: do something better to separate solution numbers and their respective volumes.
@@ -382,7 +389,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if "CH3OH" in component.Chemical.Substance.name:
             methMoles += mix.component_moles(MatchComponent=component)
     TotalMetalMoles = metMoles
-    TotalLinkerMoles = linkMoles
+    TotalLinkerMoles = linkMoles  # what if =0? -> divBy0 on l444 below
     TotalMethanolMoles = methMoles
 
     logging.info(f"{TotalMetalMoles=}, {TotalLinkerMoles=}, {TotalMethanolMoles=}")
@@ -426,6 +433,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
 
     # We calculate an extra theoretical yield based on the moles of linker:
+    #print(f"{TotalLinkerMoles=}, {exp.Chemicals.TargetProduct.Chemical.MolarMass=}")
     LinkerBasedProductMass = TotalLinkerMoles / 2 * exp.Chemicals.TargetProduct.Chemical.MolarMass
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(
