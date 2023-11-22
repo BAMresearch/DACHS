@@ -54,7 +54,7 @@ def test_equipment() -> None:
 
 
 def test_readEquipment() -> None:
-    filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
+    filename = Path("tests", "testData", "AutoMOFs_The_Logbook.xlsx")
     SetupName = "AMSET_6"
 
     # read equipment list:
@@ -134,12 +134,12 @@ def test_experimental_setup() -> None:
 
 
 def test_readRawMessageLog() -> None:
-    filename = Path("tests", "testData", "AutoMOFs05_H005.xlsx")
+    filename = Path("tests", "testData", "log_AutoMOFs_6_L019.xlsx")
     _ = readRawMessageLog(filename)
 
 
 def test_ReadStartingCompounds() -> None:
-    filename = Path("tests", "testData", "AutoMOFs_Logbook_Testing.xlsx")
+    filename = Path("tests", "testData", "AutoMOFs_The_Logbook.xlsx")
     _ = ReadStartingCompounds(filename)
 
 
