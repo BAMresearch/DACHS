@@ -55,8 +55,9 @@ jobs:
             if [ ! -d "$CONDA" ] || [ ! -f "$CONDACMD" ]; then
               echo "Conda not found! CONDA='$CONDA' or CONDACMD='$CONDACMD' don't exist!"
             else
-              $CONDAACT
-              $CONDACMD install -y -c conda-forge $(sed -e '/^\s*#/d' "$REQFN")
+              #$CONDAACT
+              #$CONDACMD install -y -c conda-forge $(sed -e '/^\s*#/d' "$REQFN")
+              choco install $(sed -e '/^\s*#/d' "$REQFN")
           else
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
