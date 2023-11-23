@@ -83,7 +83,7 @@ jobs:
         shell: sh
         run: |
           [ -d "$CONDA" ] && "$CONDAACT"
-          tox -e ${{ env.TOX_ENV }} -v
+          tox -e ${{ env.TOX_ENV }} -v --trace --full-trace --tb=long
 
       - name: Rename coverage data uniquely
         shell: sh
