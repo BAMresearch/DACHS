@@ -22,6 +22,8 @@ jobs:
     env:
       PYTHON: ${{ join(matrix.python, '.') }}  # e.g. '3.11'
       TOX_ENV: ${{ format('{0}{1}', 'py', join(matrix.python, '')) }}  # e.g. 'py311'
+      CONDACMD: "$CONDA/condabin/conda.bat"
+      CONDAACT: "$CONDA/condabin/activate.bat"
     runs-on: ${{ format('{0}-latest', matrix.os) }}
     name: "Test py-${{ join(matrix.python, '.') }} (${{ matrix.os }})"
     steps:
@@ -50,7 +52,11 @@ jobs:
           if [ "$PLATFORM" = "linux" ] && [ -f "$REQFN" ]; then
             sudo apt-get -y install $(sed -e '/^\s*#/d' "$REQFN")
           elif [ "$PLATFORM" = "windows" ] && [ -f "$REQFN" ]; then
-            /c/miniconda/condabin/conda.bat install -y -c conda-forge $(sed -e '/^\s*#/d' "$REQFN")
+            if [ ! -d "$CONDA" ] || [ ! -f "$CONDACMD" ]; then
+              echo "Conda not found! CONDA='$CONDA' or CONDACMD='$CONDACMD' don't exist!"
+            else
+              $CONDAACT
+              $CONDACMD install -y -c conda-forge $(sed -e '/^\s*#/d' "$REQFN")
           else
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
@@ -58,14 +64,14 @@ jobs:
       - name: Install dependencies
         shell: sh
         run: |
-          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
+          [ -d "$CONDA" ] && "$CONDAACT"
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
       - name: Show installed package details
         shell: sh
         run: |
-          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
+          [ -d "$CONDA" ] && "$CONDAACT"
           virtualenv --version
           pip --version
           tox --version
@@ -74,7 +80,7 @@ jobs:
       - name: Run tests
         shell: sh
         run: |
-          [ -d "/c/miniconda" ] && /c/miniconda/condabin/activate.bat
+          [ -d "$CONDA" ] && "$CONDAACT"
           tox -e ${{ env.TOX_ENV }} -v
 
       - name: Rename coverage data uniquely
