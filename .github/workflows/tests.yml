@@ -58,6 +58,7 @@ jobs:
               #$CONDAACT
               #$CONDACMD install -y -c conda-forge $(sed -e '/^\s*#/d' "$REQFN")
               choco install $(sed -e '/^\s*#/d' "$REQFN")
+            fi
           else
             echo "macro sys_install_req(): platform '$PLATFORM' not implemented yet."
           fi
