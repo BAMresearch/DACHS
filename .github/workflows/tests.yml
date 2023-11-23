@@ -80,6 +80,8 @@ jobs:
           pip list --format=freeze
 
       - name: Run tests
+        env:
+          TOXPYTHON: python3 -Xfrozen_modules=off
         shell: sh
         run: |
           [ -d "$CONDA" ] && "$CONDAACT"
