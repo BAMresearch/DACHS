@@ -47,10 +47,10 @@ def test_equipment() -> None:
         Description="Falcon tubes, 50 ml",
         PVs={},
     )
-    print([f"{k}: {v}" for k, v in solvent.items()])
-    print(f"{solvent._loadKeys=}")
-    # test ureg:
-    print(e2.PricePerUnit())
+    # print([f"{k}: {v}" for k, v in solvent.items()])
+    # print(f"{solvent._loadKeys=}")
+    # # test ureg:
+    # print(e2.PricePerUnit())
 
 
 def test_readEquipment() -> None:
@@ -92,7 +92,7 @@ def test_readEquipment() -> None:
         Description=dfRow["Description"],
         EquipmentList=eqList,
     )
-    print(filename)
+    # print(filename)
 
 
 def test_experiment() -> None:
@@ -128,9 +128,8 @@ def test_experimental_setup() -> None:
         Description="Same as AMSET_4 but Rod shaped stirring bar",
         EquipmentList=[eq1],
     )
-
-    print([f"{k}: {v}" for k, v in su1.items()])
-    print(f"{su1._loadKeys=}")
+    # print([f"{k}: {v}" for k, v in su1.items()])
+    # print(f"{su1._loadKeys=}")
 
 
 def test_readRawMessageLog() -> None:
@@ -198,12 +197,11 @@ def test_reagent() -> None:
         UnitPrice="149 euro",
         UnitSize="1000 gram",
     )
-
-    print([f"{k}: {v}" for k, v in solvent.items()])
-    print(f"{solvent._loadKeys=}")
-    # test ureg:
-    print(ureg("12.4 percent") * solvent.UnitPrice)
-    print(solvent.PricePerUnit())
+    # print([f"{k}: {v}" for k, v in solvent.items()])
+    # print(f"{solvent._loadKeys=}")
+    # # test ureg:
+    # print(ureg("12.4 percent") * solvent.UnitPrice)
+    # print(solvent.PricePerUnit())
 
     # r1 = ReagentByVolume(
     #             AmountOfVolume='500 ml',

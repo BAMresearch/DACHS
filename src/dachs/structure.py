@@ -658,7 +658,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         if DPars[key] == []:  # empty list issue
             logging.warning(f"{key=} in DPars is an empty list, probably missing from {synFile.stem}")
 
-    print(DPars.keys())
+    # print(DPars.keys())
     # we read the template text per automof, and then format it using the information in DPars.
     descText = ""
     try:
@@ -673,5 +673,4 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             descText += f"Note {Notei}: {Note.Value}"
 
     exp.Synthesis.Description = descText
-
     return exp
