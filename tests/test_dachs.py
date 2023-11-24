@@ -76,6 +76,8 @@ def test_readEquipment() -> None:
             )
             eqDict.update({str(equip["Equipment ID"]): eqItem})
         except Exception as e:
+            import traceback
+            traceback.print_exception(e)
             print(f'Failure reading {equip["Equipment ID"]=}\n {str(e)}')
 
     # read setup configuration:
