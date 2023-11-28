@@ -18,6 +18,8 @@ include README.rst
 include main.py
 include Structure.drawio
 include notebooks/*.ipynb
+include SplitRoWaNLogs.py
 
 global-exclude *.py[cod] __pycache__/* *.so *.dylib .DS_Store */.ipynb_checkpoints/*
 exclude scripts/*
+exclude tests/testData/*.h5
