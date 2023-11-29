@@ -1,6 +1,22 @@
 
 # CHANGELOG
 
+## v0.5.2 (2023-11-29)
+
+### Fix
+
+* **structure**: logging to files ([`507fec6`](https://github.com/BAMresearch/DACHS/commit/507fec67e77b1d687204456d8cb1af44d65a76ca))
+
+### Refactor
+
+* **Formatting**: black applied ([`b513bcc`](https://github.com/BAMresearch/DACHS/commit/b513bcc9c1eb378c7face9b1739195577e028b6f))
+
+* **General**: removed unused import, isort&#39;d ([`55ef37a`](https://github.com/BAMresearch/DACHS/commit/55ef37a97e656ae72ad88d574471018852a9228d))
+
+### Test
+
+* **dachs**: tests need assertions ([`9e5eec4`](https://github.com/BAMresearch/DACHS/commit/9e5eec4c00f107ef087c243ba131d329577e0e00))
+
 ## v0.5.1 (2023-11-28)
 
 ### Documentation
