@@ -46,10 +46,14 @@ def test_equipment() -> None:
         Description="Falcon tubes, 50 ml",
         PVs={},
     )
-    # print([f"{k}: {v}" for k, v in solvent.items()])
-    # print(f"{solvent._loadKeys=}")
-    # # test ureg:
-    # print(e2.PricePerUnit())
+    assert list(solvent.keys()) == [
+        'ID', 'EquipmentID', 'EquipmentName', 'Manufacturer', 'ModelName', 'ModelNumber', 'Description',
+        'PriceDate', 'UnitPrice', 'UnitSize', 'PVs', '_excludeKeys', '_storeKeys', '_loadKeys']
+    assert solvent._loadKeys == ['ID', 'EquipmentID', 'EquipmentName', 'Manufacturer', 'ModelName',
+                                 'ModelNumber', 'Description', 'PriceDate', 'UnitPrice', 'UnitSize', 'PVs']
+    ppu = e2.PricePerUnit()
+    assert ppu.u == "EUR"
+    assert ppu.m == pytest.approx(.6733333)
 
 
 def test_readEquipment() -> None:
@@ -93,11 +97,11 @@ def test_readEquipment() -> None:
         Description=dfRow["Description"],
         EquipmentList=eqList,
     )
-    # print(filename)
+    assert filename == Path("tests/testData/AutoMOFs_The_Logbook.xlsx")
 
 
 def test_experiment() -> None:
-    _ = Experiment(
+    ex = Experiment(
         ID="AutoMOF5",
         ExperimentName="Automatic MOF Exploration series 5",
         Description="""
@@ -105,9 +109,9 @@ def test_experiment() -> None:
             all performed at room temperature (see environmental details in log).
             The injection rate and injection order are varied. Centrifugation and drying
             is performed manually. Residence times are 20 minutes after start of second injection.
-        """,
-    )
-    return
+        """,)
+    assert list(ex.keys()) == ['ID', 'ExperimentName', 'Description', 'Chemicals', 'Synthesis',
+                               'ExperimentalSetup', '_excludeKeys', '_storeKeys', '_loadKeys']
 
 
 def test_experimental_setup() -> None:
@@ -129,18 +133,26 @@ def test_experimental_setup() -> None:
         Description="Same as AMSET_4 but Rod shaped stirring bar",
         EquipmentList=[eq1],
     )
-    # print([f"{k}: {v}" for k, v in su1.items()])
-    # print(f"{su1._loadKeys=}")
+    assert list(su1.keys()) == ['ID', 'ExperimentalSetupID', 'SetupName', 'Description', 'EquipmentList',
+                                '_excludeKeys', '_storeKeys', '_loadKeys']
+    assert list(eq1.keys()) == ['ID', 'EquipmentID', 'EquipmentName', 'Manufacturer', 'ModelName', 'ModelNumber',
+                                'Description', 'PriceDate', 'UnitPrice', 'UnitSize', 'PVs', '_excludeKeys',
+                                '_storeKeys', '_loadKeys']
+    assert su1.EquipmentList[0] == eq1
 
 
 def test_readRawMessageLog() -> None:
     filename = Path("tests", "testData", "log_AutoMOFs_6_L019.xlsx")
-    _ = readRawMessageLog(filename)
+    logs = readRawMessageLog(filename)
+    assert len(logs) == 25
+    assert all([isinstance(log, RawLogMessage) for log in logs])
 
 
 def test_ReadStartingCompounds() -> None:
     filename = Path("tests", "testData", "AutoMOFs_The_Logbook.xlsx")
-    _ = ReadStartingCompounds(filename)
+    comp = ReadStartingCompounds(filename)
+    assert len(comp) == 22
+    assert all([isinstance(c, Reagent) for c in comp])
 
 
 def test_product() -> None:
@@ -153,8 +165,10 @@ def test_product() -> None:
         Density=ureg.Quantity("0.335 g/cc"),
         SourceDOI="something",
     )
-    _ = Product(ID="ZIF-8", Chemical=zifChemical, Mass=ureg.Quantity("12.5 mg"), Purity="99 percent")
-    return
+    prod = Product(ID="ZIF-8", Chemical=zifChemical, Mass=ureg.Quantity("12.5 mg"), Purity="99 percent")
+    assert list(prod.keys()) == ['ID', 'Chemical', 'Mass', 'Purity', 'Evidence', '_excludeKeys',
+                                 '_storeKeys', '_loadKeys']
+    assert prod.Chemical.MolarMass.m == 229
 
 
 def test_reagent() -> None:
@@ -198,20 +212,14 @@ def test_reagent() -> None:
         UnitPrice="149 euro",
         UnitSize="1000 gram",
     )
-    # print([f"{k}: {v}" for k, v in solvent.items()])
-    # print(f"{solvent._loadKeys=}")
-    # # test ureg:
-    # print(ureg("12.4 percent") * solvent.UnitPrice)
-    # print(solvent.PricePerUnit())
-
-    # r1 = ReagentByVolume(
-    #             AmountOfVolume='500 ml',
-    #             Reagent=solvent
-    #         )
-    # r2 = ReagentByMass(
-    #             AmountOfMass='4.5767 g',
-    #             Reagent=linker
-    #         )
+    assert solvent._loadKeys == ['ID', 'Chemical', 'CASNumber', 'Brand', 'UNNumber', 'MinimumPurity',
+                                 'OpenDate', 'StorageConditions', 'UnitPrice', 'UnitSize', 'Used']
+    price = ureg("12.4 percent") * solvent.UnitPrice
+    assert price.m == 1.116
+    assert price.u == "EUR"
+    ppu = solvent.PricePerUnit()
+    assert ppu.m == 3.6
+    assert ppu.u == "EUR / liter"
 
     # make mixture:
     mixture = Mixture(
@@ -226,18 +234,27 @@ def test_reagent() -> None:
             linker.ID: solvent.MassByVolume(ureg.Quantity("500 ml")),
         },
     )
-
-    # print(f'{r1.Reagent.MolarMass=}')
-    logging.info(
-        [
-            f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.ChemicalName} in"
-            f" {mixture.MixtureName} at mole concentration"
-            f" {mixture.component_concentration(MatchComponent=c):0.03e}"
-            for ci, c in enumerate(mixture.ComponentList)
-        ]
-    )
-    logging.info(
-        [f"{c.price_per_mass():.3f} of {c.Chemical.ChemicalName} in {mixture.MixtureName}"
-            for c in mixture.ComponentList]
-    )
+    msg = [f"{c.MolesByMass(mixture.ComponentMasses[c.ID]):.3f} of {c.Chemical.ChemicalName} in"
+           f" {mixture.MixtureName} at mole concentration"
+           f" {mixture.component_concentration(MatchComponent=c):0.03e}"
+           for ci, c in enumerate(mixture.ComponentList)]
+    assert msg[0] == (
+        "0.143 mole of Methanol in linker stock solution at mole concentration 2.884e-02 dimensionless")
+    assert msg[1] == (
+        "4.811 mole of 2-methylimidazole in linker stock solution at mole concentration 9.712e-01 dimensionless")
+    logging.info(msg)
+    msg = [f"{c.price_per_mass():.3f} of {c.Chemical.ChemicalName} in {mixture.MixtureName}"
+           for c in mixture.ComponentList]
+    assert msg[0] == "0.005 EUR / gram of Methanol in linker stock solution"
+    assert msg[1] == "0.149 EUR / gram of 2-methylimidazole in linker stock solution"
+    logging.info(msg)
+    mc = mixture.component_concentrations()
+    assert len(mc) == 2
+    assert mc[0].m == pytest.approx(0.028837061)
+    assert mc[1].m == pytest.approx(0.971162939)
+    assert all([str(q.u) == "dimensionless" for q in mc])
+    assert mixture.total_mass.m == pytest.approx(399.5767)
+    assert mixture.total_mass.u == "gram"
+    assert mixture.total_price.m == pytest.approx(58.87585584)
+    assert mixture.total_price.u == "EUR"
     logging.info(f"\n {mixture.component_concentrations()=}, {mixture.total_mass=}, {mixture.total_price=}")
