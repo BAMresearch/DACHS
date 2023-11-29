@@ -21,7 +21,8 @@ def outfileFromInput(infn, suffix="h5"):
 # https://stackoverflow.com/a/63828227
 def configureParser() -> argparse.ArgumentParser:
     def validate_file(arg):
-        if arg == '': return None # nothing specified. 
+        if arg == '':
+            return None  # nothing specified.
         filepath = Path(arg).absolute()
         if not filepath.is_file():
             raise ValueError

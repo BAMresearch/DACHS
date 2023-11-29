@@ -96,7 +96,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             # There is a list of starting compounds in the log file
             StartingCompounds=ReadStartingCompounds(logFile),
             Mixtures=[],  # Mixtures get filled in later
-            # Then we have the potential products from the synthesis. Be as thorough as you like here, it will help you later on
+            # Then we have the potential products from the synthesis.
+            # Be as thorough as you like here, it will help you later on
             PotentialProducts=[
                 Product(ID="ZIF-8", Chemical=zifChemical),
                 Product(ID="ZIF-L", Chemical=zifLChemical),
@@ -140,7 +141,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         aNumber = chempy.util.periodic.atomic_number("Zn")
         mixIsMetal = False
         mixIsLinker = False
-        # see known issue on the BAMResearch DACHS Git.. this is to avoid false matches when using overlapping names:
+        # see known issue on the BAMResearch DACHS Git..
+        # this is to avoid false matches when using overlapping names:
         ReagentIDsUsedInSynthesis = [i.Value for i in find_in_log(rawLog, "ReagentID", Highlander=False)]
         # print(f"{ReagentIDsUsedInSynthesis=}")
         for reagent in exp.Chemicals.StartingCompounds:
@@ -154,7 +156,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                     previousRLM = previousRLM[-1]
                     logging.info(f"{reagent.ID=}, {previousRLM.Value=}, so: {reagent.ID == previousRLM.Value}")
                     if reagent.ID in ReagentIDsUsedInSynthesis:
-                        # no idea why I can't also check for this match: reagent.ID==previousRLM.Value, I get a problem later on
+                        # no idea why I can't also check for this match:
+                        # reagent.ID==previousRLM.Value, I get a problem later on
                         mix.add_reagent_to_mix(reag=reagent, ReagentMass=RLM.Quantity)
                         if aNumber in reagent.Chemical.Substance.composition.keys():
                             mixIsMetal = True
@@ -183,7 +186,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         RLM = find_in_log(rawLog, "density determined", Highlander=True, Which="first", raiseWarning=False)
         if RLM is not None:  # if this is not empty
             mix.Density = RLM.Quantity
-        # override density if calculated is present, as measured was done at 20 degrees, and calculated is at lab temp:
+        # override density if calculated is present, as measured was done at 20 degrees,
+        # and calculated is at lab temp:
         RLM = find_in_log(rawLog, "density calculated", Highlander=True, Which="first", raiseWarning=False)
         if RLM is not None:  # if this is not empty
             mix.Density = RLM.Quantity
@@ -295,7 +299,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         # figure out which volume was used for this by looking at the index:
         for volRLM in allVolumes:
             if volRLM.Index < solutionRLM.Index:
-                # the last time we set the volume before injection is the volume used. WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG! see, A4_T006 TODO: fix
+                # the last time we set the volume before injection is the volume used.
+                # WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG! see, A4_T006 TODO: fix
                 VolumeRLM = volRLM
 
         # VolumeRLM = allVolumes[0]
@@ -428,7 +433,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # exp.Synthesis.SourceDOI = "TBD"  # TODO: add a default synthesis to Zenodo
 
     # We calculate an extra theoretical yield based on the moles of linker:
-    #print(f"{TotalLinkerMoles=}, {exp.Chemicals.TargetProduct.Chemical.MolarMass=}")
+    # print(f"{TotalLinkerMoles=}, {exp.Chemicals.TargetProduct.Chemical.MolarMass=}")
     LinkerBasedProductMass = TotalLinkerMoles / 2 * exp.Chemicals.TargetProduct.Chemical.MolarMass
     exp.Synthesis.DerivedParameters += [
         DerivedParameter(

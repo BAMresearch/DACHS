@@ -28,5 +28,6 @@ def test_integral() -> None:
             print(f"Failed files {s0=}, {s1=}, {syn=}")
             raise
 
+
 if __name__ == "__main__":
     test_integral()
