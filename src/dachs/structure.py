@@ -35,12 +35,12 @@ def setupLogging(outLogFilePathBase: Path):
     warnfn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyWarnings.log")
     infofn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyInfo.log")
     fh = logging.FileHandler(infofn, mode="w")
-    #fh.setLevel(logging.INFO) # not defining = NOTSET, catch all
+    # fh.setLevel(logging.INFO) # not defining = NOTSET, catch all
     logger.addHandler(fh)
     fh2 = logging.FileHandler(warnfn, mode="w")
     fh2.setLevel(logging.WARNING)
     logger.addHandler(fh2)
-    print(f"Installed log handlers:")
+    print("Installed log handlers:")
     for lh in logger.handlers:
         print("   ", lh)
 
