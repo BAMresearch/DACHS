@@ -1,0 +1,6 @@
+dachs.structure.setupLogging
+============================
+
+.. currentmodule:: dachs.structure
+
+.. autofunction:: setupLogging

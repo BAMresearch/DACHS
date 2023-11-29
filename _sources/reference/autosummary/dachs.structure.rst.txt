@@ -16,6 +16,7 @@ dachs.structure
    
       DParFromLogEntry
       create
+      setupLogging
    
    
 
