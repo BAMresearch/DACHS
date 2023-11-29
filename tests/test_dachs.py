@@ -3,15 +3,14 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from dachs import ureg
 from dachs.equipment import PV, Equipment
 from dachs.metaclasses import Experiment, ExperimentalSetupClass
 from dachs.readers import ReadStartingCompounds, readRawMessageLog
-from dachs.reagent import Mixture  # ReagentByMass, ReagentByVolume, ReagentMixture,
-from dachs.reagent import Chemical, Product, Reagent
-
-# from dachs.synthesis import RawLogMessage
+from dachs.reagent import Chemical, Mixture, Product, Reagent
+from dachs.synthesis import RawLogMessage
 
 
 def test_equipment() -> None:

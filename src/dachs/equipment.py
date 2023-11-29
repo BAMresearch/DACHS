@@ -12,11 +12,10 @@ __date__ = "2022/11/15"
 __status__ = "beta"
 
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 import pandas as pd
 from attrs import Factory, define, field, validators
-from pandas import Timestamp
 
 from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs

@@ -12,12 +12,11 @@ __date__ = "2022/11/07"
 __status__ = "beta"
 
 from typing import List, Optional, Union
-import pint
-
-import yaml
 
 import chempy
-from attrs import Factory, define, field, validators, converters
+import pint
+import yaml
+from attrs import Factory, converters, define, field, validators
 from pandas import Timestamp
 
 from dachs import ureg  # get importError when using: "from . import ureg"

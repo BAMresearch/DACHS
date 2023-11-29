@@ -19,7 +19,6 @@ from typing import List, Optional  # , Optional
 
 from attrs import Factory, define, field, validators
 
-from dachs import ureg  # get importError when using: "from . import ureg"
 from dachs.additemstoattrs import addItemsToAttrs
 from dachs.equipment import Equipment
 from dachs.helpers import whitespaceCleanup

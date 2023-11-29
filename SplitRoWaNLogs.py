@@ -1,11 +1,10 @@
-
 import argparse
 import os
-import pandas as pd
-
 
 # revamped log writer
 from pathlib import Path
+
+import pandas as pd
 
 
 def configureParser() -> argparse.ArgumentParser:
