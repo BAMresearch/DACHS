@@ -26,6 +26,25 @@ def DParFromLogEntry(ID: str, ParameterName: str, Description: str, LogEntry: Ra
     )
 
 
+def setupLogging(outLogFilePathBase: Path):
+    # accept all log levels, this 'overrides' any handler settings,
+    # handlers will not see anything lower than that
+    # see https://docs.python.org/3/library/logging.html#logging-levels
+    logging.basicConfig(level=logging.NOTSET, stream=sys.stdout)
+    logger = logging.getLogger()
+    warnfn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyWarnings.log")
+    infofn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyInfo.log")
+    fh = logging.FileHandler(infofn, mode="w")
+    #fh.setLevel(logging.INFO) # not defining = NOTSET, catch all
+    logger.addHandler(fh)
+    fh2 = logging.FileHandler(warnfn, mode="w")
+    fh2.setLevel(logging.WARNING)
+    logger.addHandler(fh2)
+    print(f"Installed log handlers:")
+    for lh in logger.handlers:
+        print("   ", lh)
+
+
 def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None) -> Experiment:
     """
     Construction of a test structure from Glen's excel files using the available dataclasses,
@@ -44,15 +63,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     :param solFiles: One or more Excel files describing the base solutions which were mixed by the robot
     :param synFile: The synthesis robot log file.
     """
-    logging.basicConfig(level=logging.WARNING, stream=sys.stdout)
-    # logging to files not working yet. Do I have to 'emit' and close?
-    # logger = logging.getLogger()
-    # fh = logging.FileHandler(Path(synFile.parent, synFile.stem + "DachsifyWarnings.log"), mode="w")
-    # fh.setLevel(logging.WARNING)
-    # fh2 = logging.FileHandler(Path(synFile.parent, synFile.stem + "DachsifyInfo.log"), mode="w")
-    # fh2.setLevel(logging.INFO)
-    # logger.addHandler(fh)
-    # logger.addHandler(fh2)
+    setupLogging(Path(synFile.parent, synFile.stem))
     logging.info(f"Working in '{os.getcwd()}'.")
 
     # define a ZIF 8 Chemical, we'll need this later:
