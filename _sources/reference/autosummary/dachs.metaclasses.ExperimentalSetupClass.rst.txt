@@ -31,7 +31,8 @@ dachs.metaclasses.ExperimentalSetupClass
    .. autosummary::
    
       ~ExperimentalSetupClass.ID
-      ~ExperimentalSetupClass.Name
+      ~ExperimentalSetupClass.ExperimentalSetupID
+      ~ExperimentalSetupClass.SetupName
       ~ExperimentalSetupClass.Description
       ~ExperimentalSetupClass.EquipmentList
    

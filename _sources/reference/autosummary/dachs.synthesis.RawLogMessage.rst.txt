@@ -39,5 +39,6 @@ dachs.synthesis.RawLogMessage
       ~RawLogMessage.Quantity
       ~RawLogMessage.Value
       ~RawLogMessage.Unit
+      ~RawLogMessage.Using
    
    

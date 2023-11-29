@@ -1,0 +1,6 @@
+dachs.synthesis.UnitConverter
+=============================
+
+.. currentmodule:: dachs.synthesis
+
+.. autofunction:: UnitConverter

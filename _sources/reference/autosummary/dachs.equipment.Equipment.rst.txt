@@ -32,14 +32,15 @@ dachs.equipment.Equipment
    .. autosummary::
    
       ~Equipment.ID
-      ~Equipment.Name
+      ~Equipment.EquipmentID
+      ~Equipment.EquipmentName
       ~Equipment.Manufacturer
       ~Equipment.ModelName
       ~Equipment.ModelNumber
       ~Equipment.Description
+      ~Equipment.PriceDate
       ~Equipment.UnitPrice
       ~Equipment.UnitSize
       ~Equipment.PVs
-      ~Equipment.AlternativeIDs
    
    

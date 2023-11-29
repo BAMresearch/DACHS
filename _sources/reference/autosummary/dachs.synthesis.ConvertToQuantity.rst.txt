@@ -1,0 +1,6 @@
+dachs.synthesis.ConvertToQuantity
+=================================
+
+.. currentmodule:: dachs.synthesis
+
+.. autofunction:: ConvertToQuantity

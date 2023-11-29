@@ -1,0 +1,6 @@
+dachs.synthesis.ValConverter
+============================
+
+.. currentmodule:: dachs.synthesis
+
+.. autofunction:: ValConverter

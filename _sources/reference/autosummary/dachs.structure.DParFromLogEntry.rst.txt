@@ -1,0 +1,6 @@
+dachs.structure.DParFromLogEntry
+================================
+
+.. currentmodule:: dachs.structure
+
+.. autofunction:: DParFromLogEntry

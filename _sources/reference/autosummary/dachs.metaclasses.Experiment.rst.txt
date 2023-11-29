@@ -31,11 +31,10 @@ dachs.metaclasses.Experiment
    .. autosummary::
    
       ~Experiment.ID
-      ~Experiment.Name
+      ~Experiment.ExperimentName
       ~Experiment.Description
       ~Experiment.Chemicals
       ~Experiment.Synthesis
-      ~Experiment.Characterizations
       ~Experiment.ExperimentalSetup
    
    

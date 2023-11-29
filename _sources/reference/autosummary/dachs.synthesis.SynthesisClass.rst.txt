@@ -32,12 +32,12 @@ dachs.synthesis.SynthesisClass
    
       ~SynthesisClass.ID
       ~SynthesisClass.Name
+      ~SynthesisClass.DerivedParameters
       ~SynthesisClass.Description
       ~SynthesisClass.ChemicalReaction
       ~SynthesisClass.RawLog
       ~SynthesisClass.SynthesisLog
       ~SynthesisClass.SourceDOI
-      ~SynthesisClass.ExtraInformation
-      ~SynthesisClass.DerivedParameters
+      ~SynthesisClass.KeyParameters
    
    

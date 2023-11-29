@@ -20,7 +20,6 @@ dachs.metaclasses
       :template: class.rst
    
       ChemicalsClass
-      EnvironmentClass
       Experiment
       ExperimentalSetupClass
    

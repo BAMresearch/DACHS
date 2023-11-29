@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
-        <title>dachs.structure - DACHS 0.5.0+f5cf062 documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>dachs.structure - DACHS 0.5.1+9e5eec4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">DACHS 0.5.0+f5cf062 documentation</div></a>
+      <a href="../../index.html"><div class="brand">DACHS 0.5.1+9e5eec4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -149,7 +149,7 @@
     <img class="sidebar-logo" src="../../_static/dachs-wscale.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">DACHS 0.5.0+f5cf062 documentation</span>
+  <span class="sidebar-brand-text">DACHS 0.5.1+9e5eec4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -189,7 +189,6 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/autosummary/dachs.metaclasses.html">dachs.metaclasses</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of dachs.metaclasses</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.metaclasses.ChemicalsClass.html">dachs.metaclasses.ChemicalsClass</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.metaclasses.EnvironmentClass.html">dachs.metaclasses.EnvironmentClass</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.metaclasses.Experiment.html">dachs.metaclasses.Experiment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.metaclasses.ExperimentalSetupClass.html">dachs.metaclasses.ExperimentalSetupClass</a></li>
 </ul>
@@ -219,10 +218,14 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/autosummary/dachs.structure.html">dachs.structure</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of dachs.structure</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.structure.DParFromLogEntry.html">dachs.structure.DParFromLogEntry</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.structure.create.html">dachs.structure.create</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.html">dachs.synthesis</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of dachs.synthesis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.ConvertToQuantity.html">dachs.synthesis.ConvertToQuantity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.UnitConverter.html">dachs.synthesis.UnitConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.ValConverter.html">dachs.synthesis.ValConverter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.DerivedParameter.html">dachs.synthesis.DerivedParameter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.RawLogMessage.html">dachs.synthesis.RawLogMessage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/autosummary/dachs.synthesis.SynthesisClass.html">dachs.synthesis.SynthesisClass</a></li>
@@ -281,27 +284,36 @@
 
 <span class="kn">from</span> <span class="nn">dachs</span> <span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span> <span class="nn">dachs.metaclasses</span> <span class="kn">import</span> <span class="n">ChemicalsClass</span><span class="p">,</span> <span class="n">Experiment</span>
-<span class="kn">from</span> <span class="nn">dachs.readers</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ReadStartingCompounds</span><span class="p">,</span>
-    <span class="n">find_in_log</span><span class="p">,</span>
-    <span class="n">find_reagent_in_rawmessage</span><span class="p">,</span>
-    <span class="n">find_trigger_in_log</span><span class="p">,</span>
-    <span class="n">readExperimentalSetup</span><span class="p">,</span>
-    <span class="n">readRawMessageLog</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">dachs.reagent</span> <span class="kn">import</span> <span class="n">Mixture</span>  <span class="c1"># ReagentByMass,; ReagentByVolume,; ReagentMixture,</span>
-<span class="kn">from</span> <span class="nn">dachs.reagent</span> <span class="kn">import</span> <span class="n">Chemical</span><span class="p">,</span> <span class="n">Product</span>
-<span class="kn">from</span> <span class="nn">dachs.synthesis</span> <span class="kn">import</span> <span class="n">SynthesisClass</span><span class="p">,</span> <span class="n">synthesisStep</span>
+<span class="kn">from</span> <span class="nn">dachs.readers</span> <span class="kn">import</span> <span class="n">ReadStartingCompounds</span><span class="p">,</span> <span class="n">find_in_log</span><span class="p">,</span> <span class="n">readExperimentalSetup</span><span class="p">,</span> <span class="n">readRawMessageLog</span>
+<span class="kn">from</span> <span class="nn">dachs.reagent</span> <span class="kn">import</span> <span class="n">Chemical</span><span class="p">,</span> <span class="n">Mixture</span><span class="p">,</span> <span class="n">Product</span>
+<span class="kn">from</span> <span class="nn">dachs.synthesis</span> <span class="kn">import</span> <span class="n">DerivedParameter</span><span class="p">,</span> <span class="n">RawLogMessage</span><span class="p">,</span> <span class="n">SynthesisClass</span>
 
 
-<div class="viewcode-block" id="create"><a class="viewcode-back" href="../../reference/autosummary/dachs.structure.create.html#dachs.structure.create">[docs]</a><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">logFile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">solFiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">synFile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">amset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Experiment</span><span class="p">:</span>
+<div class="viewcode-block" id="DParFromLogEntry">
+<a class="viewcode-back" href="../../reference/autosummary/dachs.structure.DParFromLogEntry.html#dachs.structure.DParFromLogEntry">[docs]</a>
+<span class="k">def</span> <span class="nf">DParFromLogEntry</span><span class="p">(</span><span class="n">ID</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ParameterName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">LogEntry</span><span class="p">:</span> <span class="n">RawLogMessage</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DerivedParameter</span><span class="p">(</span>
+        <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span>
+        <span class="n">ParameterName</span><span class="o">=</span><span class="n">ParameterName</span><span class="p">,</span>
+        <span class="n">Description</span><span class="o">=</span><span class="n">Description</span><span class="p">,</span>
+        <span class="n">RawMessages</span><span class="o">=</span><span class="p">[</span><span class="n">LogEntry</span><span class="o">.</span><span class="n">Index</span><span class="p">],</span>
+        <span class="n">Quantity</span><span class="o">=</span><span class="n">LogEntry</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">Value</span><span class="o">=</span><span class="n">LogEntry</span><span class="o">.</span><span class="n">Value</span><span class="p">,</span>
+        <span class="n">Unit</span><span class="o">=</span><span class="n">LogEntry</span><span class="o">.</span><span class="n">Unit</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create">
+<a class="viewcode-back" href="../../reference/autosummary/dachs.structure.create.html#dachs.structure.create">[docs]</a>
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">logFile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">solFiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">synFile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">amset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Experiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construction of a test structure from Glen&#39;s excel files using the available dataclasses,</span>
 <span class="sd">    the hope is to use this as a template to construct the ontology, then write the structure to HDF5 files.</span>
 
 <span class="sd">    It now defines:</span>
 <span class="sd">        - base Chemicals and</span>
-<span class="sd">        - mixtures</span>
+<span class="sd">        - Mixtures</span>
 
 <span class="sd">    **TODO**:</span>
 <span class="sd">        - write synthesis log</span>
@@ -312,41 +324,74 @@
 <span class="sd">    :param solFiles: One or more Excel files describing the base solutions which were mixed by the robot</span>
 <span class="sd">    :param synFile: The synthesis robot log file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="c1"># logging to files not working yet. Do I have to &#39;emit&#39; and close?</span>
+    <span class="c1"># logger = logging.getLogger()</span>
+    <span class="c1"># fh = logging.FileHandler(Path(synFile.parent, synFile.stem + &quot;DachsifyWarnings.log&quot;), mode=&quot;w&quot;)</span>
+    <span class="c1"># fh.setLevel(logging.WARNING)</span>
+    <span class="c1"># fh2 = logging.FileHandler(Path(synFile.parent, synFile.stem + &quot;DachsifyInfo.log&quot;), mode=&quot;w&quot;)</span>
+    <span class="c1"># fh2.setLevel(logging.INFO)</span>
+    <span class="c1"># logger.addHandler(fh)</span>
+    <span class="c1"># logger.addHandler(fh2)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Working in &#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># define a zif Chemical:</span>
-    <span class="n">z8</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s2">&quot;ZnC8H12N4&quot;</span><span class="p">)</span>
+    <span class="c1"># define a ZIF 8 Chemical, we&#39;ll need this later:</span>
+    <span class="n">z8</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s2">&quot;C8H10N4Zn&quot;</span><span class="p">)</span>
     <span class="n">zifChemical</span> <span class="o">=</span> <span class="n">Chemical</span><span class="p">(</span>
-        <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;Zif-8&quot;</span><span class="p">,</span>
-        <span class="n">Name</span><span class="o">=</span><span class="s2">&quot;Zeolite Imidazole Framework type 8&quot;</span><span class="p">,</span>
-        <span class="n">ChemicalFormula</span><span class="o">=</span><span class="s2">&quot;ZnC8H12N4&quot;</span><span class="p">,</span>
+        <span class="n">ChemicalID</span><span class="o">=</span><span class="s2">&quot;ZIF-8&quot;</span><span class="p">,</span>
+        <span class="n">ChemicalName</span><span class="o">=</span><span class="s2">&quot;Zeolitic Imidazolate Framework 8&quot;</span><span class="p">,</span>
+        <span class="n">ChemicalFormula</span><span class="o">=</span><span class="s2">&quot;C8H10N4Zn&quot;</span><span class="p">,</span>
         <span class="n">Substance</span><span class="o">=</span><span class="n">z8</span><span class="p">,</span>
         <span class="n">MolarMass</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">z8</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">())),</span>
-        <span class="n">Density</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;0.3 g/cc&quot;</span><span class="p">),</span>
-        <span class="n">SourceDOI</span><span class="o">=</span><span class="s2">&quot;something&quot;</span><span class="p">,</span>
+        <span class="n">Density</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;0.9426 g/cc&quot;</span><span class="p">),</span>
+        <span class="n">SourceDOI</span><span class="o">=</span><span class="s2">&quot;10.1038/s42004-021-00613-z&quot;</span><span class="p">,</span>
+        <span class="n">SpaceGroup</span><span class="o">=</span><span class="s2">&quot;I-43m&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># define a ZIF L Chemical, we&#39;ll need these later too:</span>
+    <span class="n">zl</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s2">&quot;C24H38N12O3Zn2&quot;</span><span class="p">)</span>
+    <span class="n">zifLChemical</span> <span class="o">=</span> <span class="n">Chemical</span><span class="p">(</span>
+        <span class="n">ChemicalID</span><span class="o">=</span><span class="s2">&quot;ZIF-L&quot;</span><span class="p">,</span>
+        <span class="n">ChemicalName</span><span class="o">=</span><span class="s2">&quot;Zeolitic Imidazolate Framework L&quot;</span><span class="p">,</span>
+        <span class="n">ChemicalFormula</span><span class="o">=</span><span class="s2">&quot;C24H38N12O3Zn2&quot;</span><span class="p">,</span>
+        <span class="n">Substance</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span>
+        <span class="n">MolarMass</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">zl</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">())),</span>
+        <span class="n">Density</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;1.4042 g/cc&quot;</span><span class="p">),</span>
+        <span class="n">SourceDOI</span><span class="o">=</span><span class="s2">&quot;10.1038/s42004-021-00613-z&quot;</span><span class="p">,</span>
+        <span class="n">SpaceGroup</span><span class="o">=</span><span class="s2">&quot;Cmca&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Start with a Experiment</span>
     <span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
         <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;DACHS&quot;</span><span class="p">,</span>  <span class="c1"># this also defines the root at which the HDF5 tree starts</span>
-        <span class="n">Name</span><span class="o">=</span><span class="s2">&quot;Automatic MOF Exploration series&quot;</span><span class="p">,</span>
+        <span class="n">ExperimentName</span><span class="o">=</span><span class="s2">&quot;Automatic MOF Exploration series&quot;</span><span class="p">,</span>
         <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            In this series, MOFs are synthesised in methanol from two stock solutions,</span>
 <span class="s2">            all performed at room temperature (see environmental details in log).</span>
 <span class="s2">            The injection rate and injection order are varied. Centrifugation and drying</span>
 <span class="s2">            is performed manually. Residence times are ca. 20 minutes after start of second injection.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># in this experiment, we are going to use some chemicals. These are defined by the chemicals class.</span>
         <span class="n">Chemicals</span><span class="o">=</span><span class="n">ChemicalsClass</span><span class="p">(</span>
-            <span class="n">starting_compounds</span><span class="o">=</span><span class="n">ReadStartingCompounds</span><span class="p">(</span><span class="n">logFile</span><span class="p">),</span>
-            <span class="n">mixtures</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">target_product</span><span class="o">=</span><span class="n">Product</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ZIF-8&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifChemical</span><span class="p">,</span> <span class="n">Purity</span><span class="o">=</span><span class="s2">&quot;99 percent&quot;</span><span class="p">),</span>
-            <span class="n">final_product</span><span class="o">=</span><span class="n">Product</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ZIF-8&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifChemical</span><span class="p">,</span> <span class="n">Purity</span><span class="o">=</span><span class="s2">&quot;99 percent&quot;</span><span class="p">),</span>  <span class="c1"># mass is set later.</span>
+            <span class="c1"># There is a list of starting compounds in the log file</span>
+            <span class="n">StartingCompounds</span><span class="o">=</span><span class="n">ReadStartingCompounds</span><span class="p">(</span><span class="n">logFile</span><span class="p">),</span>
+            <span class="n">Mixtures</span><span class="o">=</span><span class="p">[],</span>  <span class="c1"># Mixtures get filled in later</span>
+            <span class="c1"># Then we have the potential products from the synthesis.</span>
+            <span class="c1"># Be as thorough as you like here, it will help you later on</span>
+            <span class="n">PotentialProducts</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">Product</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ZIF-8&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifChemical</span><span class="p">),</span>
+                <span class="n">Product</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ZIF-L&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifLChemical</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="c1"># the target product is what you are aiming to get:</span>
+            <span class="n">TargetProduct</span><span class="o">=</span><span class="n">Product</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="s2">&quot;TargetProduct&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifChemical</span><span class="p">),</span>
+            <span class="c1"># the final product is what you actually got in the end, as evidenced by the evidence.</span>
+            <span class="n">FinalProduct</span><span class="o">=</span><span class="n">Product</span><span class="p">(</span>
+                <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;FinalProduct&quot;</span><span class="p">,</span> <span class="n">Chemical</span><span class="o">=</span><span class="n">zifChemical</span><span class="p">,</span> <span class="n">Evidence</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Assumed for now ¯\_(ツ)_/¯&quot;</span>
+            <span class="p">),</span>  <span class="c1"># mass is set later.</span>
         <span class="p">),</span>
-        <span class="n">ExperimentalSetup</span><span class="o">=</span><span class="n">readExperimentalSetup</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">logFile</span><span class="p">,</span> <span class="n">SetupName</span><span class="o">=</span><span class="n">amset</span><span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;defining the mixtures based on mixtures of starting compounds&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;defining the Mixtures based on Mixtures of starting compounds&quot;</span><span class="p">)</span>
 
     <span class="c1"># make a mixture as defined in each of the excel sheets:</span>
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">solFiles</span><span class="p">:</span>
@@ -359,162 +404,172 @@
             <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">stepId</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">SampleNumber</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
             <span class="s2">&quot;no unique mixture ID (sampleNumber) identified in the solution log&quot;</span>
         <span class="p">)</span>
         <span class="n">solutionId</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SampleNumber</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">synth</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">rawLog</span> <span class="o">=</span> <span class="n">readRawMessageLog</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">mix</span> <span class="o">=</span> <span class="n">Mixture</span><span class="p">(</span>
             <span class="n">ID</span><span class="o">=</span><span class="n">solutionId</span><span class="p">,</span>
-            <span class="n">Name</span><span class="o">=</span><span class="s2">&quot;Mixture&quot;</span><span class="p">,</span>
+            <span class="n">MixtureName</span><span class="o">=</span><span class="s2">&quot;Mixture&quot;</span><span class="p">,</span>
             <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">PreparationDate</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s2">&quot;1980-12-31&quot;</span><span class="p">),</span>  <span class="c1"># idx,  # will be replaced with last timestamp read</span>
+            <span class="n">PreparationDate</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>  <span class="c1"># idx,  # will be replaced with last timestamp read</span>
             <span class="n">StorageConditions</span><span class="o">=</span><span class="s2">&quot;RT&quot;</span><span class="p">,</span>
-            <span class="c1"># ComponentList=reagList,</span>
-            <span class="c1"># Synthesis=None # will be filled in later</span>
         <span class="p">)</span>
-        <span class="c1"># now we find the Reagents that went into the mixture:</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">sstep</span> <span class="o">=</span> <span class="n">synthesisStep</span><span class="p">(</span>
-                <span class="n">ID</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">stepId</span><span class="p">),</span>
-                <span class="n">RawMessage</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Readout&quot;</span><span class="p">],</span>
-                <span class="n">RawMessageLevel</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Info&quot;</span><span class="p">],</span>
-                <span class="n">TimeStamp</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]),</span>
-                <span class="n">stepDescription</span><span class="o">=</span><span class="s2">&quot;Generating stock solutions&quot;</span><span class="p">,</span>
-                <span class="n">stepType</span><span class="o">=</span><span class="s2">&quot;mixing&quot;</span><span class="p">,</span>
-                <span class="n">ExperimentId</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;ExperimentID&quot;</span><span class="p">],</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">find_trigger_in_log</span><span class="p">(</span><span class="n">sstep</span><span class="p">,</span> <span class="n">triggerList</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mass of&quot;</span><span class="p">]):</span>  <span class="c1"># triggerList=[&quot;Weight&quot;]) or</span>
-                <span class="c1"># we found a component to add to the mixture</span>
-                <span class="n">reag</span> <span class="o">=</span> <span class="n">find_reagent_in_rawmessage</span><span class="p">(</span><span class="n">sstep</span><span class="o">.</span><span class="n">RawMessage</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">starting_compounds</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">reag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># logging.warning(f&quot;Reagent not found in {sstep.RawMessage=}&quot;)</span>
-                    <span class="c1"># print(f&#39;{str(row[&quot;Value&quot;]) + &quot; &quot; + str(row[&quot;Unit&quot;])}, {reag.ID=}&#39;)</span>
-                    <span class="n">mix</span><span class="o">.</span><span class="n">AddReagent</span><span class="p">(</span>
-                        <span class="n">reag</span><span class="o">=</span><span class="n">reag</span><span class="p">,</span> <span class="n">ReagentMass</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Value&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Unit&quot;</span><span class="p">]))</span>
-                    <span class="p">)</span>
-            <span class="c1"># in the one log, it&#39;s &quot;Solutions mixed together&quot;,</span>
-            <span class="c1"># in the other &quot;Solution components mixed together&quot;</span>
-            <span class="k">if</span> <span class="n">find_trigger_in_log</span><span class="p">(</span><span class="n">sstep</span><span class="p">,</span> <span class="n">triggerList</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mixed together&quot;</span><span class="p">]):</span>
-                <span class="n">mix</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">=</span> <span class="n">sstep</span><span class="o">.</span><span class="n">TimeStamp</span>
-            <span class="n">synth</span> <span class="o">+=</span> <span class="p">[</span><span class="n">sstep</span><span class="p">]</span>
-            <span class="n">stepId</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># new style 20230919, attempting to get rid of synthesisStep</span>
+        <span class="n">aNumber</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">periodic</span><span class="o">.</span><span class="n">atomic_number</span><span class="p">(</span><span class="s2">&quot;Zn&quot;</span><span class="p">)</span>
+        <span class="n">mixIsMetal</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">mixIsLinker</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># see known issue on the BAMResearch DACHS Git..</span>
+        <span class="c1"># this is to avoid false matches when using overlapping names:</span>
+        <span class="n">ReagentIDsUsedInSynthesis</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">Value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">rawLog</span><span class="p">,</span> <span class="s2">&quot;ReagentID&quot;</span><span class="p">,</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+        <span class="c1"># print(f&quot;{ReagentIDsUsedInSynthesis=}&quot;)</span>
+        <span class="k">for</span> <span class="n">reagent</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">StartingCompounds</span><span class="p">:</span>
+            <span class="n">RLMList</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">rawLog</span><span class="p">,</span> <span class="p">[</span><span class="n">reagent</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s2">&quot;mass of&quot;</span><span class="p">],</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">raiseWarning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">RLMList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if the list is not empty:</span>
+                <span class="k">for</span> <span class="n">RLM</span> <span class="ow">in</span> <span class="n">RLMList</span><span class="p">:</span>  <span class="c1"># add each to the mix</span>
+                    <span class="c1"># find the preceding message to ensure the reagentID is correct:</span>
+                    <span class="n">previousRLM</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rawLog</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">Index</span> <span class="o">==</span> <span class="p">(</span><span class="n">RLM</span><span class="o">.</span><span class="n">Index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">previousRLM</span><span class="p">):</span>
+                        <span class="k">break</span>  <span class="c1"># previousRLM might be empty</span>
+                    <span class="n">previousRLM</span> <span class="o">=</span> <span class="n">previousRLM</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">reagent</span><span class="o">.</span><span class="n">ID</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">previousRLM</span><span class="o">.</span><span class="n">Value</span><span class="si">=}</span><span class="s2">, so: </span><span class="si">{</span><span class="n">reagent</span><span class="o">.</span><span class="n">ID</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">previousRLM</span><span class="o">.</span><span class="n">Value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">reagent</span><span class="o">.</span><span class="n">ID</span> <span class="ow">in</span> <span class="n">ReagentIDsUsedInSynthesis</span><span class="p">:</span>
+                        <span class="c1"># no idea why I can&#39;t also check for this match:</span>
+                        <span class="c1"># reagent.ID==previousRLM.Value, I get a problem later on</span>
+                        <span class="n">mix</span><span class="o">.</span><span class="n">add_reagent_to_mix</span><span class="p">(</span><span class="n">reag</span><span class="o">=</span><span class="n">reagent</span><span class="p">,</span> <span class="n">ReagentMass</span><span class="o">=</span><span class="n">RLM</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">aNumber</span> <span class="ow">in</span> <span class="n">reagent</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">mixIsMetal</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">if</span> <span class="s2">&quot;C4H6N2&quot;</span> <span class="ow">in</span> <span class="n">reagent</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                            <span class="n">mixIsLinker</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">mixIsMetal</span><span class="p">:</span>
+            <span class="n">mix</span><span class="o">.</span><span class="n">Description</span> <span class="o">=</span> <span class="s2">&quot;Metal salt dispersion&quot;</span>
+        <span class="k">if</span> <span class="n">mixIsLinker</span><span class="p">:</span>
+            <span class="n">mix</span><span class="o">.</span><span class="n">Description</span> <span class="o">=</span> <span class="s2">&quot;Organic linker dispersion&quot;</span>
+
+        <span class="n">RLM</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">rawLog</span><span class="p">,</span> <span class="s2">&quot;mixed together&quot;</span><span class="p">,</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">RLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if this is not empty</span>
+            <span class="n">mix</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">=</span> <span class="n">RLM</span><span class="o">.</span><span class="n">TimeStamp</span>
+
         <span class="c1"># now we can define the mixture</span>
-        <span class="c1"># mix.PreparationDate = find_in_log(</span>
-        <span class="c1">#     synth,</span>
-        <span class="c1">#     &quot;Solutions mixed together&quot;,</span>
-        <span class="c1">#     Highlander=True,</span>
-        <span class="c1">#     Which=&quot;last&quot;</span>
-        <span class="c1">#     # return_indices=True,</span>
-        <span class="c1">#     ).TimeStamp  # last index found should be the date</span>
         <span class="n">mix</span><span class="o">.</span><span class="n">Synthesis</span> <span class="o">=</span> <span class="n">SynthesisClass</span><span class="p">(</span>
-            <span class="n">ID</span><span class="o">=</span><span class="n">solutionId</span><span class="p">,</span>
+            <span class="n">ID</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">solutionId</span><span class="si">}</span><span class="s2">_Synthesis&quot;</span><span class="p">,</span>
             <span class="n">Name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Preparation of </span><span class="si">{</span><span class="n">solutionId</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">Description</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>
-            <span class="n">SynthesisLog</span><span class="o">=</span><span class="n">synth</span><span class="p">,</span>
+            <span class="c1"># SynthesisLog=synth,</span>
+            <span class="n">RawLog</span><span class="o">=</span><span class="n">rawLog</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span> <span class="o">+=</span> <span class="p">[</span><span class="n">mix</span><span class="p">]</span>
-        <span class="c1"># and we can add the synthesis used to make this mixture:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">solutionId</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="c1"># logging.info(exp.Chemicals.mixtures)</span>
+        <span class="c1"># enter measured density if available</span>
+        <span class="n">RLM</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">rawLog</span><span class="p">,</span> <span class="s2">&quot;density determined&quot;</span><span class="p">,</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="n">raiseWarning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">RLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if this is not empty</span>
+            <span class="n">mix</span><span class="o">.</span><span class="n">Density</span> <span class="o">=</span> <span class="n">RLM</span><span class="o">.</span><span class="n">Quantity</span>
+        <span class="c1"># override density if calculated is present, as measured was done at 20 degrees,</span>
+        <span class="c1"># and calculated is at lab temp:</span>
+        <span class="n">RLM</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">rawLog</span><span class="p">,</span> <span class="s2">&quot;density calculated&quot;</span><span class="p">,</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="n">raiseWarning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">RLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if this is not empty</span>
+            <span class="n">mix</span><span class="o">.</span><span class="n">Density</span> <span class="o">=</span> <span class="n">RLM</span><span class="o">.</span><span class="n">Quantity</span>
+        <span class="c1"># fix the detailed description, clipping off the last &#39;, and &#39;:</span>
+        <span class="n">mix</span><span class="o">.</span><span class="n">DetailedDescription</span> <span class="o">=</span> <span class="n">mix</span><span class="o">.</span><span class="n">DetailedDescription</span><span class="p">[:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span> <span class="o">+=</span> <span class="p">[</span><span class="n">mix</span><span class="p">]</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;defining the synthesis log&quot;</span><span class="p">)</span>
 
     <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span> <span class="o">=</span> <span class="n">SynthesisClass</span><span class="p">(</span>
-        <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;MOF_synthesis_1&quot;</span><span class="p">,</span>
+        <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;Synthesis&quot;</span><span class="p">,</span>
         <span class="n">Name</span><span class="o">=</span><span class="s2">&quot;MOF standard synthesis in MeOH, room temperature, nominally 20 minute residence time&quot;</span><span class="p">,</span>
-        <span class="n">Description</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            note: these are nominal conditions for the series, but variations in injection quantities, speeds,</span>
-<span class="s2">            reaction times, temperatures and post-processing have been applied. For exact conditions for this</span>
-<span class="s2">            particular synthesis, please consult the log and metadata.</span>
-
-<span class="s2">            ZIF-8 (Zinc Imidazole Framework-8) was synthesised from two stock solutions,</span>
-<span class="s2">            the first consisting of zinc nitrate hexahydrate in methanol (MeOH), and the second consisting</span>
-<span class="s2">            of 2-Methylimidazole (2-MeIm) in MeOH. 10 ml of each stock solution was injected into a falcon</span>
-<span class="s2">            tube, at a rate up to 20 ml/min, and stirred at 200 rpm for normally 20 minutes at an ambient</span>
-<span class="s2">            laboratory temperature of around 25$^{\circ}$C.</span>
-<span class="s2">            This resulted in a final synthesis of Zn: 2-MeIm: MeOH molar ratio as specified in the synthesis</span>
-<span class="s2">            concentration list.</span>
-<span class="s2">            After the allowed synthesis time, the reaction mixture was centrifuged at 6000 rpm for 20 minutes,</span>
-<span class="s2">            and subsequently dried at 60$^{\circ}$C for 22 hours.</span>
-
-<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># description gets added at the end with actual values...</span>
         <span class="n">RawLog</span><span class="o">=</span><span class="n">readRawMessageLog</span><span class="p">(</span><span class="n">synFile</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="c1"># After our discussion, we&#39;ve decided not to focus on including derived parameters just yet.</span>
     <span class="c1"># We still need a few things though.</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting the derived parameters&quot;</span><span class="p">)</span>
-    <span class="c1"># df = pd.read_excel(</span>
-    <span class="c1">#     filename, sheet_name=&quot;Sheet1&quot;, index_col=None, header=0, parse_dates=[&quot;Time&quot;]</span>
-    <span class="c1"># )</span>
-    <span class="c1"># df = df.dropna(how=&quot;all&quot;)</span>
-
     <span class="c1"># minimal derived information:</span>
-    <span class="c1"># add the reaction mixtures to Chemicals.mixtures</span>
+    <span class="c1"># add the reaction Mixtures to Chemicals.Mixtures</span>
     <span class="c1"># for the start time we need the last &quot;start injection of solution&quot; timestamp</span>
-    <span class="n">ReactionStart</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+    <span class="n">StartRLM</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
         <span class="s2">&quot;Start injection of solution&quot;</span><span class="p">,</span>
         <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
         <span class="c1"># return_indices=True,</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">TimeStamp</span>  <span class="c1"># .astimezone(&#39;UTC&#39;))#, does this need str-ing?</span>
+    <span class="p">)</span>  <span class="c1"># .astimezone(&#39;UTC&#39;))#, does this need str-ing?</span>
+    <span class="n">ReactionStart</span> <span class="o">=</span> <span class="n">StartRLM</span><span class="o">.</span><span class="n">TimeStamp</span> <span class="k">if</span> <span class="n">StartRLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">ReactionStop</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+    <span class="n">StopRLM</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
         <span class="s2">&quot;Sample placed in centrifuge&quot;</span><span class="p">,</span>
         <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span>
         <span class="c1"># return_indices=True,</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">TimeStamp</span>  <span class="c1"># .astimezone(&#39;UTC&#39;))#, does this need str-ing?</span>
+    <span class="p">)</span>  <span class="c1"># .astimezone(&#39;UTC&#39;))#, does this need str-ing?</span>
+    <span class="n">ReactionStop</span> <span class="o">=</span> <span class="n">StopRLM</span><span class="o">.</span><span class="n">TimeStamp</span> <span class="k">if</span> <span class="n">StopRLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;ReactionTime&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">((</span><span class="n">ReactionStop</span> <span class="o">-</span> <span class="n">ReactionStart</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="s2">&quot;s&quot;</span><span class="p">)}</span>
-    <span class="p">)</span>
+    <span class="c1"># more detailed logging style also indicating sources and descriptions</span>
+    <span class="k">if</span> <span class="n">StartRLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">StopRLM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DerivedParameter</span><span class="p">(</span>
+                <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ReactionTime&quot;</span><span class="p">,</span>
+                <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Reaction time&quot;</span><span class="p">,</span>
+                <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;The time between the start of the second injection into the reaction mixture and the start of&quot;</span>
+                    <span class="s2">&quot; the centrifugation&quot;</span>
+                <span class="p">),</span>
+                <span class="n">RawMessages</span><span class="o">=</span><span class="p">[</span><span class="n">StartRLM</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">StopRLM</span><span class="o">.</span><span class="n">Index</span><span class="p">],</span>
+                <span class="n">Value</span><span class="o">=</span><span class="p">(</span><span class="n">ReactionStop</span> <span class="o">-</span> <span class="n">ReactionStart</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                <span class="n">Unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="c1"># if values are not there, I&#39;m no longer making dummy entries as per Ingo&#39;s suggestion. keeps the code clean.</span>
 
     <span class="k">if</span> <span class="n">amset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sun</span> <span class="o">=</span> <span class="n">amset</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">LogEntry</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
-            <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
-            <span class="s2">&quot;SetupID&quot;</span><span class="p">,</span>
-            <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
-            <span class="c1"># return_indices=True,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">LogEntry</span> <span class="o">==</span> <span class="p">[]:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No AMSET configuration found in log, but also not specified as input argument.&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">SyntaxError</span>
 
+    <span class="c1"># override with info in log if present:</span>
+    <span class="n">LogEntry</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="s2">&quot;SetupID&quot;</span><span class="p">,</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
+        <span class="n">raiseWarning</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># return_indices=True,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="s2">&quot;AMSET&quot;</span> <span class="ow">in</span> <span class="n">LogEntry</span><span class="o">.</span><span class="n">Value</span><span class="p">:</span>
-            <span class="n">sun</span> <span class="o">=</span> <span class="n">LogEntry</span><span class="o">.</span><span class="n">Value</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No AMSET configuration found in log, but also not specified as input argument.&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">SyntaxError</span>
-
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">LogEntry</span><span class="o">.</span><span class="n">Value</span>  <span class="c1"># override if in the log</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">LogEntry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">amset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No AMSET configuration found in log, but also not specified as input argument.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SetupName: </span><span class="si">{</span><span class="n">sun</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># At this point, we need the experimental setup as we need the falcon tube..</span>
     <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span> <span class="o">=</span> <span class="n">readExperimentalSetup</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">logFile</span><span class="p">,</span> <span class="n">SetupName</span><span class="o">=</span><span class="n">sun</span><span class="p">)</span>
-
+    <span class="c1"># print(exp.ExperimentalSetup)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span><span class="o">.</span><span class="n">EquipmentList</span>
+                 <span class="k">if</span> <span class="s2">&quot;falcon tube&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">EquipmentName</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>  <span class="c1"># might be empty</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">container</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="c1"># now we can create a new mixture</span>
     <span class="n">mix</span> <span class="o">=</span> <span class="n">Mixture</span><span class="p">(</span>
-        <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ReactionMix_0&quot;</span><span class="p">,</span>
-        <span class="n">Name</span><span class="o">=</span><span class="s2">&quot;Reaction Mixture 0&quot;</span><span class="p">,</span>
+        <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ReactionMix0&quot;</span><span class="p">,</span>
+        <span class="n">MixtureName</span><span class="o">=</span><span class="s2">&quot;Reaction Mixture 0&quot;</span><span class="p">,</span>
         <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;The MOF synthesis reaction mixture&quot;</span><span class="p">,</span>
         <span class="n">PreparationDate</span><span class="o">=</span><span class="n">ReactionStart</span><span class="p">,</span>  <span class="c1"># idx,  # last timestamp read</span>
         <span class="n">StorageConditions</span><span class="o">=</span><span class="s2">&quot;RT&quot;</span><span class="p">,</span>
-        <span class="n">Container</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span><span class="o">.</span><span class="n">EquipmentList</span> <span class="k">if</span> <span class="s2">&quot;falcon tube&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">Name</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">Container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># to this we need to find the volume and density of which solution for the injections</span>
-    <span class="n">allVolumes</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span> <span class="s2">&quot;Solution volume set&quot;</span><span class="p">,</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">allVolumes</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No injection volume specified in log&quot;</span>
-    <span class="c1"># assert (</span>
-    <span class="c1">#     len(allVolumes) == 1</span>
-    <span class="c1"># ), &quot;More than one injection volumes specified in log, dissimilar solution volumes not yet implemented&quot;</span>
+    <span class="c1"># TODO: do something better to separate solution numbers and their respective volumes.</span>
+    <span class="n">allVolumes</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Solution&quot;</span><span class="p">,</span> <span class="s2">&quot;volume set&quot;</span><span class="p">],</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">allVolumes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No injection volume specified in </span><span class="si">{</span><span class="n">synFile</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># find calibration factor and offset:</span>
-    <span class="n">Syringe</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span><span class="o">.</span><span class="n">EquipmentList</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">Name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;syringe&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">Syringe</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span><span class="o">.</span><span class="n">EquipmentList</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">EquipmentName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;syringe&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">Syringe</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s2">&quot;Can&#39;t setup Mixture: Syringe not found!&quot;</span><span class="p">)</span>
+    <span class="n">Syringe</span> <span class="o">=</span> <span class="n">Syringe</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">CalibrationFactor</span> <span class="o">=</span> <span class="n">Syringe</span><span class="o">.</span><span class="n">PVs</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">CalibrationFactor</span>
     <span class="n">CalibrationOffset</span> <span class="o">=</span> <span class="n">Syringe</span><span class="o">.</span><span class="n">PVs</span><span class="p">[</span><span class="s2">&quot;volume&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">CalibrationOffset</span>
     <span class="n">allSolutions</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Stop&quot;</span><span class="p">,</span> <span class="s2">&quot;injection of solution&quot;</span><span class="p">],</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -525,131 +580,378 @@
         <span class="k">for</span> <span class="n">volRLM</span> <span class="ow">in</span> <span class="n">allVolumes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">volRLM</span><span class="o">.</span><span class="n">Index</span> <span class="o">&lt;</span> <span class="n">solutionRLM</span><span class="o">.</span><span class="n">Index</span><span class="p">:</span>
                 <span class="c1"># the last time we set the volume before injection is the volume used.</span>
+                <span class="c1"># WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG, WROMG! see, A4_T006 TODO: fix</span>
                 <span class="n">VolumeRLM</span> <span class="o">=</span> <span class="n">volRLM</span>
 
         <span class="c1"># VolumeRLM = allVolumes[0]</span>
-        <span class="n">mix</span><span class="o">.</span><span class="n">AddMixture</span><span class="p">(</span>
-            <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span><span class="p">[</span><span class="n">solutionId</span><span class="p">],</span>
+
+        <span class="n">DensityOfAdd</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="n">solutionId</span><span class="p">],</span> <span class="s2">&quot;Density&quot;</span>
+        <span class="p">)</span>  <span class="c1"># default does not seem to work, still returns None.</span>
+        <span class="k">if</span> <span class="n">DensityOfAdd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">DensityOfAdd</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;0.792 g/cc&quot;</span><span class="p">)</span>
+        <span class="c1"># print(f&quot;{DensityOfAdd=}&quot;)</span>
+        <span class="n">mix</span><span class="o">.</span><span class="n">add_mixture_to_mix</span><span class="p">(</span>
+            <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="n">solutionId</span><span class="p">],</span>
             <span class="n">AddMixtureVolume</span><span class="o">=</span><span class="p">(</span>
                 <span class="n">VolumeRLM</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">*</span> <span class="n">CalibrationFactor</span> <span class="o">+</span> <span class="n">CalibrationOffset</span>
             <span class="p">),</span>  <span class="c1"># TODO: correction factor should be added in</span>
-            <span class="n">MixtureDensity</span><span class="o">=</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;0.792 g/cc&quot;</span><span class="p">),</span>  <span class="c1"># TODO: methanol density for now</span>
+            <span class="n">MixtureDensity</span><span class="o">=</span><span class="n">DensityOfAdd</span><span class="p">,</span>
         <span class="p">)</span>
+    <span class="c1"># clip off the last auto-generated &#39;, and &#39; from the detailed description</span>
+    <span class="n">mix</span><span class="o">.</span><span class="n">DetailedDescription</span> <span class="o">=</span> <span class="n">mix</span><span class="o">.</span><span class="n">DetailedDescription</span><span class="p">[:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
     <span class="c1"># Add to the structure.</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span> <span class="o">+=</span> <span class="p">[</span><span class="n">mix</span><span class="p">]</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span> <span class="o">+=</span> <span class="p">[</span><span class="n">mix</span><span class="p">]</span>
 
     <span class="c1"># calculate the age of solution0 and solution1 into the mix:</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;MetalSolutionAge&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">-</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
-                <span class="s2">&quot;s&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;LinkerSolutionAge&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">-</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">mixtures</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
-                <span class="s2">&quot;s&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;MetalSolutionAge&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Metal Solution Age&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The time between the preparation of the metal solution and the mixing of the reaction mixture&quot;</span>
+            <span class="p">),</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">Value</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">-</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 
+    <span class="c1"># age of the linker solution</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;LinkerSolutionAge&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Metal Solution Age&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The time between the preparation of the linker solution and the mixing of the reaction mixture&quot;</span>
+            <span class="p">),</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">Value</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span> <span class="o">-</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">PreparationDate</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
     <span class="c1"># calculate the weight of Product:</span>
-    <span class="n">InitialWeight</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+    <span class="n">InitialMass</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
         <span class="p">[</span><span class="s2">&quot;empty Falcon tube&quot;</span><span class="p">],</span>
         <span class="n">excludeString</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;+ dry sample&quot;</span><span class="p">,</span> <span class="s2">&quot; lid&quot;</span><span class="p">],</span>
         <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">FinalWeight</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+    <span class="n">FinalMass</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;of Falcon tube + dry sample&quot;</span><span class="p">],</span> <span class="n">excludeString</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lid&quot;</span><span class="p">],</span> <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span>
     <span class="p">)</span>
 
-    <span class="c1"># WeightRLMs = find_in_log(exp.Synthesis.RawLog, [&quot;Weight&quot;, &quot;Falcon&quot;], Highlander=False)</span>
-    <span class="c1"># targets = [&quot;Weight&quot;, &quot;Falcon&quot;]</span>
-    <span class="c1"># # find me the messages containing both those words:</span>
-    <span class="c1"># dfMask = df[&quot;Readout&quot;].apply(</span>
-    <span class="c1">#     lambda sentence: all(word in sentence for word in targets)</span>
-    <span class="c1"># )</span>
     <span class="c1"># mLocs = np.where(dfMask)[0]</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">InitialWeight</span><span class="si">=}</span><span class="s2">, </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">FinalWeight</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># assert len(WeightRLMs) == 2, &quot;more than two weight indications (empty, empty+dry product) were found&quot;</span>
-    <span class="c1"># exp.Chemicals.final_product.Mass = WeightRLMs[1].Quantity - WeightRLMs[0].Quantity</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">final_product</span><span class="o">.</span><span class="n">Mass</span> <span class="o">=</span> <span class="n">FinalWeight</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">-</span> <span class="n">InitialWeight</span><span class="o">.</span><span class="n">Quantity</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">InitialMass</span><span class="si">=}</span><span class="s2">, </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">FinalMass</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">FinalProduct</span><span class="o">.</span><span class="n">Mass</span> <span class="o">=</span> <span class="n">FinalMass</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">-</span> <span class="n">InitialMass</span><span class="o">.</span><span class="n">Quantity</span>
     <span class="c1"># compute theoretical yield:</span>
     <span class="c1"># we need to find out how many moles of metal we have in the previously established reaction mixture</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mix</span><span class="o">.</span><span class="n">ComponentList</span><span class="p">)</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">metMoles</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">methMoles</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">linkMoles</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">aNumber</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">periodic</span><span class="o">.</span><span class="n">atomic_number</span><span class="p">(</span><span class="s2">&quot;Zn&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">mix</span><span class="o">.</span><span class="n">ComponentList</span><span class="p">:</span>
-        <span class="n">aNumber</span> <span class="o">=</span> <span class="n">chempy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">periodic</span><span class="o">.</span><span class="n">atomic_number</span><span class="p">(</span><span class="s2">&quot;Zn&quot;</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">aNumber</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="c1"># this is the component we&#39;re looking for. How many moles of atoms per moles of substance?</span>
-            <span class="n">metalMoles</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">composition</span><span class="p">[</span><span class="n">aNumber</span><span class="p">]</span>
-            <span class="n">TotalMetalMoles</span> <span class="o">=</span> <span class="n">mix</span><span class="o">.</span><span class="n">ComponentMoles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span> <span class="o">*</span> <span class="n">metalMoles</span>
+            <span class="n">metalMoles</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">composition</span><span class="p">[</span>
+                <span class="n">aNumber</span>
+            <span class="p">]</span>  <span class="c1"># just in case we have more metal ions per mole of chem.</span>
+            <span class="n">metMoles</span> <span class="o">+=</span> <span class="n">mix</span><span class="o">.</span><span class="n">component_moles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span> <span class="o">*</span> <span class="n">metalMoles</span>
         <span class="k">if</span> <span class="s2">&quot;C4H6N2&quot;</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="n">TotalLinkerMoles</span> <span class="o">=</span> <span class="n">mix</span><span class="o">.</span><span class="n">ComponentMoles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span>
+            <span class="n">linkMoles</span> <span class="o">+=</span> <span class="n">mix</span><span class="o">.</span><span class="n">component_moles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;CH3OH&quot;</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">Substance</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="n">TotalMethanolMoles</span> <span class="o">=</span> <span class="n">mix</span><span class="o">.</span><span class="n">ComponentMoles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span>
+            <span class="n">methMoles</span> <span class="o">+=</span> <span class="n">mix</span><span class="o">.</span><span class="n">component_moles</span><span class="p">(</span><span class="n">MatchComponent</span><span class="o">=</span><span class="n">component</span><span class="p">)</span>
+    <span class="n">TotalMetalMoles</span> <span class="o">=</span> <span class="n">metMoles</span>
+    <span class="n">TotalLinkerMoles</span> <span class="o">=</span> <span class="n">linkMoles</span>  <span class="c1"># what if =0? -&gt; divBy0 on l444 below</span>
+    <span class="n">TotalMethanolMoles</span> <span class="o">=</span> <span class="n">methMoles</span>
 
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;MetalToLinkerRatio&quot;</span><span class="p">:</span> <span class="n">TotalMetalMoles</span> <span class="o">/</span> <span class="n">TotalLinkerMoles</span><span class="p">})</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;MetalToMethanolRatio&quot;</span><span class="p">:</span> <span class="n">TotalMetalMoles</span> <span class="o">/</span> <span class="n">TotalMethanolMoles</span><span class="p">})</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">TotalMetalMoles</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">TotalLinkerMoles</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">TotalMethanolMoles</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">target_product</span><span class="o">.</span><span class="n">Mass</span> <span class="o">=</span> <span class="n">TotalMetalMoles</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">target_product</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">MolarMass</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">ChemicalYield</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">_storeKeys</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;ChemicalYield&quot;</span><span class="p">]</span>
+    <span class="c1"># exp.Synthesis.KeyParameters.update({&quot;MetalToLinkerRatio&quot;: TotalLinkerMoles / TotalMetalMoles})</span>
+    <span class="c1"># more detailed logging style also indicating sources and descriptions</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;MetalToLinkerRatio&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Metal To Linker Ratio&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The molar ratio between metal ions and linker molecules, as calculated from the solution&quot;</span>
+                <span class="s2">&quot; compositions.&quot;</span>
+            <span class="p">),</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">Value</span><span class="o">=</span><span class="p">(</span><span class="n">TotalLinkerMoles</span> <span class="o">/</span> <span class="n">TotalMetalMoles</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="p">(</span><span class="n">TotalLinkerMoles</span> <span class="o">/</span> <span class="n">TotalMetalMoles</span><span class="p">)</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+    <span class="c1"># exp.Synthesis.KeyParameters.update({&quot;MetalToMethanolRatio&quot;: TotalMethanolMoles / TotalMetalMoles})</span>
+    <span class="c1"># more detailed logging style also indicating sources and descriptions</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;MetalToMethanolRatio&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Metal To Methanol Ratio&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The molar ratio between metal ions and solvent (methanol) molecules, as calculated from the&quot;</span>
+                <span class="s2">&quot; solution compositions.&quot;</span>
+            <span class="p">),</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">Value</span><span class="o">=</span><span class="p">(</span><span class="n">TotalMethanolMoles</span> <span class="o">/</span> <span class="n">TotalMetalMoles</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="p">(</span><span class="n">TotalMethanolMoles</span> <span class="o">/</span> <span class="n">TotalMetalMoles</span><span class="p">)</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="c1"># The yield is calculated from the target mass versus the actual product mass.</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">TargetProduct</span><span class="o">.</span><span class="n">Mass</span> <span class="o">=</span> <span class="n">TotalMetalMoles</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">TargetProduct</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">MolarMass</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">SynthesisYield</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">_storeKeys</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;SynthesisYield&quot;</span><span class="p">]</span>
     <span class="c1"># maybe later</span>
-    <span class="c1"># exp.Synthesis.ChemicalReaction = chempy.Reaction.from_string(&quot;&quot;)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">SourceDOI</span> <span class="o">=</span> <span class="s2">&quot;10.1039/D1RA02856A&quot;</span>
+    <span class="c1"># exp.Synthesis.SourceDOI = &quot;TBD&quot;  # TODO: add a default synthesis to Zenodo</span>
 
-    <span class="c1"># exp.Chemicals.target_product.Mass =</span>
-
-    <span class="c1"># DerivedParameter(</span>
-    <span class="c1">#     Name=&quot;Yield&quot;,</span>
-    <span class="c1">#     Description=&quot;Actual yield of the Product&quot;,</span>
-    <span class="c1">#     RawMessages=list(mLocs),</span>
-    <span class="c1">#     Quantity=exp.Synthesis.RawLog[mLocs[-1]].Quantity</span>
-    <span class="c1">#     - exp.Synthesis.RawLog[mLocs[0]].Quantity,</span>
-    <span class="c1"># )</span>
+    <span class="c1"># We calculate an extra theoretical yield based on the moles of linker:</span>
+    <span class="c1"># print(f&quot;{TotalLinkerMoles=}, {exp.Chemicals.TargetProduct.Chemical.MolarMass=}&quot;)</span>
+    <span class="n">LinkerBasedProductMass</span> <span class="o">=</span> <span class="n">TotalLinkerMoles</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">TargetProduct</span><span class="o">.</span><span class="n">Chemical</span><span class="o">.</span><span class="n">MolarMass</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;SynthesisYieldLinker&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Linker-based synthesis yield&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;The synthesis yield as calculated based on full conversion of the available linker.&quot;</span><span class="p">,</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">Value</span><span class="o">=</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">FinalProduct</span><span class="o">.</span><span class="n">Mass</span> <span class="o">/</span> <span class="n">LinkerBasedProductMass</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">FinalProduct</span><span class="o">.</span><span class="n">Mass</span> <span class="o">/</span> <span class="n">LinkerBasedProductMass</span><span class="p">)</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 
     <span class="c1"># store the room temperature:</span>
     <span class="n">LogEntry</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
-        <span class="s2">&quot;arduino:environment:temperature&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Environmental temperature&quot;</span><span class="p">,</span>
         <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
         <span class="c1"># return_indices=True,</span>
     <span class="p">)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;LabTemperature&quot;</span><span class="p">:</span> <span class="n">LogEntry</span><span class="o">.</span><span class="n">Quantity</span><span class="p">})</span>
+    <span class="c1"># exp.Synthesis.KeyParameters.update({&quot;LabTemperature&quot;: LogEntry.Quantity})</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DParFromLogEntry</span><span class="p">(</span>
+                <span class="s2">&quot;LabTemperature&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Laboratory temperature&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes&quot;</span><span class="p">,</span>
+                <span class="n">LogEntry</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
     <span class="c1"># injection speed:</span>
     <span class="n">LogEntry</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
         <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
-        <span class="s2">&quot;Solution rate set&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Solution&quot;</span><span class="p">,</span> <span class="s2">&quot;rate set&quot;</span><span class="p">],</span>
         <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
         <span class="c1"># return_indices=True,</span>
     <span class="p">)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">ExtraInformation</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;InjectionSpeed&quot;</span><span class="p">:</span> <span class="n">LogEntry</span><span class="o">.</span><span class="n">Quantity</span><span class="p">})</span>
+    <span class="c1"># exp.Synthesis.KeyParameters.update({&quot;InjectionSpeed&quot;: LogEntry.Quantity})</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DParFromLogEntry</span><span class="p">(</span>
+                <span class="s2">&quot;InjectionSpeed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Injection Speed&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;The speed at which the second reactant was added to the reaction mixture&quot;</span><span class="p">,</span>
+                <span class="n">LogEntry</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="c1"># exp.Synthesis.KeyParameters.update({&quot;SynthesisYield&quot;: exp.Chemicals.SynthesisYield})</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">DerivedParameter</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;SynthesisYield&quot;</span><span class="p">,</span>
+            <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Synthesis Yield&quot;</span><span class="p">,</span>
+            <span class="n">Description</span><span class="o">=</span><span class="s2">&quot;The yield of the synthesis as calculated from the final product mass&quot;</span><span class="p">,</span>
+            <span class="n">RawMessages</span><span class="o">=</span><span class="p">[</span><span class="n">InitialMass</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">FinalMass</span><span class="o">.</span><span class="n">Index</span><span class="p">],</span>
+            <span class="n">Quantity</span><span class="o">=</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">SynthesisYield</span><span class="p">,</span>
+            <span class="n">Value</span><span class="o">=</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">SynthesisYield</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">Unit</span><span class="o">=</span><span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">SynthesisYield</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+    <span class="c1"># add notes to the KeyParameters:</span>
+    <span class="n">noteCounter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">noteList</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="s2">&quot;Note&quot;</span><span class="p">,</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Which=&quot;last&quot;,</span>
+        <span class="c1"># return_indices=True,</span>
+        <span class="n">raiseWarning</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">noteList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">noteList</span><span class="p">:</span>
+            <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="n">DParFromLogEntry</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Note</span><span class="si">{</span><span class="n">noteCounter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;Note </span><span class="si">{</span><span class="n">noteCounter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;An operator note or flag as pertaining to the synthesis&quot;</span><span class="p">,</span>
+                    <span class="n">note</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
 
-    <span class="c1"># exp.Synthesis.DerivedParameters += [</span>
-    <span class="c1">#     DerivedParameter(</span>
-    <span class="c1">#         Name=&quot;RoomTemperature&quot;,</span>
-    <span class="c1">#         Description=&quot;Actual room temperature at synthesis time&quot;,</span>
-    <span class="c1">#         RawMessages=[LogEntry.Index],</span>
-    <span class="c1">#         Quantity=LogEntry.Quantity,</span>
-    <span class="c1">#     )</span>
-    <span class="c1"># ]</span>
+    <span class="c1"># lastly, we can prune all the unused reagents from StartingCompounds:</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">StartingCompounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">StartingCompounds</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">Used</span><span class="p">]</span>
 
-    <span class="c1"># lastly, we can remove all the unused reagents from starting_compounds:</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">starting_compounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">starting_compounds</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">Used</span><span class="p">]</span>
+    <span class="c1"># Finally, we add the text description:</span>
+    <span class="c1"># TODO: specify the order and delay between the solution injections</span>
+    <span class="c1"># TODO: stirring speed RPM</span>
 
+    <span class="n">CentrifugeSpeed</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="s2">&quot;placed in centrifuge&quot;</span><span class="p">],</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DParFromLogEntry</span><span class="p">(</span><span class="s2">&quot;CentrifugeSpeed&quot;</span><span class="p">,</span> <span class="s2">&quot;Centrifuge Speed&quot;</span><span class="p">,</span> <span class="s2">&quot;The speed of centrifugation&quot;</span><span class="p">,</span> <span class="n">CentrifugeSpeed</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="n">CentrifugeDuration</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Centrifuge&quot;</span><span class="p">,</span> <span class="s2">&quot;set time&quot;</span><span class="p">],</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DParFromLogEntry</span><span class="p">(</span>
+                <span class="s2">&quot;CentrifugeDuration&quot;</span><span class="p">,</span> <span class="s2">&quot;Centrifuge Duration&quot;</span><span class="p">,</span> <span class="s2">&quot;The duration of centrifugation&quot;</span><span class="p">,</span> <span class="n">CentrifugeDuration</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="n">OvenStop</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="s2">&quot;removed from oven&quot;</span><span class="p">],</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">OvenStart</span> <span class="o">=</span> <span class="n">find_in_log</span><span class="p">(</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="s2">&quot;oven&quot;</span><span class="p">],</span>
+        <span class="n">Highlander</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">Which</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">LogEntry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DParFromLogEntry</span><span class="p">(</span>
+                <span class="s2">&quot;OvenTemperature&quot;</span><span class="p">,</span> <span class="s2">&quot;Oven Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;The setpoint temperature of the drying oven&quot;</span><span class="p">,</span> <span class="n">OvenStart</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="k">if</span> <span class="n">OvenStart</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">OvenStop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DerivedParameter</span><span class="p">(</span>
+                <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ForcedDryingDuration&quot;</span><span class="p">,</span>
+                <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Forced Drying Duration&quot;</span><span class="p">,</span>
+                <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;The duration of the oven drying, i.e. between placing the sample in the oven and taking it&quot;</span>
+                    <span class="s2">&quot; out again&quot;</span>
+                <span class="p">),</span>
+                <span class="n">RawMessages</span><span class="o">=</span><span class="p">[</span><span class="n">OvenStart</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">OvenStop</span><span class="o">.</span><span class="n">Index</span><span class="p">],</span>
+                <span class="n">Value</span><span class="o">=</span><span class="p">(</span><span class="n">OvenStop</span><span class="o">.</span><span class="n">TimeStamp</span> <span class="o">-</span> <span class="n">OvenStart</span><span class="o">.</span><span class="n">TimeStamp</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                <span class="n">Unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="n">StirrerBar</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">ExperimentalSetup</span><span class="o">.</span><span class="n">EquipmentList</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Stirrer Bar&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">EquipmentName</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">StirrerBar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">DerivedParameter</span><span class="p">(</span>
+                <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;StirrerBarModel&quot;</span><span class="p">,</span>
+                <span class="n">ParameterName</span><span class="o">=</span><span class="s2">&quot;Stirrer Bar Model&quot;</span><span class="p">,</span>
+                <span class="n">Description</span><span class="o">=</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The stirrer bar is from </span><span class="si">{</span><span class="n">StirrerBar</span><span class="o">.</span><span class="n">Manufacturer</span><span class="si">}</span><span class="s2">, model: </span><span class="si">{</span><span class="n">StirrerBar</span><span class="o">.</span><span class="n">ModelName</span><span class="si">}</span><span class="s2">, model&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; number </span><span class="si">{</span><span class="n">StirrerBar</span><span class="o">.</span><span class="n">ModelNumber</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">),</span>
+                <span class="n">RawMessages</span><span class="o">=</span><span class="p">[</span><span class="n">StirrerBar</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span>
+                <span class="n">Value</span><span class="o">=</span><span class="n">StirrerBar</span><span class="o">.</span><span class="n">ModelName</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="c1"># Injection orders, we&#39;ll just read this from the SampleID letter...</span>
+    <span class="n">SIDLetter</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">RawLog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SampleID</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">SIDLetter</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">SIDLetter</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="s2">&quot;The two solutions were added simultaneously.&quot;</span>
+    <span class="k">elif</span> <span class="n">SIDLetter</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The linker solution was added in a pre-injection step, after which the metal solution was added at&quot;</span>
+            <span class="s2">&quot; the specified injection rate.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">SIDLetter</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The metal solution was added in a pre-injection step, after which the linker solution was added at&quot;</span>
+            <span class="s2">&quot; the specified injection rate.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">SIDLetter</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The metal solution was added in a pre-injection step, after which the linker solution was added&quot;</span>
+            <span class="s2">&quot; through a hand pour as fast as possible. Both solutions were prepared using the syringe injector.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">SIDLetter</span> <span class="o">==</span> <span class="s2">&quot;P&quot;</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The metal solution was added in a pre-injection step, after which the linker solution was added&quot;</span>
+            <span class="s2">&quot; through a hand pour as fast as possible. Both solutions were prepared using a pipette.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">OrderDescription</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># defaults for text generation:</span>
+    <span class="n">DPars</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ReactionTime&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;MetalSolutionAge&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;LinkerSolutionAge&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;MetalToLinkerRatio&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;dimensionless&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;MetalToMethanolRatio&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;dimensionless&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;SynthesisYieldLinker&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;dimensionless&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;LabTemperature&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;degC&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;InjectionSpeed&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;ml/min&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;SynthesisYield&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;dimensionless&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;CentrifugeSpeed&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;rpm&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;CentrifugeTime&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;OvenTemperature&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;degC&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;ForcedDryingDuration&quot;</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;StirrerBarModel&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OrderDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown injection order&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="p">[</span><span class="n">DPars</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">i</span><span class="o">.</span><span class="n">ID</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">DerivedParameters</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">DerivedParameter</span><span class="p">)]</span>
+    <span class="n">Mixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">Chemicals</span><span class="o">.</span><span class="n">Mixtures</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Mixture</span><span class="p">)]</span>
+    <span class="n">ReactionMix</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Mixes</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="s2">&quot;ReactionMix0&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">S0Mix</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Mixes</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="s2">&quot;Solution0&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">S1Mix</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Mixes</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="s2">&quot;Solution1&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">addKeys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;OrderDescription&quot;</span><span class="p">,</span> <span class="s2">&quot;S0Mix&quot;</span><span class="p">,</span> <span class="s2">&quot;S1Mix&quot;</span><span class="p">,</span> <span class="s2">&quot;ReactionMix&quot;</span><span class="p">,</span> <span class="s2">&quot;OvenStop&quot;</span><span class="p">]</span>
+    <span class="c1"># print(f&quot;Price of reaction mix: {ReactionMix.total_price:.2f~P}&quot;)</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">addKeys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+            <span class="n">DPars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">=}</span><span class="s2"> not found in locals, cannot be added to DPars.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">DPars</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">DPars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]:</span>  <span class="c1"># empty list issue</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">=}</span><span class="s2"> in DPars is an empty list, probably missing from </span><span class="si">{</span><span class="n">synFile</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># print(DPars.keys())</span>
+    <span class="c1"># we read the template text per automof, and then format it using the information in DPars.</span>
+    <span class="n">descText</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">descText</span> <span class="o">=</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">synFile</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;SynthesisTemplate.txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">DPars</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Issue encountered when rendering text from template:&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="c1"># add notes if they exist to the end of the synthesis text.</span>
+    <span class="k">if</span> <span class="n">noteList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">Notei</span><span class="p">,</span> <span class="n">Note</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">noteList</span><span class="p">):</span>
+            <span class="n">descText</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Note </span><span class="si">{</span><span class="n">Notei</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Note</span><span class="o">.</span><span class="n">Value</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">exp</span><span class="o">.</span><span class="n">Synthesis</span><span class="o">.</span><span class="n">Description</span> <span class="o">=</span> <span class="n">descText</span>
     <span class="k">return</span> <span class="n">exp</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -668,7 +970,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on Aug 11, 2023 (git f5cf062)</div>
+              Last updated on Nov 29, 2023 (git 9e5eec4)</div>
           </div>
           <div class="right-details">
             
@@ -683,9 +985,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=3a4f1788"></script>
+</div><script src="../../_static/documentation_options.js?v=9b7c024a"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -31,7 +31,7 @@ dachs.equipment.PV
    .. autosummary::
    
       ~PV.ID
-      ~PV.Name
+      ~PV.PVName
       ~PV.Setpoint
       ~PV.Actual
       ~PV.Description

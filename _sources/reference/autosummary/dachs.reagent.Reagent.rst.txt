@@ -18,13 +18,13 @@ dachs.reagent.Reagent
    
       ~Reagent.MassByVolume
       ~Reagent.MolesByMass
-      ~Reagent.PricePerMass
       ~Reagent.PricePerMole
       ~Reagent.PricePerUnit
       ~Reagent.__init__
       ~Reagent.items
       ~Reagent.keys
       ~Reagent.pop
+      ~Reagent.price_per_mass
       ~Reagent.values
    
    

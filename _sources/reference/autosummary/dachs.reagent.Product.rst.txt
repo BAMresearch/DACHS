@@ -34,5 +34,6 @@ dachs.reagent.Product
       ~Product.Chemical
       ~Product.Mass
       ~Product.Purity
+      ~Product.Evidence
    
    

@@ -16,17 +16,17 @@ dachs.reagent.Mixture
 
    .. autosummary::
    
-      ~Mixture.AddMixture
-      ~Mixture.AddReagent
-      ~Mixture.ComponentConcentration
-      ~Mixture.ComponentConcentrations
-      ~Mixture.ComponentMoles
-      ~Mixture.PricePerMass
-      ~Mixture.TotalMoles
       ~Mixture.__init__
+      ~Mixture.add_mixture_to_mix
+      ~Mixture.add_reagent_to_mix
+      ~Mixture.component_concentration
+      ~Mixture.component_concentrations
+      ~Mixture.component_moles
       ~Mixture.items
       ~Mixture.keys
       ~Mixture.pop
+      ~Mixture.price_per_mass
+      ~Mixture.total_moles
       ~Mixture.values
    
    
@@ -38,15 +38,17 @@ dachs.reagent.Mixture
    .. autosummary::
    
       ~Mixture.ID
-      ~Mixture.Name
+      ~Mixture.MixtureName
       ~Mixture.Description
+      ~Mixture.DetailedDescription
       ~Mixture.ComponentList
       ~Mixture.ComponentMasses
       ~Mixture.PreparationDate
+      ~Mixture.Density
       ~Mixture.StorageConditions
       ~Mixture.Synthesis
       ~Mixture.Container
-      ~Mixture.TotalMass
-      ~Mixture.TotalPrice
+      ~Mixture.total_mass
+      ~Mixture.total_price
    
    

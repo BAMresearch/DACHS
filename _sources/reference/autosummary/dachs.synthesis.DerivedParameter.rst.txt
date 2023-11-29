@@ -30,7 +30,8 @@ dachs.synthesis.DerivedParameter
 
    .. autosummary::
    
-      ~DerivedParameter.Name
+      ~DerivedParameter.ID
+      ~DerivedParameter.ParameterName
       ~DerivedParameter.Description
       ~DerivedParameter.RawMessages
       ~DerivedParameter.Quantity
