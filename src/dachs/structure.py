@@ -95,12 +95,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # Start with a Experiment
     exp = Experiment(
         ID="DACHS",  # this also defines the root at which the HDF5 tree starts
-        ExperimentName="Automatic MOF Exploration series",
+        ExperimentName="AutoMOF series",
         Description="""
-            In this series, MOFs are synthesised in methanol from two stock solutions,
+            In this series, MOFs are synthesised from two stock solutions,
             all performed at room temperature (see environmental details in log).
-            The injection rate and injection order are varied. Centrifugation and drying
-            is performed manually. Residence times are ca. 20 minutes after start of second injection.
+            The injection rate and injection order are varied, amongst other things. Centrifugation and drying
+            is performed manually. For detailed information on this particular synthesis, see the Details item in Synthesis.
         """,
         # in this experiment, we are going to use some chemicals. These are defined by the chemicals class.
         Chemicals=ChemicalsClass(
@@ -277,6 +277,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     logging.info(f"SetupName: {sun}")
     # At this point, we need the experimental setup as we need the falcon tube..
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
+    AMSETDescription = exp.ExperimentalSetup.Description
     # print(exp.ExperimentalSetup)
     container = [i for i in exp.ExperimentalSetup.EquipmentList
                  if "falcon tube" in i.EquipmentName.lower()]  # might be empty
@@ -476,6 +477,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             )
         ]
 
+
+
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
@@ -532,25 +535,38 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # Finally, we add the text description:
     # TODO: specify the order and delay between the solution injections
-    # TODO: stirring speed RPM
-
+    
+    # stirring speed RPM
+    StirrerSpeed = find_in_log(
+        exp.Synthesis.RawLog,
+        "Set stirring speed",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    if StirrerSpeed is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry("StirrerSpeed", "Stirring plate speed", "The speed of the stirring plate under the Falcon tube", StirrerSpeed)
+        ]
+        
     CentrifugeSpeed = find_in_log(
         exp.Synthesis.RawLog,
         ["Sample", "placed in centrifuge"],
         Highlander=True,
         Which="last",
     )
-    if LogEntry is not None:
+    if CentrifugeSpeed is not None:
         exp.Synthesis.DerivedParameters += [
             DParFromLogEntry("CentrifugeSpeed", "Centrifuge Speed", "The speed of centrifugation", CentrifugeSpeed)
         ]
+
     CentrifugeDuration = find_in_log(
         exp.Synthesis.RawLog,
         ["Centrifuge", "set time"],
         Highlander=True,
         Which="last",
     )
-    if LogEntry is not None:
+    if CentrifugeDuration is not None:
         exp.Synthesis.DerivedParameters += [
             DParFromLogEntry(
                 "CentrifugeDuration", "Centrifuge Duration", "The duration of centrifugation", CentrifugeDuration
@@ -568,7 +584,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Highlander=True,
         Which="first",
     )
-    if LogEntry is not None:
+    if OvenStart is not None:
         exp.Synthesis.DerivedParameters += [
             DParFromLogEntry(
                 "OvenTemperature", "Oven Temperature", "The setpoint temperature of the drying oven", OvenStart
@@ -588,8 +604,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 Unit="s",
             )
         ]
-    StirrerBar = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirrer Bar" in i.EquipmentName)][0]
-    if StirrerBar is not None:
+    
+    StirrerBarList = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirrer Bar" in i.EquipmentName)]
+    StirrerBar = StirrerBarList[0] if len(StirrerBarList) else None
+
+    if StirrerBar is not None: # len(StirrerBarList)>0:
+        # StirrerBar = StirrerBarList[0]
         exp.Synthesis.DerivedParameters += [
             DerivedParameter(
                 ID="StirrerBarModel",
@@ -602,6 +622,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 Value=StirrerBar.ModelName,
             )
         ]
+
+    
 
     # Injection orders, we'll just read this from the SampleID letter...
     SIDLetter = exp.Synthesis.RawLog[0].SampleID[0]
@@ -631,6 +653,14 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     else:
         OrderDescription = ""
 
+
+    ReactionVesselModel = container  # we've extracted this before already.
+    StirrerBarModel = StirrerBar # ibid.  
+
+    # get the stirrer plate:
+    MatchList = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirring Plate" in i.EquipmentName)]
+    StirrerPlateModel = MatchList[0] if len(MatchList) else None
+
     # defaults for text generation:
     DPars = {
         "ReactionTime": ureg.Quantity(-1.0, "s"),
@@ -643,10 +673,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         "InjectionSpeed": ureg.Quantity(-1.0, "ml/min"),
         "SynthesisYield": ureg.Quantity(-1.0, "dimensionless"),
         "CentrifugeSpeed": ureg.Quantity(-1.0, "rpm"),
-        "CentrifugeTime": ureg.Quantity(-1.0, "s"),
+        "CentrifugeDuration": ureg.Quantity(-1.0, "s"),
         "OvenTemperature": ureg.Quantity(-1.0, "degC"),
         "ForcedDryingDuration": ureg.Quantity(-1.0, "s"),
-        "StirrerBarModel": "Unknown",
+        "StirrerSpeed": ureg.Quantity(-1.0, 'rpm'),
+        # "StirrerBarModel": "Unknown",
+        "AMSETDescription": AMSETDescription,
         "OrderDescription": "Unknown injection order",
     }
     [DPars.update({i.ID: i}) for i in exp.Synthesis.DerivedParameters if isinstance(i, DerivedParameter)]
@@ -654,7 +686,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
     S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
     S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
-    addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop"]
+    addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop", "ReactionVesselModel", "StirrerBarModel", "StirrerPlateModel", "FinalMass"]
     # print(f"Price of reaction mix: {ReactionMix.total_price:.2f~P}")
 
     for key in addKeys:
@@ -669,6 +701,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # print(DPars.keys())
     # we read the template text per automof, and then format it using the information in DPars.
     descText = ""
+    # print(f"Reading text from file: {Path(synFile.parent, 'SynthesisTemplate.txt').read_text()}")
     try:
         descText = (Path(synFile.parent) / "SynthesisTemplate.txt").read_text().format(**DPars)
     except Exception as e:

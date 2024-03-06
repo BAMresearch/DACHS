@@ -28,6 +28,7 @@ NoneType = type(None)
 
 
 def ValConverter(Val):
+    """Checks if Val is a string, and if so, converts it to a float or int if possible"""
     if str(Val).strip() != "-":
         return yaml.safe_load(Val) if isinstance(Val, str) else Val
     else:
@@ -35,6 +36,7 @@ def ValConverter(Val):
 
 
 def UnitConverter(UnitStr: Union[str, None]) -> Union[str, None]:
+    """Checks if UnitStr is a string, and if so, converts it to a string supported by the Pint library"""
     if UnitStr is None:
         return None
     if str(UnitStr).strip() != "-":
@@ -49,6 +51,7 @@ def UnitConverter(UnitStr: Union[str, None]) -> Union[str, None]:
 
 
 def ConvertToQuantity(Val, Unit):
+    """Converts a value and unit to a pint/ureg Quantity"""
     condition = 0
     Quantity = None
     # Val, U, Q = None, None, None
@@ -68,6 +71,8 @@ def ConvertToQuantity(Val, Unit):
 
 @define
 class RawLogMessage(addItemsToAttrs):
+    """Attrs-defined class for carrying the raw log messages from the RoWaN synthesis platform"""
+
     Index: int = field(default=0, validator=validators.instance_of(int))
     TimeStamp: Timestamp = field(default=None, validator=validators.instance_of(Timestamp))
     MessageLevel: str = field(default="", validator=validators.instance_of(str), converter=str)
@@ -104,7 +109,7 @@ class DerivedParameter(addItemsToAttrs):
     Contains parameters derived from interpretation of the raw log.
     This should link back to the indices of the raw log from which the parameter
     was derived. values can be stored either as pint/ureg Quantities, or as
-    Value (float or int) with optional Unit (str)
+    Value (float or int) with optional Unit (str) for conversion to Quantities.
     """
 
     ID: str = field(  # step number
