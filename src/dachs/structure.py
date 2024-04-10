@@ -95,12 +95,32 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # Start with a Experiment
     exp = Experiment(
         ID="DACHS",  # this also defines the root at which the HDF5 tree starts
-        ExperimentName="AutoMOF series",
+        ExperimentName="DACHS AutoMOF series",
         Description="""
-            In this series, MOFs are synthesised from two stock solutions,
-            all performed at room temperature (see environmental details in log).
-            The injection rate and injection order are varied, amongst other things. Centrifugation and drying
-            is performed manually. For detailed information on this particular synthesis, see the Details item in Synthesis.
+            ## Introduction to DACHS
+
+            The DACHS (Database for Automation, Characterization and Holistic Synthesis) project 
+            aims to create completely traceable experiments, that cover: 
+                - syntheses, with all possible details documented
+                - measurements, complete with full metadata on measurement procedures and instrument settings
+                - corrections, traceable corrections applied to the measurements to arrive at analyzable data
+                - analyses, (optionally multiple) reproducible analyses of the corrected data
+                - interpretations of sets of analyses, linked to the synthesis parameters. 
+
+            ## Introduction to the DACHS AutoMOF series
+            The AutoMOF series (AutoMOFs) is a series of experiments within DACHS, aimed at producing 
+            reproducible MOF samples through tracking of the synthesis parameters.
+            It is simultaneously used to test the DACHS principles. 
+
+            ## Where to find what
+            Details on the synthesis used for this particular experiment are stored in the /DACHS/Synthesis/Description field. 
+            The experimental set-up is described in /DACHS/ExperimentalSetup/Description.
+            The chemicals, including starting compounds, mixtures, and (potential-, target- and final) products are given in the /DACHS/Chemicals group
+            Parameters that might be of interest to the synthesis are stored in /DACHS/Synthesis/DerivedParameters.
+
+            ## License
+            These DACHS synthesis files are released under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
         """,
         # in this experiment, we are going to use some chemicals. These are defined by the chemicals class.
         Chemicals=ChemicalsClass(
@@ -230,6 +250,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     )  # .astimezone('UTC'))#, does this need str-ing?
     ReactionStart = StartRLM.TimeStamp if StartRLM is not None else pd.to_datetime(0, utc=True)
 
+    exp.ExperimentName = f"DACHS {rawLog[0].ExperimentID} series"
+
     StopRLM = find_in_log(
         exp.Synthesis.RawLog,
         "Sample placed in centrifuge",
@@ -279,8 +301,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     exp.ExperimentalSetup = readExperimentalSetup(filename=logFile, SetupName=sun)
     AMSETDescription = exp.ExperimentalSetup.Description
     # print(exp.ExperimentalSetup)
-    container = [i for i in exp.ExperimentalSetup.EquipmentList
-                 if "falcon tube" in i.EquipmentName.lower()]  # might be empty
+    container = [
+        i for i in exp.ExperimentalSetup.EquipmentList if "falcon tube" in i.EquipmentName.lower()
+    ]  # might be empty
     container = container[-1] if len(container) else None
     # now we can create a new mixture
     mix = Mixture(
@@ -476,8 +499,60 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 LogEntry,
             )
         ]
-
-
+    # store the room temperature:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Environmental temperature",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry(
+                "LabTemperature",
+                "Laboratory temperature",
+                "The temperature of the laboratory as measured about 0.5m above the reaction falcon tubes",
+                LogEntry,
+            )
+        ]
+    # store the room temperature:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Environmental humidity",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry(
+                "LabHumidity",
+                "Laboratory humidity",
+                "The humidity of the laboratory as measured about 0.5m above the reaction falcon tubes",
+                LogEntry,
+            )
+        ]
+    # store the room temperature:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Environmental pressure",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry(
+                "LabPressure",
+                "Laboratory pressure",
+                "The ambient pressure of the laboratory as measured about 0.5m above the reaction falcon tubes",
+                LogEntry,
+            )
+        ]
 
     # injection speed:
     LogEntry = find_in_log(
@@ -535,7 +610,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
 
     # Finally, we add the text description:
     # TODO: specify the order and delay between the solution injections
-    
+
     # stirring speed RPM
     StirrerSpeed = find_in_log(
         exp.Synthesis.RawLog,
@@ -546,9 +621,14 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     )
     if StirrerSpeed is not None:
         exp.Synthesis.DerivedParameters += [
-            DParFromLogEntry("StirrerSpeed", "Stirring plate speed", "The speed of the stirring plate under the Falcon tube", StirrerSpeed)
+            DParFromLogEntry(
+                "StirrerSpeed",
+                "Stirring plate speed",
+                "The speed of the stirring plate under the Falcon tube",
+                StirrerSpeed,
+            )
         ]
-        
+
     CentrifugeSpeed = find_in_log(
         exp.Synthesis.RawLog,
         ["Sample", "placed in centrifuge"],
@@ -604,11 +684,11 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 Unit="s",
             )
         ]
-    
+
     StirrerBarList = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirrer Bar" in i.EquipmentName)]
     StirrerBar = StirrerBarList[0] if len(StirrerBarList) else None
 
-    if StirrerBar is not None: # len(StirrerBarList)>0:
+    if StirrerBar is not None:  # len(StirrerBarList)>0:
         # StirrerBar = StirrerBarList[0]
         exp.Synthesis.DerivedParameters += [
             DerivedParameter(
@@ -622,8 +702,6 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                 Value=StirrerBar.ModelName,
             )
         ]
-
-    
 
     # Injection orders, we'll just read this from the SampleID letter...
     SIDLetter = exp.Synthesis.RawLog[0].SampleID[0]
@@ -653,9 +731,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     else:
         OrderDescription = ""
 
-
     ReactionVesselModel = container  # we've extracted this before already.
-    StirrerBarModel = StirrerBar # ibid.  
+    StirrerBarModel = StirrerBar  # ibid.
 
     # get the stirrer plate:
     MatchList = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirring Plate" in i.EquipmentName)]
@@ -676,7 +753,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         "CentrifugeDuration": ureg.Quantity(-1.0, "s"),
         "OvenTemperature": ureg.Quantity(-1.0, "degC"),
         "ForcedDryingDuration": ureg.Quantity(-1.0, "s"),
-        "StirrerSpeed": ureg.Quantity(-1.0, 'rpm'),
+        "StirrerSpeed": ureg.Quantity(-1.0, "rpm"),
         # "StirrerBarModel": "Unknown",
         "AMSETDescription": AMSETDescription,
         "OrderDescription": "Unknown injection order",
@@ -686,7 +763,30 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     ReactionMix = [i for i in Mixes if i.ID == "ReactionMix0"][0]
     S0Mix = [i for i in Mixes if i.ID == "Solution0"][0]
     S1Mix = [i for i in Mixes if i.ID == "Solution1"][0]
-    addKeys = ["OrderDescription", "S0Mix", "S1Mix", "ReactionMix", "OvenStop", "ReactionVesselModel", "StirrerBarModel", "StirrerPlateModel", "FinalMass"]
+    addKeys = [
+        "OrderDescription",
+        "S0Mix",
+        "S1Mix",
+        "ReactionMix",
+        "OvenStop",
+        "ReactionVesselModel",
+        "StirrerBarModel",
+        "StirrerPlateModel",
+        "FinalMass",
+    ]
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="ChemicalCost",
+            ParameterName="Cost of Chemicals",
+            Description=(
+                f"The cost of the chemicals used in the synthesis, as calculated from the base chemical prices and the quantities used in this reaction. "
+            ),
+            RawMessages=[],
+            Quantity=ReactionMix.total_price,
+            Value=ReactionMix.total_price.magnitude,
+            Unit=ReactionMix.total_price.units,
+        )
+    ]
     # print(f"Price of reaction mix: {ReactionMix.total_price:.2f~P}")
 
     for key in addKeys:
@@ -711,7 +811,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     # add notes if they exist to the end of the synthesis text.
     if noteList is not None:
         for Notei, Note in enumerate(noteList):
-            descText += f"Note {Notei}: {Note.Value}"
+            descText += f" Note {Notei}: {Note.Value}"
 
     exp.Synthesis.Description = descText
     return exp
