@@ -327,8 +327,12 @@ class Mixture(addItemsToAttrs):
 
     def add_reagent_to_mix(self, reag: Reagent, ReagentMass: ureg.Quantity) -> None:
         """Adds a reagent to the mixture"""
-        self.ComponentList += [reag]
-        self.ComponentMasses[reag.ID] = ReagentMass
+        if not reag in self.ComponentList:
+            self.ComponentList += [reag]
+            self.ComponentMasses[reag.ID] = ReagentMass
+        else:
+            self.ComponentMasses[reag.ID] += ReagentMass
+
         self.DetailedDescription += f"{ReagentMass:.2f~P} of {reag.Chemical.ChemicalName}, and "
         # mark the reagent as actually in use:
         reag.Used = True
@@ -357,8 +361,11 @@ class Mixture(addItemsToAttrs):
         ), "Sanity check failed, you are adding more mass of mixture than existed in the mixture."
         MassFractionOfTotal = (AddMixtureMass / mix.total_mass).to("gram/gram")
         for ci, component in enumerate(mix.ComponentList):
-            self.ComponentList += [component]
-            self.ComponentMasses[component.ID] = mix.ComponentMasses[component.ID] * MassFractionOfTotal
+            if not component in self.ComponentList:
+                self.ComponentList += [component]
+                self.ComponentMasses[component.ID] = mix.ComponentMasses[component.ID] * MassFractionOfTotal
+            else:
+                self.ComponentMasses[component.ID] += mix.ComponentMasses[component.ID] * MassFractionOfTotal
 
         if AddMixtureVolume is not None:
             self.DetailedDescription += (
