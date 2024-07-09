@@ -608,6 +608,7 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
                     note,
                 )
             ]
+            noteCounter += 1
 
     # lastly, we can prune all the unused reagents from StartingCompounds:
     exp.Chemicals.StartingCompounds = [item for item in exp.Chemicals.StartingCompounds if item.Used]
