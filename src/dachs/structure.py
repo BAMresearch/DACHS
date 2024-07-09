@@ -344,8 +344,12 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             exp.Chemicals.Mixtures[solutionId], "Density"
         )  # default does not seem to work, still returns None.
         if DensityOfAdd is None:
+            print(f"no density found for {solutionId}, assuming 0.792 g/cc")
             DensityOfAdd = ureg.Quantity("0.792 g/cc")
         # print(f"{DensityOfAdd=}")
+        # print(
+        #     f"adding mixture to mix: {exp.Chemicals.Mixtures[solutionId]=}, {VolumeRLM.Quantity=}, {DensityOfAdd=}"
+        # )
         mix.add_mixture_to_mix(
             exp.Chemicals.Mixtures[solutionId],
             AddMixtureVolume=(
