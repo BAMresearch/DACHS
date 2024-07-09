@@ -743,6 +743,19 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
     MatchList = [i for i in exp.ExperimentalSetup.EquipmentList if ("Stirring Plate" in i.EquipmentName)]
     StirrerPlateModel = MatchList[0] if len(MatchList) else None
 
+    # override FinalMass with the actual final mass:
+    FinalMass = DerivedParameter(
+        ID="FinalMass",
+        ParameterName="Final Mass",
+        Description="The mass of the final product as measured after drying",
+        RawMessages=[],
+        Quantity=exp.Chemicals.FinalProduct.Mass,
+        Value=exp.Chemicals.FinalProduct.Mass.magnitude,
+        Unit=exp.Chemicals.FinalProduct.Mass.units,
+    )
+
+    exp.Synthesis.DerivedParameters += [FinalMass]
+
     # defaults for text generation:
     DPars = {
         "ReactionTime": ureg.Quantity(-1.0, "s"),
@@ -792,6 +805,37 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             Unit=ReactionMix.total_price.units,
         )
     ]
+
+    # a couple more requests by Glen for duplication of parameters in the derivedparameters:
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="TotalReactionMass",
+            ParameterName="Total Reactionmixture Mass",
+            Description=(
+                f"The total mass of the reaction mixture in the falcon tube, as calculated from the masses of the individual components specified in Chemicals/Mixtures/ReactionMix0."
+            ),
+            RawMessages=[],
+            Quantity=ReactionMix.total_mass,
+            Value=ReactionMix.total_mass.magnitude,
+            Unit=ReactionMix.total_mass.units,
+        )
+    ]
+
+    # a couple more requests by Glen for duplication of parameters in the derivedparameters:
+    exp.Synthesis.DerivedParameters += [
+        DerivedParameter(
+            ID="TotalReactionMoles",
+            ParameterName="Total Reactionmixture Moles",
+            Description=(
+                f"The total amount of moles that comprises the reaction mixture in the falcon tube, as calculated from the moles of the individual components specified in Chemicals/Mixtures/ReactionMix0."
+            ),
+            RawMessages=[],
+            Quantity=ReactionMix.total_moles(),
+            Value=ReactionMix.total_moles().magnitude,
+            Unit=ReactionMix.total_moles().units,
+        )
+    ]
+
     # print(f"Price of reaction mix: {ReactionMix.total_price:.2f~P}")
 
     for key in addKeys:
