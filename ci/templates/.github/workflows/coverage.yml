@@ -74,7 +74,8 @@ jobs:
 
       - name: Summarize
         shell: sh
-        run: echo '### Total coverage: {{'${{ env.total }}'}}%' >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo '### Total coverage: {{'${{ env.total }}'}}%' >> $GITHUB_STEP_SUMMARY
 
       - name: Checkout documentation pages branch
         if: {{"${{ github.ref == 'refs/heads/main' }}"}}
