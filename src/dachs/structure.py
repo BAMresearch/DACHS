@@ -32,8 +32,8 @@ def setupLogging(outLogFilePathBase: Path):
     # see https://docs.python.org/3/library/logging.html#logging-levels
     logging.basicConfig(level=logging.NOTSET, stream=sys.stdout)
     logger = logging.getLogger()
-    warnfn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyWarnings.log")
-    infofn = outLogFilePathBase.with_name(outLogFilePathBase.name+"_DachsifyInfo.log")
+    warnfn = outLogFilePathBase.with_name(outLogFilePathBase.name + "_DachsifyWarnings.log")
+    infofn = outLogFilePathBase.with_name(outLogFilePathBase.name + "_DachsifyInfo.log")
     fh = logging.FileHandler(infofn, mode="w")
     # fh.setLevel(logging.INFO) # not defining = NOTSET, catch all
     logger.addHandler(fh)
@@ -99,27 +99,31 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
         Description="""
             ## Introduction to DACHS
 
-            The DACHS (Database for Automation, Characterization and Holistic Synthesis) project 
-            aims to create completely traceable experiments, that cover: 
+            The DACHS (Database for Automation, Characterization and Holistic Synthesis) project
+            aims to create completely traceable experiments, that cover:
                 - syntheses, with all possible details documented
                 - measurements, complete with full metadata on measurement procedures and instrument settings
                 - corrections, traceable corrections applied to the measurements to arrive at analyzable data
                 - analyses, (optionally multiple) reproducible analyses of the corrected data
-                - interpretations of sets of analyses, linked to the synthesis parameters. 
+                - interpretations of sets of analyses, linked to the synthesis parameters.
 
             ## Introduction to the DACHS AutoMOF series
-            The AutoMOF series (AutoMOFs) is a series of experiments within DACHS, aimed at producing 
+            The AutoMOF series (AutoMOFs) is a series of experiments within DACHS, aimed at producing
             reproducible MOF samples through tracking of the synthesis parameters.
-            It is simultaneously used to test the DACHS principles. 
+            It is simultaneously used to test the DACHS principles.
 
             ## Where to find what
-            Details on the synthesis used for this particular experiment are stored in the /DACHS/Synthesis/Description field. 
+            Details on the synthesis used for this particular experiment are stored in the
+            /DACHS/Synthesis/Description field.
             The experimental set-up is described in /DACHS/ExperimentalSetup/Description.
-            The chemicals, including starting compounds, mixtures, and (potential-, target- and final) products are given in the /DACHS/Chemicals group
-            Parameters that might be of interest to the synthesis are stored in /DACHS/Synthesis/DerivedParameters.
+            The chemicals, including starting compounds, mixtures, and (potential-, target- and final)
+            products are given in the /DACHS/Chemicals group
+            Parameters that might be of interest to the synthesis are stored in
+            /DACHS/Synthesis/DerivedParameters.
 
             ## License
-            These DACHS synthesis files are released under a Creative Commons Attribution-ShareAlike 4.0 International License.
+            These DACHS synthesis files are released under a
+            Creative Commons Attribution-ShareAlike 4.0 International License.
 
         """,
         # in this experiment, we are going to use some chemicals. These are defined by the chemicals class.
@@ -348,7 +352,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             DensityOfAdd = ureg.Quantity("0.792 g/cc")
         # print(f"{DensityOfAdd=}")
         # print(
-        #     f"adding mixture to mix: {exp.Chemicals.Mixtures[solutionId]=}, {VolumeRLM.Quantity=}, {DensityOfAdd=}"
+        #     f"adding mixture to mix: {exp.Chemicals.Mixtures[solutionId]=}, {VolumeRLM.Quantity=},
+        #       {DensityOfAdd=}"
         # )
         mix.add_mixture_to_mix(
             exp.Chemicals.Mixtures[solutionId],
@@ -797,7 +802,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID="ChemicalCost",
             ParameterName="Cost of Chemicals",
             Description=(
-                f"The cost of the chemicals used in the synthesis, as calculated from the base chemical prices and the quantities used in this reaction. "
+                "The cost of the chemicals used in the synthesis, as calculated from the base "
+                "chemical prices and the quantities used in this reaction."
             ),
             RawMessages=[],
             Quantity=ReactionMix.total_price,
@@ -812,7 +818,8 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID="TotalReactionMass",
             ParameterName="Total Reactionmixture Mass",
             Description=(
-                f"The total mass of the reaction mixture in the falcon tube, as calculated from the masses of the individual components specified in Chemicals/Mixtures/ReactionMix0."
+                "The total mass of the reaction mixture in the falcon tube, as calculated from "
+                "the masses of the individual components specified in Chemicals/Mixtures/ReactionMix0."
             ),
             RawMessages=[],
             Quantity=ReactionMix.total_mass,
@@ -827,7 +834,9 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             ID="TotalReactionMoles",
             ParameterName="Total Reactionmixture Moles",
             Description=(
-                f"The total amount of moles that comprises the reaction mixture in the falcon tube, as calculated from the moles of the individual components specified in Chemicals/Mixtures/ReactionMix0."
+                "The total amount of moles that comprises the reaction mixture in the falcon tube, "
+                "as calculated from the moles of the individual components specified in "
+                "Chemicals/Mixtures/ReactionMix0."
             ),
             RawMessages=[],
             Quantity=ReactionMix.total_moles(),
