@@ -1,5 +1,42 @@
-
 # CHANGELOG
+
+## Unreleased
+
+### Ci
+
+* **coverage**: syntax fix ([`2b98edd`](https://github.com/BAMresearch/DACHS/commit/2b98eddccc55cad17f9952429cebe502e38f3f06))
+
+### Documentation
+
+* **Structure**: adjust info messages/output ([`23f491b`](https://github.com/BAMresearch/DACHS/commit/23f491b58062a5c9acf1b4cf2fc7047cd57d3518))
+
+* **notebook**: removed outputs for easier diff ([`5e70afb`](https://github.com/BAMresearch/DACHS/commit/5e70afb5f7901b7c79cd7774ae19a1bdab853198))
+
+### Fix
+
+* **Structure**: copy some parameters to DerivedParameters as well ([`b8833c6`](https://github.com/BAMresearch/DACHS/commit/b8833c6a26e6e308b2ccfa1ef3732eb466a7a6fb))
+
+* **Structure**: increase note count with each note ([`c6547c7`](https://github.com/BAMresearch/DACHS/commit/c6547c77f34cfee013687a198ebfb16eca1840a9))
+
+* **Reagent**: append component or reagent if not in list already ([`9067c63`](https://github.com/BAMresearch/DACHS/commit/9067c635c5234a0ccb547f7578f5485cb62fcb96))
+
+### Refactor
+
+* **structure**: make flake8 happy ([`2ede69c`](https://github.com/BAMresearch/DACHS/commit/2ede69cbb7b4c09021ab41868a7d531cf01738de))
+
+### Test
+
+* **notebook**: added outputs again for testing ([`b57b2fe`](https://github.com/BAMresearch/DACHS/commit/b57b2fe40b4fd4894557993f3d97c3e774214a19))
+
+* **requirements**: updated for chempy issues with numpy2 ([`98d1b57`](https://github.com/BAMresearch/DACHS/commit/98d1b576b232693b2d765ca04a91461b2dafa2cb))
+
+* **Data**: adjusted test data ([`a4b0d1c`](https://github.com/BAMresearch/DACHS/commit/a4b0d1c44d427b22b58aa16911aa65c01801fe57))
+
+### General
+
+* previous update. ([`6393d38`](https://github.com/BAMresearch/DACHS/commit/6393d3805b17b89530abbda0cdce2defbbdacc02))
+
+* Updated structure with more information ([`99a5206`](https://github.com/BAMresearch/DACHS/commit/99a520617e46d56e8323c3bac8503dda391514ec))
 
 ## v0.5.2 (2023-11-29)
 
@@ -191,20 +228,6 @@
 
 * Merge branch &#39;main&#39; of https://github.com/BAMresearch/DACHS ([`3537931`](https://github.com/BAMresearch/DACHS/commit/35379313ab1a2dfa3e450331f6778b87eab74b2b))
 
-* Computation of solution age added to extraInfo ([`df5dd85`](https://github.com/BAMresearch/DACHS/commit/df5dd859e0194f086018a030334890ca2e4e37e5))
-
-* added test case for AutoMOF_6 series ([`4fa9ec3`](https://github.com/BAMresearch/DACHS/commit/4fa9ec3ede82b8004abe6aac275a737895ff887d))
-
-* preparing for AutoMOF 6&amp;7 ([`1d53806`](https://github.com/BAMresearch/DACHS/commit/1d5380676c3679e4248b678183065f217cd2188e))
-
-* Shell script to run AutoMOF05 ([`755431d`](https://github.com/BAMresearch/DACHS/commit/755431d90364df1cbfce1784aefd468e7650b25b))
-
-* script to pick apart the raw logs from RoWan ([`5918e0d`](https://github.com/BAMresearch/DACHS/commit/5918e0dacaaadf0ac4921f26b1a8e2a6a894730b))
-
-* Readin example jupyter notebook launching Dash ([`afa6065`](https://github.com/BAMresearch/DACHS/commit/afa60659c206e583918d6ec1f8e1143d5734abc4))
-
-* making a read-in structure python notebook ([`09a1e55`](https://github.com/BAMresearch/DACHS/commit/09a1e550aa0cca0acfdd0bcdacb02f9af10ae908))
-
 ## v0.4.3-dev.2 (2023-05-04)
 
 ### Style
@@ -219,7 +242,21 @@
 
 ### General
 
-* **structure**: set AMSET in tests to succeed ([`e7740a5`](https://github.com/BAMresearch/DACHS/commit/e7740a5dbf703ba20c1b931de9e41a4398be79cf))
+* tests(structure): set AMSET in tests to succeed ([`e7740a5`](https://github.com/BAMresearch/DACHS/commit/e7740a5dbf703ba20c1b931de9e41a4398be79cf))
+
+* Computation of solution age added to extraInfo ([`df5dd85`](https://github.com/BAMresearch/DACHS/commit/df5dd859e0194f086018a030334890ca2e4e37e5))
+
+* added test case for AutoMOF_6 series ([`4fa9ec3`](https://github.com/BAMresearch/DACHS/commit/4fa9ec3ede82b8004abe6aac275a737895ff887d))
+
+* preparing for AutoMOF 6&amp;7 ([`1d53806`](https://github.com/BAMresearch/DACHS/commit/1d5380676c3679e4248b678183065f217cd2188e))
+
+* Shell script to run AutoMOF05 ([`755431d`](https://github.com/BAMresearch/DACHS/commit/755431d90364df1cbfce1784aefd468e7650b25b))
+
+* script to pick apart the raw logs from RoWan ([`5918e0d`](https://github.com/BAMresearch/DACHS/commit/5918e0dacaaadf0ac4921f26b1a8e2a6a894730b))
+
+* Readin example jupyter notebook launching Dash ([`afa6065`](https://github.com/BAMresearch/DACHS/commit/afa60659c206e583918d6ec1f8e1143d5734abc4))
+
+* making a read-in structure python notebook ([`09a1e55`](https://github.com/BAMresearch/DACHS/commit/09a1e550aa0cca0acfdd0bcdacb02f9af10ae908))
 
 * removing superfluous weight determination ([`5ff5fd9`](https://github.com/BAMresearch/DACHS/commit/5ff5fd99e5792818bf39c7136ea6bad0397b6f95))
 
@@ -315,7 +352,7 @@
 
 ### General
 
-* **structure**: commented core for dumping all storage paths ([`450d660`](https://github.com/BAMresearch/DACHS/commit/450d66084076d13b27028fbf5e328f86ce89be1a))
+* tests(structure): commented core for dumping all storage paths ([`450d660`](https://github.com/BAMresearch/DACHS/commit/450d66084076d13b27028fbf5e328f86ce89be1a))
 
 ## v0.1.2 (2023-04-03)
 
@@ -409,8 +446,6 @@
 
 * Merge branch &#39;main&#39; of BAMresearch/DACHS ([`ced27a3`](https://github.com/BAMresearch/DACHS/commit/ced27a3ae63a09603c74a8238856e061b332b91a))
 
-* Changed UID to ID and fixed excel read ([`a1ccde0`](https://github.com/BAMresearch/DACHS/commit/a1ccde0d1d325fa5d441e7e09579df99d53953d5))
-
 * using updated McHDF.storeKV() ([`e7fa4de`](https://github.com/BAMresearch/DACHS/commit/e7fa4ded170c1d42a796397d4ac3c3df283a6a2a))
 
 * disabled debug output ([`4621d21`](https://github.com/BAMresearch/DACHS/commit/4621d21a8296c1fbe15fc4178174d2d2905daaf7))
@@ -419,15 +454,17 @@
 
 * using PurePosixPath for hdf5 path not being filesystem related ([`d9caa87`](https://github.com/BAMresearch/DACHS/commit/d9caa8701cc5cac2d86ceca092b34bf2a7839821))
 
-* Merge branch &#39;main&#39; of https://github.com/BAMresearch/DACHS ([`6ddeac7`](https://github.com/BAMresearch/DACHS/commit/6ddeac75acb629316e8932a5be1d7ad849f914ed))
+* Changed UID to ID and fixed excel read ([`a1ccde0`](https://github.com/BAMresearch/DACHS/commit/a1ccde0d1d325fa5d441e7e09579df99d53953d5))
 
-* remove defaults for required fields ([`90487d5`](https://github.com/BAMresearch/DACHS/commit/90487d5ef995a3ab489a1d975bbc7265caec0c8d))
+* Merge branch &#39;main&#39; of https://github.com/BAMresearch/DACHS ([`6ddeac7`](https://github.com/BAMresearch/DACHS/commit/6ddeac75acb629316e8932a5be1d7ad849f914ed))
 
 * hdf5 export in test_integral() using McSAS3 writer ([`4b627d8`](https://github.com/BAMresearch/DACHS/commit/4b627d8ba920c66c9864514f79571c8711d9eea6))
 
 * fixed test_integral() ([`22257c7`](https://github.com/BAMresearch/DACHS/commit/22257c72d93df9c0299e6959dd69a3e6efbd6972))
 
 * removed empty file ([`eb4ad06`](https://github.com/BAMresearch/DACHS/commit/eb4ad069ed15cab926dc38bbbfd876baf612391c))
+
+* remove defaults for required fields ([`90487d5`](https://github.com/BAMresearch/DACHS/commit/90487d5ef995a3ab489a1d975bbc7265caec0c8d))
 
 * Adding derived parameters extractors, not yet work ([`90dcf7f`](https://github.com/BAMresearch/DACHS/commit/90dcf7f451b42fdde17a47212f6cc02c1e626a1e))
 
