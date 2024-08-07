@@ -13,7 +13,7 @@ jobs:
     steps:
 
       - name: Checking out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -24,10 +24,10 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
       # see *py_ver* in ci/update.py
-      - name: Setting up Python 3.10
-        uses: actions/setup-python@v4
+      - name: Setting up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: |
             ci/requirements.txt
@@ -39,14 +39,15 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --progress-bar=off -r ci/requirements.txt
 
-      - name: Update files with new version number
+      - name: Determine a version number
         env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          PYTHONPATH: ci
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: sh
         run: |
-          # update files not covered by semantic-release
-          python ci/fixver.py $(semantic-release version --print)
-          # run semantic-release in source tree only
+          set -x
+          NEWVER=$(semantic-release version --print)
+          sed -i -e "s/v\([0-9]\+\.\)\{3\}/v$NEWVER./" README.rst
+          sed -i -e "s/\([0-9]\+\.\)\{2\}[0-9]\+/$NEWVER/" .cookiecutterrc
+          git add README.rst .cookiecutterrc
+          # creates a release only if there are relevant changes/commits starting with 'fix/feat()'
           semantic-release version
-          git status

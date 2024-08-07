@@ -4,9 +4,10 @@
 #    cookiecutter --overwrite-if-exists --config-file=.cookiecutterrc gh:BAMresearch/yapy-cookiecutter
 
 default_context:
-    full_name:                 'Brian R. Pauw'
-    email:                     'brian.pauw@bam.de'
-    website:                   'https://github.com/toqduj'
+    author_count:              '2'
+    full_names:                'Brian R. Pauw, Ingo Breßler'
+    emails:                    'brian.pauw@bam.de, ingo.bressler@bam.de'
+    websites:                  'https://github.com/toqduj, https://ingobressler.net'
     project_name:              'DACHS'
     repo_name:                 'DACHS'
     repo_hosting:              'github.com'
@@ -19,8 +20,8 @@ default_context:
     project_short_description: 'Database for Automation and Consistent Holistic Synthesis'
     release_date:              '2023-03-17'
     year_from:                 '2022'
-    year_to:                   '2023'
-    version:                   '0.5.0'
+    year_to:                   '2024'
+    version:                   '0.5.2'
     pypi_host:                 'test.pypi.org'
     license:                   'GNU General Public License v3 or later (GPLv3+)'
     sphinx_theme:              'furo'

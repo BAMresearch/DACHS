@@ -29,14 +29,16 @@ templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "DACHS"
-year = "2022-2023"
-author = "Brian R. Pauw"
+year = "2022-2024"
+author = "Brian R. Pauw and Ingo Breßler"
 copyright = "{0}, {1}".format(year, author)
 version = "0.5.2"
 release = version
 commit_id = None
 try:
-    commit_id = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("ascii")
+    commit_id = (
+        subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("ascii")
+    )
 except subprocess.CalledProcessError as e:
     print(e)
 
@@ -50,6 +52,7 @@ autodoc_mock_imports = [
     "scipy",
     "h5py",
     "pint",
+    "sasmodels",
     "chempy",
     "graphviz",
     "mcsas3",
@@ -81,4 +84,7 @@ linkcheck_ignore = [
         project_meta["tool"]["coverage"]["report"]["path"],
     )
     + r".*",
+    # attempted fix of '406 Client Error: Not Acceptable for url'
+    # https://github.com/sphinx-doc/sphinx/issues/1331
+    join(project_meta["project"]["urls"]["repository"], "commit", r"[0-9a-fA-F]+")
 ]

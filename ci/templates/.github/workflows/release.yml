@@ -26,14 +26,15 @@ jobs:
 
       {{ ci.pip_install_req() }}
 
-      - name: Update files with new version number
+      - name: Determine a version number
         env:
-          GH_TOKEN: {{'${{secrets.GITHUB_TOKEN}}'}}
-          PYTHONPATH: ci
+          GH_TOKEN: {{'${{ secrets.GITHUB_TOKEN }}'}}
         shell: sh
         run: |
-          # update files not covered by semantic-release
-          python ci/fixver.py $(semantic-release version --print)
-          # run semantic-release in source tree only
+          set -x
+          NEWVER=$(semantic-release version --print)
+          sed -i -e "s/v\([0-9]\+\.\)\{3\}/v$NEWVER./" README.rst
+          sed -i -e "s/\([0-9]\+\.\)\{2\}[0-9]\+/$NEWVER/" .cookiecutterrc
+          git add README.rst .cookiecutterrc
+          # creates a release only if there are relevant changes/commits starting with 'fix/feat()'
           semantic-release version
-          git status

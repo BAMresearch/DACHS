@@ -20,33 +20,6 @@ jobs:
 
       {{ ci.pip_install_req() }}
 
-      - name: Get last and current version
-        env:
-          PYTHONPATH: ci
-        shell: sh
-        run: |
-          echo "git_ver='$(git describe)'" >> $GITHUB_ENV
-          echo "git_ver='$(git describe)'"
-          echo "cur_ver='$(semantic-release version --print 2>/dev/null)'" >> $GITHUB_ENV
-          echo "cur_ver='$(semantic-release version --print 2>/dev/null)'"
-          echo "git_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "git_hash=$(git rev-parse --short HEAD)"
-
-      - name: Set develepment version number
-        # modify source files to reflect the current version
-        # (relevant for pre-releases indicated by tag only)
-        # Does not modify the git history
-        if: env.git_ver != env.cur_ver
-        env:
-          PYTHONPATH: ci
-        shell: sh
-        # update version for documentation locally only
-        run: |
-          # update files not covered by semantic-release
-          python ci/fixver.py $(semantic-release version --build-metadata $git_hash --no-commit --no-push --print)
-          # run semantic-release in source tree only
-          semantic-release version --build-metadata $git_hash --no-commit --no-push --skip-build
-
       - name: Check
         shell: sh
         run: tox -e check -v
@@ -56,7 +29,7 @@ jobs:
         run: tox -e docs -v
 
       - name: Upload docs for finalization later
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docs
           path: dist/docs
