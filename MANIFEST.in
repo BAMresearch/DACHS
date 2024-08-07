@@ -23,4 +23,5 @@ include SplitRoWaNLogs.py
 global-exclude *.py[cod] __pycache__/* *.so *.dylib .DS_Store */.ipynb_checkpoints/*
 recursive-include templates *.j2
 exclude scripts/*
+exclude *.sh
 exclude tests/testData/*.h5
