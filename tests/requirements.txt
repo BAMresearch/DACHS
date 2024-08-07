@@ -3,9 +3,12 @@ notebook
 pandas
 ipywidgets
 matplotlib
+# chempy has issues with numpy2 currently
+# https://github.com/bjodah/chempy/issues/234#issuecomment-2173750234
+numpy<2
+chempy
 scipy
 git+https://github.com/BAMresearch/McSAS3.git
-chempy<=0.8.2
 pint
 openpyxl
 h5py
