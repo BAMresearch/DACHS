@@ -35,15 +35,15 @@
    :template: module.rst
    :recursive:
 
-   dachs.additemstoattrs
-   dachs.dachsvalidators
-   dachs.equipment
-   dachs.helpers
-   dachs.main
-   dachs.metaclasses
-   dachs.readers
-   dachs.reagent
-   dachs.serialization
-   dachs.structure
-   dachs.synthesis
+   additemstoattrs
+   dachsvalidators
+   equipment
+   helpers
+   main
+   metaclasses
+   readers
+   reagent
+   serialization
+   structure
+   synthesis
 

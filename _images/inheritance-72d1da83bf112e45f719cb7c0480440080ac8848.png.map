@@ -10,7 +10,7 @@
 <area shape="rect" id="node9" href="autosummary/dachs.reagent.Product.html#dachs.reagent.Product" target="_top" title="Defines a chemical Product as having a chemical structure, with a target mass (100% conversion)" alt="" coords="403,351,570,376"/>
 <area shape="rect" id="node10" href="autosummary/dachs.reagent.Reagent.html#dachs.reagent.Reagent" target="_top" title="dachs.reagent.Reagent" alt="" coords="401,400,573,425"/>
 <area shape="rect" id="node11" href="autosummary/dachs.synthesis.DerivedParameter.html#dachs.synthesis.DerivedParameter" target="_top" title="Contains parameters derived from interpretation of the raw log." alt="" coords="363,449,611,475"/>
-<area shape="rect" id="node12" href="autosummary/dachs.synthesis.RawLogMessage.html#dachs.synthesis.RawLogMessage" target="_top" title="dachs.synthesis.RawLogMessage" alt="" coords="367,499,606,524"/>
+<area shape="rect" id="node12" href="autosummary/dachs.synthesis.RawLogMessage.html#dachs.synthesis.RawLogMessage" target="_top" title="Attrs&#45;defined class for carrying the raw log messages from the RoWaN synthesis platform" alt="" coords="367,499,606,524"/>
 <area shape="rect" id="node13" href="autosummary/dachs.synthesis.SynthesisClass.html#dachs.synthesis.SynthesisClass" target="_top" title="dachs.synthesis.SynthesisClass" alt="" coords="373,548,601,573"/>
 <area shape="rect" id="node14" href="autosummary/dachs.synthesis.synthesisStep.html#dachs.synthesis.synthesisStep" target="_top" title="dachs.synthesis.synthesisStep" alt="" coords="376,597,597,623"/>
 </map>
