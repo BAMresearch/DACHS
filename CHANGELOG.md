@@ -1,12 +1,18 @@
 # CHANGELOG
 
-## Unreleased
+## v0.5.3 (2024-08-07)
 
 ### Ci
+
+* **docs**: install graphviz+dot on Windows ([`6c941d3`](https://github.com/BAMresearch/DACHS/commit/6c941d3910b9a4e8d760d78a5550e063c7bc643c))
+
+* **docs**: install graphviz+dot on Windows ([`6eefd83`](https://github.com/BAMresearch/DACHS/commit/6eefd8363b7df390b92883dcc2aa026919c766f4))
 
 * **coverage**: syntax fix ([`2b98edd`](https://github.com/BAMresearch/DACHS/commit/2b98eddccc55cad17f9952429cebe502e38f3f06))
 
 ### Documentation
+
+* **Changelog**: updated ([`416bbdd`](https://github.com/BAMresearch/DACHS/commit/416bbddfcfb74cfe1ea0fcad795445eb97a173fa))
 
 * **Structure**: adjust info messages/output ([`23f491b`](https://github.com/BAMresearch/DACHS/commit/23f491b58062a5c9acf1b4cf2fc7047cd57d3518))
 

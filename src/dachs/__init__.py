@@ -3,7 +3,7 @@
 
 import pint
 
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 
 ureg = pint.UnitRegistry(auto_reduce_dimensions=True)
 ureg.define(r"percent = 0.01 = %")

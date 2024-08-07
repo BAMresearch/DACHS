@@ -32,7 +32,7 @@ project = "DACHS"
 year = "2022-2024"
 author = "Brian R. Pauw and Ingo Breßler"
 copyright = "{0}, {1}".format(year, author)
-version = "0.5.2"
+version = "0.5.3"
 release = version
 commit_id = None
 try:
