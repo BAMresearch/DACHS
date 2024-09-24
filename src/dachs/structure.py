@@ -563,6 +563,69 @@ def create(logFile: Path, solFiles: List[Path], synFile: Path, amset: str = None
             )
         ]
 
+    # New additions 2024-09-18
+    # store the wash solvvent volume:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Wash volume",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry(
+                "WashSolventVolume",
+                "Wash solvent volume",
+                "The volume of the wash solvent used to clean the final product",
+                LogEntry,
+            )
+        ]
+
+    # store the wash solvvent:
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Wash solution",
+        Highlander=True,
+        Which="last",
+        # return_indices=True,
+    )
+    # washSolventID = [i.Chemical.ChemicalName for i in exp.Chemicals.StartingCompounds if i.ID == LogEntry.Value]
+    # if len(washSolventID) == 1:
+    #     washSolventID = washSolventID[0]
+    # else:
+    #     washSolventID = None
+    # exp.Synthesis.KeyParameters.update({"LabTemperature": LogEntry.Quantity})
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DParFromLogEntry(
+                "WashSolvent",
+                "Wash solvent",
+                "The wash solvent used to clean the final product",
+                LogEntry,
+            )
+        ]
+
+    # store the number of washes by counting the number of centrifugations -1
+    LogEntry = find_in_log(
+        exp.Synthesis.RawLog,
+        "Sample placed in centrifuge",
+        Highlander=False,
+        # return_indices=True,
+    )
+    if LogEntry is not None:
+        exp.Synthesis.DerivedParameters += [
+            DerivedParameter(
+                ID="NumberOfWashes",
+                ParameterName="Number of washes",
+                Description="The number of times the product has been washed after the initial centrifugation.",
+                RawMessages=[i.Index for i in LogEntry],
+                Value=len(LogEntry) - 1,
+                Unit=ureg.dimensionless,
+            )
+        ]
+
     # injection speed:
     LogEntry = find_in_log(
         exp.Synthesis.RawLog,
