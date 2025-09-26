@@ -66,7 +66,8 @@ To invoke the command line interface for processing experimental log files to th
 Documentation
 =============
 
-https://BAMresearch.github.io/DACHS
+- for now, internal build only: https://scicat65.ddnss.de:2080
+- when public: https://BAMresearch.github.io/DACHS
 
 Development
 ===========
