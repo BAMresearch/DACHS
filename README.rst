@@ -2,7 +2,7 @@
 Overview
 ========
 
-Database for Automation and Consistent Holistic Synthesis
+Database for Automation, Characterisation and Holistic Synthesis
 
 .. start-badges
 
