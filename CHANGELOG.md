@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v0.5.5 (2025-12-08)
+
+### Bug fixes
+
+* **Project**: move dependencies to pyproject, tests deps to tox.ini ([`bc47e16`](https://github.com/BAMresearch/DACHS/commit/bc47e161313ac03e8c10b2d043f2b8f328ba9791))
+
+### Continuous integration
+
+* **Tests**: testing on Ubuntu & Windows ([`12c9554`](https://github.com/BAMresearch/DACHS/commit/12c95542676ccdbecf440bfdc161b0fb245cceb5))
+
+* **Tests**: requirements file removed ([`c08f18e`](https://github.com/BAMresearch/DACHS/commit/c08f18e474a90f190fa610bde310dd73ceac5edc))
+
+* **Cleanup**: remove templates and code now obsolete with updated copier config ([`16ed14f`](https://github.com/BAMresearch/DACHS/commit/16ed14f64f22386bd546181b78b1fccf8020f1e8))
+
+* **Tests**: Run Github Action tests on Windows ([`8e9c76a`](https://github.com/BAMresearch/DACHS/commit/8e9c76ac94b5870dfc79bf20febd94a47e3b66e2))
+
 ## v0.5.4 (2025-12-08)
 
 ### Bug fixes
