@@ -3,25 +3,25 @@ exclude docs/reference/autosummary/*
 graft src
 graft ci
 graft tests
+graft testdata
 
 include .editorconfig
 include .pre-commit-config.yaml
-include .cookiecutterrc
+include .copier-answers.yml
 include tox.ini
+include templates/*.j2
+include notebooks/*.ipynb
 
-include AUTHORS.rst
+include README.md
 include CHANGELOG.md
+include AUTHORS.rst
 include CONTRIBUTING.rst
 include LICENSE
-include README.rst
 
-include main.py
 include Structure.drawio
 include notebooks/*.ipynb
-include SplitRoWaNLogs.py
+global-exclude *.py[cod] __pycache__/* *.so *.dylib .DS_Store */.ipynb_checkpoints/* .*.kate-swp
 
-global-exclude *.py[cod] __pycache__/* *.so *.dylib .DS_Store */.ipynb_checkpoints/*
-recursive-include templates *.j2
-exclude scripts/*
+include scripts/*
 exclude *.sh
 exclude tests/testData/*.h5

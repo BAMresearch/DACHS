@@ -2,11 +2,10 @@
 name = "dachs"
 description = "Database for Automation and Consistent Holistic Synthesis"
 dynamic = ["version", "readme"]
-license = {text = "GNU General Public License v3 or later (GPLv3+)"}
+license = "GPL-3.0-or-later"
 classifiers = [
   # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
   "Development Status :: 4 - Beta",
-  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
   "Operating System :: Unix",
   "Operating System :: POSIX",
   "Operating System :: MacOS",
@@ -14,10 +13,9 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Framework :: Jupyter :: JupyterLab",
   "Topic :: Utilities",
@@ -25,10 +23,17 @@ classifiers = [
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
 ]
+dependencies = [
+
+]
 
 [[project.authors]]
 name = "Brian R. Pauw"
 email = "brian.pauw@bam.de"
+
+[[project.authors]]
+name = "Glen J. Smales"
+email = "glen.smales@tugraz.at"
 
 [[project.authors]]
 name = "Ingo Breßler"
@@ -54,15 +59,15 @@ include = ["dachs*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "dachs.__version__"}
-readme = {file = ["README.rst", "CHANGELOG.md"]}
+readme = {file = ["README.md", "CHANGELOG.md"], content-type = "text/markdown"}
 
 [tool.coverage.report]
-path = "coverage-report"
+path = "coverage-report"  # see coverage.yml github action
 
 # on version numbers: https://peps.python.org/pep-0440/
 # and bottom of https://softwareengineering.stackexchange.com/a/151558
 [tool.semantic_release]
-#major_on_zero = false # no major release when current major version is zero
+allow_zero_version = true
 version_variables = [                        # version location
     "src/dachs/__init__.py:__version__",
     "docs/conf.py:version",
@@ -87,3 +92,8 @@ group_by_package = true
 known_first_party = "dachs"
 ensure_newline_before_comments = true
 extend_skip = ["ci/templates", ".ipynb_checkpoints"]
+
+[tool.docformatter]
+recursive = true
+wrap-summaries = 100
+wrap-descriptions = 100

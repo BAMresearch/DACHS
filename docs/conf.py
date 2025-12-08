@@ -29,8 +29,8 @@ templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "DACHS"
-year = "2022-2024"
-author = "Brian R. Pauw and Ingo Breßler"
+year = "2022-2025"
+author = "Brian R. Pauw, Glen J. Smales and Ingo Breßler"
 copyright = "{0}, {1}".format(year, author)
 version = "0.5.3"
 release = version
@@ -87,4 +87,7 @@ linkcheck_ignore = [
     # attempted fix of '406 Client Error: Not Acceptable for url'
     # https://github.com/sphinx-doc/sphinx/issues/1331
     join(project_meta["project"]["urls"]["repository"], "commit", r"[0-9a-fA-F]+")
+]
+linkcheck_anchors_ignore_for_url = [
+    r"https://pypi\.org/project/[^/]+",
 ]

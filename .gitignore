@@ -68,6 +68,7 @@ docs/reference/autosummary
 .DS_Store
 *~
 .*.sw[po]
+.*.kate-swp
 .build
 .ve
 .env

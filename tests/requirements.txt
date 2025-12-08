@@ -1,3 +1,6 @@
+pytest
+pytest-cov
+pytest_notebook @ git+https://github.com/BAMresearch/pytest-notebook@master
 ipykernel
 notebook
 pandas
@@ -8,7 +11,7 @@ matplotlib
 numpy<2
 chempy
 scipy
-git+https://github.com/BAMresearch/McSAS3.git
+mcsas3
 pint
 openpyxl
 h5py
