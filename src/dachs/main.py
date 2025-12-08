@@ -7,7 +7,7 @@ from os import environ
 from pathlib import Path
 from typing import List
 
-from mcsas3 import McHDF
+from mcsas3.mc_hdf import storeKVPairs
 
 import dachs.serialization
 import dachs.structure
@@ -125,5 +125,5 @@ def main(args: List[str] = None):
     logging.info(f"Writing structure to '{args.outfile}'.")
     # from pprint import pprint
     # pprint(paths)
-    McHDF.storeKVPairs(args.outfile, "", paths.items())
+    storeKVPairs(args.outfile, "", paths.items())
     dachs.serialization.graphKV(paths)
