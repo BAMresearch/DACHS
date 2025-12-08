@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## Unreleased
+## v0.5.4 (2025-12-08)
 
 ### Bug fixes
+
+* **Project**: converted to copier project template, reapplied, updated ([`69d2476`](https://github.com/BAMresearch/DACHS/commit/69d24765ce1c1a57d647e41cb7d00c58523300cf))
 
 * **McSAS3**: updated module names ([`6d26abf`](https://github.com/BAMresearch/DACHS/commit/6d26abf94b2ed2b9a001a40920fd2bc02a7d8efd))
 

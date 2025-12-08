@@ -1,7 +1,7 @@
-# DACHS (v0.5.3)
+# DACHS (v0.5.4)
 
 [![PyPI Package latest release](https://img.shields.io/pypi/v/dachs.svg)](https://pypi.org/project/dachs)
-[![Commits since latest release](https://img.shields.io/github/commits-since/BAMresearch/DACHS/v0.5.3.svg)](https://github.com/BAMresearch/DACHS/compare/v0.5.3...main)
+[![Commits since latest release](https://img.shields.io/github/commits-since/BAMresearch/DACHS/v0.5.4.svg)](https://github.com/BAMresearch/DACHS/compare/v0.5.4...main)
 [![License](https://img.shields.io/pypi/l/dachs.svg)](https://en.wikipedia.org/wiki/GPL-3.0-or-later)
 [![Supported versions](https://img.shields.io/pypi/pyversions/dachs.svg)](https://pypi.org/project/dachs)
 [![PyPI Wheel](https://img.shields.io/pypi/wheel/dachs.svg)](https://pypi.org/project/dachs#files)
