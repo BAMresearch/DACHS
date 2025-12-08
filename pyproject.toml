@@ -24,7 +24,13 @@ classifiers = [
   "Intended Audience :: Science/Research",
 ]
 dependencies = [
-
+    "pint",
+    "mcsas3",
+    "graphviz",
+    "chempy",
+    "nexusformat",
+    "dash",
+    "openpyxl"
 ]
 
 [[project.authors]]
