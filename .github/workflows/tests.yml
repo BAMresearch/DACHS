@@ -42,7 +42,6 @@ jobs:
           cache: pip
           cache-dependency-path: |
             ci/requirements.txt
-            tests/requirements.txt
 
       - name: Install required system packages
         shell: sh
